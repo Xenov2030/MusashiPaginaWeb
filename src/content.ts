@@ -1,3 +1,113 @@
+export interface VisualResource {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  kind: "conceptual" | "confirmed";
+  position?: string;
+  source: string;
+}
+export const conceptualVisuals: Record<
+  | "hero"
+  | "experience"
+  | "ramen"
+  | "cafe"
+  | "mochi"
+  | "dorayaki"
+  | "cheesecake",
+  VisualResource
+> = {
+  hero: {
+    src: "/images/hero.webp",
+    alt: "Ilustración conceptual de café y mochis sobre cerámica; no representa productos reales de Musashi",
+    width: 1200,
+    height: 800,
+    kind: "conceptual",
+    source:
+      "Generación de imágenes de OpenAI para el boceto; ver docs/RECURSOS.md",
+  },
+  experience: {
+    src: "/images/experience.webp",
+    alt: "Ilustración conceptual de una lectura junto a una merienda; no representa el local ni sus instalaciones",
+    width: 1200,
+    height: 800,
+    kind: "conceptual",
+    source:
+      "Generación de imágenes de OpenAI para el boceto; ver docs/RECURSOS.md",
+  },
+  ramen: {
+    src: "/images/ramen.webp",
+    alt: "Ilustración de ramen para un ejemplo de encuentro, sin receta ni disponibilidad confirmadas",
+    width: 1200,
+    height: 1200,
+    kind: "conceptual",
+    source:
+      "Generación de imágenes de OpenAI para el boceto; ver docs/RECURSOS.md",
+  },
+  cafe: {
+    src: "/images/cafe.webp",
+    alt: "Ilustración conceptual de café de especialidad",
+    width: 1200,
+    height: 1200,
+    kind: "conceptual",
+    position: "center",
+    source:
+      "Generación de imágenes de OpenAI para el boceto; ver docs/RECURSOS.md",
+  },
+  mochi: {
+    src: "/images/mochi.webp",
+    alt: "Ilustración conceptual de mochis",
+    width: 1200,
+    height: 1200,
+    kind: "conceptual",
+    position: "center 56%",
+    source:
+      "Generación de imágenes de OpenAI para el boceto; ver docs/RECURSOS.md",
+  },
+  dorayaki: {
+    src: "/images/dorayaki.webp",
+    alt: "Ilustración conceptual de dorayakis",
+    width: 1200,
+    height: 1200,
+    kind: "conceptual",
+    position: "center",
+    source:
+      "Generación de imágenes de OpenAI para el boceto; ver docs/RECURSOS.md",
+  },
+  cheesecake: {
+    src: "/images/cheesecake.webp",
+    alt: "Ilustración conceptual de cheesecake japonés",
+    width: 1200,
+    height: 1200,
+    kind: "conceptual",
+    position: "center",
+    source:
+      "Generación de imágenes de OpenAI para el boceto; ver docs/RECURSOS.md",
+  },
+};
+export const copy = {
+  hero: {
+    greeting: "Bienvenidos",
+    intro: "Café de especialidad, pastelería japonesa y ganas de encontrarnos.",
+    stage: "Musashi prepara un nuevo espacio. Las novedades, en Instagram.",
+  },
+  experience: {
+    title: "Algo rico.",
+    subtitle: "Una buena charla.",
+    body: "Un café puede ser la excusa para descubrir un sabor o empezar una conversación. Esa es la bienvenida que queremos acercarte desde Musashi.",
+  },
+  menu: {
+    title: "¿Qué te gustaría probar?",
+    subtitle: "Café y pastelería japonesa, para descubrir a tu ritmo.",
+  },
+  draftNote:
+    "Boceto · Imágenes conceptuales, no productos ni espacios reales de Musashi. Carta y disponibilidad por confirmar.",
+  event: {
+    intro:
+      "Una excusa para sentarnos alrededor de un plato y descubrir otros sabores de Japón.",
+    context: "Inspirado en un antecedente de Musashi.",
+  },
+};
 export interface Product {
   id: string;
   name: string;
@@ -6,7 +116,7 @@ export interface Product {
   priceARS: number | null;
   detail: string;
   texture: string;
-  image?: string;
+  image?: VisualResource;
   availability: "pending" | "available" | "unavailable";
   confirmedFeatures: string[];
 }
@@ -29,11 +139,16 @@ export const site = {
   visuals: {
     provisional: true,
     logo: null as string | null,
-    spacePhoto: null as string | null,
+    heroScene: null as VisualResource | null,
+    heroDetail: null as VisualResource | null,
+    experienceSpace: null as VisualResource | null,
+    experienceDetail: null as VisualResource | null,
+    experienceTable: null as VisualResource | null,
   },
   business: {
     address: null as string | null,
     hours: null as string | null,
+    reservationConditions: null as string | null,
     whatsapp: null as string | null, // Solo número oficial confirmado, formato internacional sin +.
   },
 };
@@ -41,9 +156,9 @@ export const demoProducts: Product[] = [
   {
     id: "cafe",
     detail:
-      "El café de especialidad pone atención en la calidad y el recorrido del grano. Esta categoría representa uno de los ejes de la propuesta de Musashi; los granos, métodos y bebidas concretas se incorporarán cuando estén confirmados.",
-    texture: "Un universo por descubrir, una taza a la vez.",
-    image: "/images/cafe.webp",
+      "El café de especialidad pone atención en la calidad y el recorrido del grano. Acercarse a él es descubrir diferencias de aroma, cuerpo y sabor en cada taza.",
+    texture: "Aroma, cuerpo y sabor: tres maneras de empezar a conocerlo.",
+    image: conceptualVisuals.cafe,
     name: "Café de especialidad",
     category: "Café",
     description: "Café de especialidad, el comienzo de una buena merienda.",
@@ -54,9 +169,9 @@ export const demoProducts: Product[] = [
   {
     id: "mochi",
     detail:
-      "El mochi es una preparación japonesa de textura elástica. En su versión dulce puede acompañarse de diferentes rellenos. La ilustración explora esa forma, pero no confirma un sabor ni una receta de Musashi.",
+      "El mochi es una preparación japonesa que se reconoce por su textura elástica. En su versión dulce puede acompañarse de diferentes rellenos; su particularidad está en cómo se siente cada bocado.",
     texture: "Su particularidad está en la textura suave y elástica.",
-    image: "/images/mochi.webp",
+    image: conceptualVisuals.mochi,
     name: "Mochi",
     category: "Pastelería",
     description: "Un dulce japonés pequeño, suave y de textura elástica.",
@@ -67,9 +182,9 @@ export const demoProducts: Product[] = [
   {
     id: "dorayaki",
     detail:
-      "El dorayaki reúne dos discos de masa parecidos a pequeños panqueques con un relleno dulce. Es un clásico de la pastelería japonesa y aparece entre los antecedentes de Musashi. Los rellenos de una futura carta requieren confirmación.",
+      "El dorayaki reúne dos discos de masa parecidos a pequeños panqueques con un relleno dulce. Es un clásico de la pastelería japonesa: una forma sencilla de acercarse a otros sabores.",
     texture: "Una masa esponjosa que se disfruta bocado a bocado.",
-    image: "/images/dorayaki.webp",
+    image: conceptualVisuals.dorayaki,
     name: "Dorayaki",
     category: "Pastelería",
     description: "Dos discos de masa esponjosa con un corazón dulce.",
@@ -80,9 +195,9 @@ export const demoProducts: Product[] = [
   {
     id: "cheesecake",
     detail:
-      "El cheesecake japonés es una interpretación ligera y aireada de la torta de queso. Su textura lo distingue de otras versiones más densas. Se incluye como antecedente ilustrativo, sin afirmar una receta ni disponibilidad actual.",
+      "El cheesecake japonés es una interpretación ligera y aireada de la torta de queso. Su miga suave lo distingue de otras versiones más densas y lo convierte en otra manera de explorar esta preparación.",
     texture: "Ligero, delicado y de miga aireada.",
-    image: "/images/cheesecake.webp",
+    image: conceptualVisuals.cheesecake,
     name: "Cheesecake japonés",
     category: "Pastelería",
     description: "La versión japonesa de la torta de queso: suave y aireada.",

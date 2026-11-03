@@ -1,4 +1,4 @@
-# Recursos de la segunda iteración
+# Recursos y continuidad con el espacio físico
 
 ## Auditoría previa
 
@@ -15,19 +15,25 @@ Se generaron siete imágenes originales con la herramienta de generación de im�
 | `public/images/mochi.webp`      | Mochis de colores y uno abierto. Los colores y el relleno no indican sabores confirmados.                                                    |
 | `public/images/dorayaki.webp`   | Dorayakis con un ejemplo de relleno; no es una receta de Musashi.                                                                            |
 | `public/images/cheesecake.webp` | Porción de cheesecake japonés como referencia visual.                                                                                        |
-| `public/images/experience.webp` | Manga de viñetas abstractas, café y dorayaki. Un panel principal y dos acercamientos de la misma ilustración; no representa el espacio real. |
+| `public/images/experience.webp` | Manga de viñetas abstractas, café y dorayaki. Un único panel conceptual; se retiraron los recortes repetidos. No representa el espacio real. |
 | `public/images/ramen.webp`      | Ramen ilustrativo para el afiche demostrativo; toppings y presentación no confirman una oferta comercial.                                    |
 
 Las imágenes se guardaron localmente, con versiones WebP de hasta 1200 px y calidad 84. El conjunto pesa aproximadamente 2,2 MB. Solo la portada carga con prioridad alta; el resto usa carga diferida. Los originales generados quedan fuera del checkout, en `/workspace/generated_images/`, y no se requieren para ejecutar el sitio.
 
-La nota global del pie identifica las ilustraciones como conceptuales y aclara que no son productos reales de Musashi. Para la versión definitiva, pedir fotos autorizadas y registrar su procedencia antes de reemplazarlas.
+Una nota visible junto a la carta identifica los recursos como conceptuales y aclara que no son productos ni espacios reales de Musashi. El panel de experiencia también identifica la composición conceptual para no confundirla con una foto del local. Para la versión definitiva, pedir fotos autorizadas y registrar su procedencia antes de reemplazarlas.
 
 ## Marca y tipografía
 
 - Identificador MUSASHI como texto provisional, sin emblema nuevo. No hay logo oficial utilizable ni favicon original; siguen pendientes.
 - DM Sans 400, 600 y 800, distribución Fontsource, SIL Open Font License; archivos y licencia en `public/fonts/`. Procedencia: https://fontsource.org/fonts/dm-sans. No se afirma que sea la fuente oficial.
 - Negro `#080808`, blanco `#FFFFFF` y rojo `#C51624` para la interfaz, más grises neutros. Los tonos naturales de las ilustraciones se limitan al recurso gastronómico, no a fondos, textos ni botones.
-- Dos recursos de identidad recurrentes: ilustración de tinta gastronómica y acentos rojos breves. Sin collage de símbolos, kanji, personajes de terceros, numeraciones editoriales ni fondos decorativos.
+- Lenguaje de continuidad: ilustración gastronómica existente, trazo rojo puntual y encuadres de viñeta discretos. Sin collage de símbolos, kanji, personajes de terceros, numeraciones editoriales ni fondos decorativos.
 - Textos para revisión, sin atribuir eslóganes al propietario. Los datos del negocio proceden del brief y se mantienen separados de los ejemplos.
 
 No hay solicitudes de fuentes, imágenes ni scripts de terceros al navegar la página.
+
+## Auditoría para la iteración de bienvenida
+
+No hay fotografías verificadas de ningún espacio de Musashi ni logo original en el checkout. Se conservaron las siete ilustraciones existentes, sin generar interiores ni sumar adornos japoneses. Los objetos de la ilustración de lectura son conceptuales; no confirman actividades, decoración o instalaciones del café. Los campos de fotografías reales quedan en `null` y no producen recuadros vacíos.
+
+Se registró `kind`, procedencia, texto alternativo, dimensiones y encuadre en `VisualResource`. La variante conceptual de portada usa mezcla de aclarado para integrar el negro sin oscurecer la imagen. Las fotos futuras confirmadas usan una variante sin esa mezcla para conservar su detalle y color. La interfaz mantiene solo negro, blanco, rojo y grises neutros.

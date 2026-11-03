@@ -13,7 +13,7 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Café, Japón",
+    "Bienvenidos",
   );
   await page.getByRole("link", { name: "Explorar la carta" }).click();
   await expect(page).toHaveURL(/#carta$/);
@@ -234,4 +234,110 @@ test("portada gastronómica, selección breve y navegación activa", async ({
   await expect(
     page.getByRole("heading", { name: "Mochi", exact: true }),
   ).toBeInViewport();
+});
+
+test("recursos honestos, foco del modal y movimiento reducido", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(page.locator(".hero-visual img").first()).toHaveAttribute(
+    "fetchpriority",
+    "high",
+  );
+  await expect(page.locator(".hero-visual img").first()).toHaveAttribute(
+    "loading",
+    "eager",
+  );
+  await expect(page.locator(".hero-visual img").first()).toHaveAttribute(
+    "data-resource-kind",
+    "conceptual",
+  );
+  await expect(page.locator(".experience-composition img")).toHaveCount(1);
+  await expect(page.locator(".experience-composition img")).toHaveAttribute(
+    "data-resource-kind",
+    "conceptual",
+  );
+  await expect(page.locator(".experience-composition img")).toHaveAttribute(
+    "loading",
+    "lazy",
+  );
+  await page.locator(".experience-main img").scrollIntoViewIfNeeded();
+  await expect
+    .poll(() =>
+      page
+        .locator(".experience-main img")
+        .evaluate(
+          (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+        ),
+    )
+    .toBe(true);
+  await expect(page.locator(".draft-note")).toHaveCount(1);
+  await expect(page.locator(".draft-note")).toContainText(
+    "no productos ni espacios reales",
+  );
+  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  expect(
+    await page
+      .locator(".product-selection")
+      .evaluate((el) => getComputedStyle(el).animationName),
+  ).toBe("none");
+  expect(
+    await page.evaluate(
+      () => getComputedStyle(document.documentElement).scrollBehavior,
+    ),
+  ).toBe("auto");
+  const trigger = page.getByRole("button", { name: "Conocer la propuesta" });
+  await trigger.click();
+  const close = page.getByRole("button", { name: "Cerrar detalle del evento" });
+  await expect(close).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(page.getByRole("dialog").getByRole("link")).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(close).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+});
+
+test("contraste de lectura y controles", async ({ page }) => {
+  await page.goto("/");
+  const ratios = await page.evaluate(() => {
+    const rgb = (value: string) =>
+      value
+        .match(/\d+/g)!
+        .slice(0, 3)
+        .map(Number)
+        .map((v) => {
+          const n = v / 255;
+          return n <= 0.04045 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4;
+        });
+    const luminance = (value: string) => {
+      const [r, g, b] = rgb(value);
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const contrast = (fg: string, bg: string) => {
+      const a = luminance(fg),
+        b = luminance(bg);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    };
+    const pairs = [
+      [".hero-intro", ".hero"],
+      [".hero-actions .button", ".hero-actions .button"],
+      [".draft-note", ".menu-section"],
+      [".poster-copy>p:not(.eyebrow)", ".event-poster"],
+      [".contact-action>p", ".contact"],
+    ];
+    return pairs.map(([text, background]) => {
+      const fg = getComputedStyle(document.querySelector(text)!).color;
+      let el: Element | null = document.querySelector(background);
+      let bg = "rgba(0, 0, 0, 0)";
+      while (el && bg === "rgba(0, 0, 0, 0)") {
+        bg = getComputedStyle(el).backgroundColor;
+        el = el.parentElement;
+      }
+      return { text, ratio: contrast(fg, bg) };
+    });
+  });
+  for (const item of ratios)
+    expect(item.ratio, item.text).toBeGreaterThanOrEqual(4.5);
 });

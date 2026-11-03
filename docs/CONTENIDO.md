@@ -1,36 +1,58 @@
-# Guía de reemplazo y aprobación
+# Incorporar materiales reales
 
-## Configuración
+La configuración vive en `src/content.ts`. Los textos de bienvenida y la nota de boceto están en `copy`; la paleta, espaciados y familias, en `src/style.css`. No cambiar la identidad negro/blanco con acento rojo por los colores de una fotografía.
 
-Editar `src/content.ts`:
+## Inventario y estado
 
-- `site.draft`: mantiene la nota discreta del boceto y selecciona la carta de demostración. Con `false`, se usa `confirmedProducts`; si está vacío, se muestra un mensaje sin inventar productos. El afiche demostrativo de ramen se oculta fuera del boceto.
-- `site.stage`: `coming-soon` o `open`. Cambiar solo tras confirmar el estado con el propietario.
-- `site.business.address` y `hours`: `null` hasta su confirmación. Al cargar texto aparecen en contacto.
-- `site.business.whatsapp`: `null` hasta recibir un número oficial. Formato internacional solo con dígitos. Al configurarlo aparece el enlace de consulta; no promete una reserva.
-- `site.visuals.logo`: ruta como `/images/logo-musashi.svg`, a un recurso autorizado guardado en `public/images/`. Conservar proporciones y aportar un archivo de calidad; una miniatura ampliada no es un original.
-- `site.visuals.spacePhoto`: foto autorizada del espacio confirmado, local y optimizada. Ajustar su texto alternativo si cambia el contenido. `provisional` registra el estado editorial del material; no constituye una verificación automática de los archivos.
+| Material                                               | Estado actual                          | Uso                                                                |
+| ------------------------------------------------------ | -------------------------------------- | ------------------------------------------------------------------ |
+| Nombre Musashi e Instagram                             | Aportados en el brief                  | Identificador y contacto; no se verificaron publicaciones en vivo. |
+| Logo y fuentes originales                              | Pendientes                             | Identificador tipográfico reemplazable y DM Sans provisional.      |
+| Siete ilustraciones gastronómicas                      | Conceptuales, generadas para el boceto | Portada, carta, experiencia y ejemplo de ramen.                    |
+| Fotos del nuevo local, fachada, equipo o clientes      | No disponibles                         | No se simulan ni se sustituyen por fotos de otro café.             |
+| Fotos del espacio anterior                             | No disponibles                         | No se usan como evidencia del nuevo espacio.                       |
+| Dirección, horarios, teléfono y condiciones de reserva | Pendientes                             | Campos desactivados hasta confirmación.                            |
+
+## Recurso visual compartido
+
+`VisualResource` describe cada imagen mediante `src`, `alt`, `width`, `height`, `kind` (`conceptual` o `confirmed`), `source` (procedencia) y `position` opcional (encuadre CSS). El componente `Visual` usa esa información en portada, carta, experiencia y evento, con dimensiones reservadas, prioridad alta para la imagen principal y carga diferida en las inferiores.
+
+Solo asignar `kind: 'confirmed'` a una foto verificada y autorizada. Completar su procedencia y un texto alternativo que describa lo que efectivamente muestra. El cambio de clasificación no valida un archivo por sí solo. Guardar las imágenes optimizadas en `public/images/` y registrar la autorización en `RECURSOS.md`.
+
+## Portada
+
+- `site.visuals.heroScene`: foto confirmada de una escena de mesa o del espacio. Mientras sea `null`, se usa la composición conceptual actual, integrada con el fondo sin oscurecer los alimentos.
+- `site.visuals.heroDetail`: detalle gastronómico complementario opcional. Si existe, aparece como una imagen pequeña superpuesta; no es un espacio vacío cuando falta.
+- `site.visuals.logo`: ruta local a un logo original autorizado. Se preserva su proporción. El identificador MUSASHI actual no es un logo rediseñado.
+
+## Experiencia
+
+- `site.visuals.experienceSpace`: vista confirmada del nuevo espacio. Por defecto, una única ilustración conceptual identificada como tal, sin repetir recortes de productos.
+- `site.visuals.experienceDetail`: detalle representativo autorizado.
+- `site.visuals.experienceTable`: escena real de mesa o preparación autorizada.
+
+Los dos detalles se renderizan solo cuando existen. No hay una falsa galería mientras permanecen en `null`. La imagen principal conceptual no afirma que el café tenga mangas, mesas o elementos de esa ilustración.
 
 ## Carta
 
-Agregar datos aprobados a `confirmedProducts`; mantener separados los ejemplos de `demoProducts`. El modelo `Product` incluye `name`, `category`, `description`, `detail`, `texture`, `priceARS`, `image`, `availability` y `confirmedFeatures`. Precio `null` se omite; no usar cero para representar un precio desconocido. La portada muestra tres propuestas, con mochi destacado cuando existe; `/carta` muestra todos los productos y agrega `detail` (explicación amplia) y `texture` (nota breve). Las imágenes son opcionales y tienen texto alternativo; para la entrega oficial, reemplazar las ilustraciones por fotos autorizadas y ajustar el texto alternativo si corresponde. Los enlaces `/carta#id` dependen de identificadores estables. Las características alimentarias requieren confirmación expresa.
+`site.draft` selecciona los ejemplos de `demoProducts`; con `false`, se usa `confirmedProducts`, inicialmente vacío. Conservar separados ejemplos y datos aprobados. El modelo `Product` contiene nombre, categoría, descripción breve, `detail` ampliado, `texture`, precio ARS opcional, `image` como `VisualResource` opcional, disponibilidad y características confirmadas.
 
-Las categorías iniciales son Café y Pastelería. Para ampliarlas, actualizar el tipo y las opciones de filtro en el componente `Menu`.
+La portada muestra tres propuestas; `/carta` agrega más contenido y las explicaciones. Los enlaces `/carta#id` necesitan identificadores estables. Las aclaraciones del prototipo se concentran en una sola nota visible por página. Las descripciones generales de preparaciones no confirman recetas, rellenos, precios, alérgenos ni existencias de Musashi.
 
-## Eventos y consultas
+Para una nueva categoría, actualizar el tipo y las opciones de filtro. Si falta una foto, no inventarla ni usar una imagen de un producto diferente.
 
-`CafeEvent` prevé título, descripción, imagen, fecha, hora, precio, condiciones y estados `upcoming`, `full`, `finished`, además de `illustrative` para el ejemplo. Antes de incorporar eventos reales, adaptar el afiche para mostrar esos datos aprobados y retirar la etiqueta demostrativa; el modelo preparado no anuncia automáticamente un calendario.
+## Negocio, encuentros y consultas
 
-`reservationLink` genera una consulta con fecha, hora, cantidad de personas y evento opcional solo con un número oficial. El mensaje advierte que no confirma una reserva. El prototipo no incluye un formulario de reservas ni conexión con disponibilidad real.
+- `site.stage`: `coming-soon` o `open`, solo tras confirmación. No retirar noindex solo por cambiar este estado.
+- `site.business.address`, `hours`, `reservationConditions`: `null` hasta recibir los datos oficiales; se muestran en contacto cuando existen.
+- `site.business.whatsapp`: número oficial internacional, solo dígitos. Habilita un enlace de consulta, no una reserva automática.
+- `reservationLink`: estructura futura con fecha, hora, cantidad de personas y evento opcional. Advierte que la consulta no confirma una reserva.
+- `CafeEvent`: modelo futuro de fecha, hora, precio, condiciones y estados. El afiche actual sigue siendo un ejemplo histórico de presentación, no un evento próximo. Adaptar contenido y aprobación antes de anunciar un evento real.
 
-## Marca
+No se incorporan backend, pagos, señas, mapas falsos ni formularios que aparenten enviar consultas.
 
-Cambiar colores, familias y espaciados en los tokens de `src/style.css`. La identidad aprobada para este rediseño es negro y blanco, con rojo en menor medida; no reintroducir tonos cálidos de la propuesta anterior. Las familias actuales se declaran en `public/fonts/fonts.css`. Para reemplazarlas, aportar WOFF2 con licencia adecuada, actualizar declaraciones y conservar la licencia de redistribución. Solicitar el favicon original o derivarlo de un logo autorizado; actualmente está pendiente.
+## Para completar la conexión con el local
 
-Al incorporar fotografías, usar WebP/AVIF cuando corresponda, dimensiones reservadas, textos alternativos útiles y autorización documentada en `RECURSOS.md`. Evitar imágenes con texto como sustituto de carta o información comercial.
+Pedir logo original, referencias tipográficas verificables, una foto amplia del nuevo espacio, un detalle representativo y una escena de mesa o preparación. Pedir además fotos de productos autorizadas y datos oficiales de dirección, horarios, carta, contacto y reservas. No usar audios sin transcripción como requisitos confirmados.
 
-## Antes de publicar como sitio oficial
-
-Confirmar datos comerciales y textos, sustituir los materiales provisionales, revisar móvil y escritorio, ejecutar compilación y pruebas. Revisar por separado la retirada de noindex del HTML y de `netlify.toml`. Noindex no equivale a privacidad.
-
-Conservar al final de la página y del README el crédito enlazado: **DESARROLLADO POR NICOLAS AGUIRRES** — https://nicolasaguirrescode.com/.
+La publicación de esta iteración queda pendiente de una indicación posterior. Conservar noindex durante la revisión y el crédito enlazado: **DESARROLLADO POR NICOLAS AGUIRRES** — https://nicolasaguirrescode.com/.

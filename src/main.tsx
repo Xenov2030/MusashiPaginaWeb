@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { confirmedProducts, demoEvent, demoProducts, site } from "./content";
+import {
+  confirmedProducts,
+  demoEvent,
+  demoProducts,
+  site,
+  conceptualVisuals,
+  copy,
+  type VisualResource,
+} from "./content";
 import "./style.css";
 
 const Arrow = () => (
@@ -129,24 +137,44 @@ function Header() {
     </header>
   );
 }
-function Hero() {
+function Visual({
+  resource,
+  priority = false,
+  className = "",
+}: {
+  resource: VisualResource;
+  priority?: boolean;
+  className?: string;
+}) {
   return (
-    <section id="inicio" className="hero">
+    <img
+      className={className}
+      src={resource.src}
+      alt={resource.alt}
+      width={resource.width}
+      height={resource.height}
+      style={{ objectPosition: resource.position || "center" }}
+      fetchPriority={priority ? "high" : undefined}
+      loading={priority ? "eager" : "lazy"}
+      data-resource-kind={resource.kind}
+    />
+  );
+}
+function Hero() {
+  const scene = site.visuals.heroScene ?? conceptualVisuals.hero;
+  const detail = site.visuals.heroDetail;
+  return (
+    <section
+      id="inicio"
+      className={`hero ${scene.kind === "confirmed" ? "hero-real" : "hero-conceptual"}`}
+    >
       <div className="hero-copy">
-        <p className="eyebrow">
-          <span className="red-dot" /> ANIME CAFÉ / MENDOZA
-        </p>
+        <p className="eyebrow">CAFÉ DE ESPECIALIDAD · PASTELERÍA JAPONESA</p>
         <h1>
-          Café, Japón
-          <br />y algo para
-          <br />
-          <em>compartir.</em>
+          {copy.hero.greeting}
+          <br />a <em className="brush-word">Musashi.</em>
         </h1>
-        <p className="hero-intro">
-          Café de especialidad y pastelería japonesa.
-          <br />
-          Un universo que también se descubre a bocados.
-        </p>
+        <p className="hero-intro">{copy.hero.intro}</p>
         <div className="hero-actions">
           <a className="button" href="#carta">
             Explorar la carta
@@ -155,20 +183,19 @@ function Hero() {
           <Instagram className="text-link">Instagram</Instagram>
         </div>
         <p className="stage-note">
+          <span className="stage-indicator" aria-hidden="true" />
           {site.stage === "open"
-            ? "Conocé Musashi Anime Café."
-            : "Musashi prepara un nuevo espacio. Seguí las novedades."}
+            ? "Conocé nuestra propuesta."
+            : copy.hero.stage}
         </p>
       </div>
-      <figure className="hero-visual">
-        <img
-          src="/images/hero.webp"
-          alt="Ilustración de café y mochis sobre cerámica, una interpretación gastronómica para el boceto"
-          width="1536"
-          height="1024"
-          fetchPriority="high"
-        />
-        <figcaption>CAFÉ DE ESPECIALIDAD + PASTELERÍA JAPONESA</figcaption>
+      <figure className={`hero-visual ${detail ? "with-detail" : ""}`}>
+        <Visual resource={scene} priority />
+        {detail && <Visual resource={detail} className="hero-detail" />}
+        <figcaption>
+          <span>CAFÉ, JAPÓN Y UN MOMENTO PARA VOS.</span>
+          <span>MENDOZA / ARGENTINA</span>
+        </figcaption>
       </figure>
     </section>
   );
@@ -203,28 +230,23 @@ function Menu({ full = false }: { full?: boolean }) {
               </>
             ) : (
               <>
-                Primero, la curiosidad.
+                {copy.menu.title}
                 <br />
-                <em>Después, el primer bocado.</em>
+                <em className="menu-subtitle">{copy.menu.subtitle}</em>
               </>
             )}
           </Title>
         </div>
         <div className="menu-intro">
-          <p>
-            {site.draft
-              ? "Selección ilustrativa para el boceto"
-              : "Nuestra carta"}
-          </p>
-          {site.draft && (
-            <small>
-              Inspirada en antecedentes de Musashi.
-              <br />
-              Carta y disponibilidad por confirmar.
-            </small>
-          )}
+          <span>
+            {site.draft ? "Una selección para descubrir" : "Nuestra carta"}
+          </span>
+          <a className="text-link" href="/#experiencia">
+            Conocé la propuesta<span aria-hidden="true"> →</span>
+          </a>
         </div>
       </div>
+      {site.draft && <p className="draft-note">{copy.draftNote}</p>}
       <div className="filters" role="group" aria-label="Filtrar carta">
         {["Todo", "Café", "Pastelería"].map((c) => (
           <button
@@ -253,13 +275,7 @@ function Menu({ full = false }: { full?: boolean }) {
           >
             <div className="product-visual">
               {p.image ? (
-                <img
-                  src={p.image}
-                  alt={`Ilustración de ${p.name.toLowerCase()}`}
-                  width="1024"
-                  height="1024"
-                  loading="lazy"
-                />
+                <Visual resource={p.image} />
               ) : (
                 <span className="image-fallback">{p.category}</span>
               )}
@@ -340,36 +356,46 @@ function Menu({ full = false }: { full?: boolean }) {
   );
 }
 function Experience() {
+  const main = site.visuals.experienceSpace ?? conceptualVisuals.experience;
+  const details = [
+    site.visuals.experienceDetail,
+    site.visuals.experienceTable,
+  ].filter((resource): resource is VisualResource => resource !== null);
   return (
-    <section id="experiencia" className="experience section">
+    <section
+      id="experiencia"
+      className={`experience section ${details.length ? "has-real-details" : ""}`}
+    >
       <div className="experience-heading">
-        <p className="eyebrow">LA EXPERIENCIA MUSASHI</p>
+        <p className="eyebrow">LA BIENVENIDA MUSASHI</p>
         <h2>
-          Una merienda.
+          {copy.experience.title}
           <br />
-          <em>Todo un universo.</em>
+          <em>{copy.experience.subtitle}</em>
         </h2>
-        <p>
-          Café y pastelería para disfrutar entre historias, conversaciones y
-          cultura japonesa. Con o sin anime favorito.
-        </p>
+        <p>{copy.experience.body}</p>
+        <a className="text-link" href="#contacto">
+          Seguimos en contacto<span aria-hidden="true"> →</span>
+        </a>
       </div>
       <div className="experience-composition">
         <figure className="experience-main">
-          <img
-            src={site.visuals.spacePhoto || "/images/experience.webp"}
-            alt={
-              site.visuals.spacePhoto
-                ? "Espacio Musashi"
-                : "Ilustración conceptual de un manga abierto junto a un café y un dorayaki; no representa el local"
-            }
-            width="1536"
-            height="1024"
-            loading="lazy"
-          />
+          <Visual resource={main} />
+          <figcaption>
+            {main.kind === "conceptual"
+              ? "CAFÉ + LECTURA / UNA COMPOSICIÓN CONCEPTUAL"
+              : "EL ESPACIO MUSASHI"}
+          </figcaption>
         </figure>
-        <div className="experience-detail detail-coffee" aria-hidden="true" />
-        <div className="experience-detail detail-reading" aria-hidden="true" />
+        {details.length > 0 && (
+          <div className="experience-details">
+            {details.map((resource) => (
+              <figure key={resource.src}>
+                <Visual resource={resource} />
+              </figure>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -400,11 +426,8 @@ function Events() {
             <br />
             de <em>Ramen.</em>
           </h2>
-          <p>
-            Un plato, otra forma de disfrutar Japón.
-            <br />
-            Un antecedente de los encuentros de Musashi.
-          </p>
+          <p>{copy.event.intro}</p>
+          <p className="event-context">{copy.event.context}</p>
           <button
             ref={opener}
             className="text-link"
@@ -415,18 +438,30 @@ function Events() {
           </button>
         </div>
         <figure className="poster-visual">
-          <img
-            src="/images/ramen.webp"
-            alt="Ilustración de un cuenco de ramen con fideos y toppings, como referencia de una experiencia especial"
-            width="1024"
-            height="1024"
-            loading="lazy"
-          />
+          <Visual resource={conceptualVisuals.ramen} />
+          <figcaption>ENCUENTROS ALREDEDOR DE LA MESA</figcaption>
         </figure>
       </article>
       <dialog
         ref={dialog}
         aria-labelledby="event-title"
+        onKeyDown={(e) => {
+          if (e.key !== "Tab") return;
+          const controls = Array.from(
+            e.currentTarget.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), [tabindex="0"]',
+            ),
+          );
+          const first = controls[0];
+          const last = controls[controls.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last?.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first?.focus();
+          }
+        }}
         onClose={() => opener.current?.focus()}
         onClick={(e) => {
           if (e.target === dialog.current) dialog.current.close();
@@ -463,18 +498,18 @@ function Contact() {
       <div>
         <p className="eyebrow">MUSASHI / MENDOZA</p>
         <h2>
-          ¿Nos vemos
+          ¿Charlamos?
           <br />
-          <em>en Instagram?</em>
+          <em>Encontranos en Instagram.</em>
         </h2>
       </div>
       <div className="contact-action">
-        <p>
-          Encontrá las novedades del nuevo espacio
-          <br />y el contacto con Musashi.
-        </p>
+        <p>Las novedades de Musashi y un canal para hacer tus consultas.</p>
         {site.business.address && <p>{site.business.address}</p>}
         {site.business.hours && <p>{site.business.hours}</p>}
+        {site.business.reservationConditions && (
+          <p>{site.business.reservationConditions}</p>
+        )}
         <Instagram className="contact-instagram">@musashi.animecafe</Instagram>
         {site.business.whatsapp && (
           <a
@@ -506,9 +541,8 @@ function Footer() {
       </div>
       <div className="footer-bottom">
         <span>
-          {site.draft
-            ? "Boceto · Ilustraciones conceptuales, no productos reales de Musashi. Contenido sujeto a confirmación."
-            : "Musashi Anime Café · Mendoza"}
+          Musashi Anime Café · Mendoza
+          {site.draft ? " · Propuesta de diseño" : ""}
         </span>
         <a href={site.author.url} target="_blank" rel="noopener noreferrer">
           DESARROLLADO POR {site.author.name}
