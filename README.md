@@ -2,21 +2,24 @@
 
 Boceto web funcional para presentar al propietario de **Musashi Anime Café, Mendoza, Argentina**. Propuesta de diseño y desarrollo de Nicolas Aguirres: café de especialidad, pastelería japonesa y cultura como punto de encuentro.
 
-**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify; no se conectó ni desplegó ningún sitio. URL prevista, sin verificación de publicación: `https://musashiweb.netlify.app/`.
+**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify. El usuario conectó previamente la rama de la propuesta anterior; este rediseño no se desplegó. URL del sitio configurado por el usuario; no verificada para este rediseño: `https://musashiweb.netlify.app/`.
 
 ## Diseño y contenido
 
-Una dirección editorial cálida: carbón, marfil, rojo profundo y verde apagado como tono complementario; títulos expresivos, lectura clara y composiciones de inspiración japonesa. La portada propone «Tu próxima pausa tiene un nuevo capítulo». Tanto el texto como la estética requieren aprobación del propietario.
+**Rediseño editorial:** negro `#080808` y blanco `#FFFFFF` dominantes, con rojo `#C51624` como acento. Esta dirección reemplaza por completo la propuesta cálida anterior. Tokens centralizados, títulos de gran escala, líneas rectas y composiciones distintas en cada sección.
 
-- Portada, tres pilares de la propuesta y experiencia Musashi.
-- Carta HTML en **`/carta`**, con categorías y filtros funcionales.
-- Café, mochi, dorayaki y cheesecake japonés como selección ilustrativa basada en los antecedentes del brief; sin precios ni disponibilidad inventados.
-- Tarjeta demostrativa de «Noche de Ramen» con detalle en un modal nativo accesible. No anuncia una fecha ni permite reservas.
-- Contacto con el Instagram oficial, nueva etapa y firma del desarrollador.
-- Menú móvil, navegación por teclado, foco visible, enlace para saltar al contenido y respeto por movimiento reducido.
-- Fuentes y recursos locales, sin feed de Instagram, backend, analítica ni cookies de seguimiento.
+- Portada negra asimétrica: MUSASHI como identificador tipográfico provisional, marco blanco, sello rojo y una ilustración monocroma propia. No se creó ni reinterpretó un logo.
+- Transición blanca con una frase editorial de gran tamaño, sin las tres tarjetas anteriores.
+- Carta HTML en **`/carta`**, filtros funcionales, filas numeradas, separadores y descripciones legibles. Sin imágenes de productos inventadas ni precios sin confirmar.
+- Experiencia en paneles de diferentes proporciones, con una trama puntual y un espacio preparado para fotografía real autorizada.
+- «Noche de Ramen» como afiche independiente con detalle en un modal accesible. Sigue siendo un ejemplo, sin fechas ni reservas.
+- Cierre directo con Instagram y firma del desarrollador.
+- Menú móvil, navegación por teclado, foco visible y respeto por movimiento reducido.
+- Recursos locales, sin feed de Instagram, backend, analítica ni cookies de seguimiento.
 
-No se publican dirección, horarios, teléfono, fecha de inauguración, reseñas ni políticas no confirmadas. La dirección anterior no se presenta como vigente. El estado de próxima apertura procede del brief aportado, no de una comprobación actual del negocio.
+No se publican dirección, horarios, teléfono, fecha de inauguración, reseñas ni políticas no confirmadas. La dirección anterior no se presenta como vigente. El contexto de próxima apertura procede del brief, no de una comprobación actual del negocio. Los textos son propuestas editoriales para aprobación.
+
+**Rama de revisión:** `desarrollo/rediseno-editorial-musashi`. La rama anterior `desarrollo/boceto-musashi` quedó sin cambios porque está conectada a la publicación automática de Netlify. Este rediseño no se fusionó ni se desplegó. Para publicarlo se necesita una indicación posterior.
 
 ## Ejecutar el proyecto
 
@@ -52,7 +55,7 @@ Si el entorno ya dispone de Chromium:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 ```
 
-Las pruebas arrancan el servidor de producción local en el puerto 4173 y comprueban portada, firma, navegación, ruta directa y recarga de `/carta`, filtros, menú móvil, modal y cierre con Escape, recuperación del foco, noindex, carga sin solicitudes externas y desbordamiento en anchos de 320, 390, 768, 1024 y 1440 px. Generan las capturas de `docs/capturas/`.
+Las pruebas arrancan el servidor de producción local en el puerto 4173 y comprueban portada, firma, navegación, ruta directa y recarga de `/carta`, filtros, menú móvil, modal y cierre con Escape, recuperación del foco, noindex, carga sin solicitudes externas y desbordamiento en anchos de 320, 390, 768, 1024 y 1440 px. También verifican que los colores calculados se limiten a neutros y rojo. Generan las capturas de `docs/capturas/`.
 
 No constituyen una auditoría completa de accesibilidad ni verifican el estado de sitios externos. En este entorno, la descarga de Chromium de Playwright fue bloqueada por la política de red; se utiliza el Chromium del sistema.
 
@@ -83,8 +86,8 @@ La estructura para consultas futuras por WhatsApp existe como función `reservat
 
 ## Publicación futura en Netlify
 
-1. Revisar la rama `desarrollo/boceto-musashi` y obtener aprobación del contenido.
-2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. La conexión no fue realizada por este proyecto.
+1. Revisar la rama `desarrollo/rediseno-editorial-musashi` y obtener aprobación del contenido.
+2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. El usuario conectó previamente `desarrollo/boceto-musashi`; no cambiar la rama de producción ni activar despliegues del rediseño sin una indicación posterior.
 3. Usar `npm run build`, directorio de publicación `dist` y Node 24. `netlify.toml` ya declara estos valores y la redirección SPA para `/carta`.
 4. Publicar solo con autorización; verificar `/`, `/carta` y su recarga directa en el dominio real, recursos, enlaces y vista móvil.
 

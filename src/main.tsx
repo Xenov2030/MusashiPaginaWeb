@@ -6,13 +6,13 @@ import "./style.css";
 const Arrow = () => (
   <svg
     className="arrow"
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
     fill="none"
     aria-hidden="true"
   >
-    <path d="M3 13 13 3M3 3h10v10" stroke="currentColor" strokeWidth="1.3" />
+    <path d="M4 16 16 4M4 4h12v12" stroke="currentColor" strokeWidth="1.5" />
   </svg>
 );
 const nav = [
@@ -36,7 +36,8 @@ function Instagram({
       target="_blank"
       rel="noopener noreferrer"
     >
-      {children} <Arrow />
+      {children}
+      <Arrow />
     </a>
   );
 }
@@ -52,10 +53,8 @@ function Brand() {
         />
       ) : (
         <>
-          <strong>
-            MUSASHI<span aria-hidden="true">.</span>
-          </strong>
-          <small>ANIME CAFÉ · MENDOZA</small>
+          <strong>MUSASHI</strong>
+          <small>ANIME CAFÉ / MENDOZA</small>
         </>
       )}
     </a>
@@ -94,172 +93,165 @@ function Header() {
             </a>
           ))}
         </nav>
-        <Instagram className="header-social">Seguinos</Instagram>
+        <Instagram className="header-social">Instagram</Instagram>
       </div>
     </header>
   );
 }
-function CupArt({ bowl = false }: { bowl?: boolean }) {
+function CoffeePrint() {
   return (
     <svg
-      className={bowl ? "food-art bowl-art" : "food-art"}
-      viewBox="0 0 540 440"
+      className="coffee-print"
+      viewBox="0 0 600 620"
       fill="none"
       role="img"
-      aria-label={
-        bowl
-          ? "Ilustración de un cuenco de ramen"
-          : "Ilustración de una taza de café"
-      }
+      aria-label="Composición gráfica de una taza de café en blanco y negro"
     >
-      <ellipse
-        cx="270"
-        cy="365"
-        rx="193"
-        ry="25"
-        fill="#10150f"
-        opacity=".18"
+      <defs>
+        <pattern
+          id="print-hatch"
+          width="10"
+          height="10"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(32)"
+        >
+          <path d="M0 0V10" stroke="currentColor" strokeWidth="2" />
+        </pattern>
+        <clipPath id="print-circle">
+          <circle cx="300" cy="295" r="230" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#print-circle)">
+        <path d="M0 0h600v620H0z" fill="url(#print-hatch)" />
+      </g>
+      <circle cx="300" cy="295" r="231" stroke="currentColor" />
+      <g transform="rotate(-13 300 300)">
+        <ellipse
+          cx="280"
+          cy="431"
+          rx="177"
+          ry="25"
+          fill="#080808"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
+        <path
+          d="M392 255h35c91 0 77 133-49 122"
+          fill="#080808"
+          stroke="currentColor"
+          strokeWidth="27"
+        />
+        <path
+          d="M139 246h267l-30 124c-20 58-182 58-202 0Z"
+          fill="currentColor"
+          stroke="#080808"
+          strokeWidth="7"
+        />
+        <ellipse
+          cx="273"
+          cy="245"
+          rx="134"
+          ry="41"
+          fill="currentColor"
+          stroke="#080808"
+          strokeWidth="7"
+        />
+        <ellipse cx="273" cy="245" rx="106" ry="26" fill="#080808" />
+        <path d="M202 360q68 46 136 4" stroke="#080808" strokeWidth="3" />
+        <path
+          d="M238 169c-34-39 33-50 0-93M290 165c-29-34 31-49 8-82"
+          stroke="currentColor"
+          strokeWidth="6"
+        />
+      </g>
+      <path
+        d="M49 499h100M49 499v-100M551 98H451M551 98v100"
+        stroke="currentColor"
+        strokeWidth="2"
       />
-      {bowl ? (
-        <>
-          <path d="M90 210 Q110 365 270 370 Q430 365 450 210Z" fill="#b65b42" />
-          <ellipse cx="270" cy="210" rx="180" ry="61" fill="#e8c69b" />
-          <ellipse cx="270" cy="210" rx="157" ry="47" fill="#715137" />
-          <path
-            d="M160 205q60-50 120 0t100 0M160 222q60-50 120 0t100 0M180 237q55-45 110-5"
-            stroke="#eed4a6"
-            strokeWidth="8"
-          />
-          <ellipse cx="322" cy="194" rx="31" ry="23" fill="#f3ead8" />
-          <circle cx="322" cy="194" r="13" fill="#dca04f" />
-          <path
-            d="m350 125 100-78m-84 91 100-78"
-            stroke="#e6c794"
-            strokeWidth="8"
-            strokeLinecap="round"
-          />
-        </>
-      ) : (
-        <>
-          <ellipse cx="258" cy="334" rx="170" ry="38" fill="#e1cfad" />
-          <ellipse cx="258" cy="328" rx="141" ry="25" fill="#f0e2ca" />
-          <path
-            d="M373 205h29c77 0 70 103-21 99"
-            stroke="#e7d6b9"
-            strokeWidth="25"
-          />
-          <path d="M130 189h253l-19 99c-9 45-176 60-208 0Z" fill="#e8d9bd" />
-          <ellipse cx="256" cy="188" rx="127" ry="39" fill="#f4e7d2" />
-          <ellipse cx="256" cy="188" rx="109" ry="28" fill="#624331" />
-          <path
-            d="M220 184c-21-22 6-34 35-11 28-23 58-11 35 11l-35 23Z"
-            fill="#dfc49b"
-          />
-          <path
-            d="M221 124c-31-27 28-32 3-61M270 123c-31-32 29-43 3-78M314 124c-25-28 25-32 6-58"
-            stroke="#e3d5bb"
-            strokeWidth="3"
-            strokeLinecap="round"
-            opacity=".6"
-          />
-        </>
-      )}
     </svg>
   );
 }
 function Hero() {
   return (
     <section id="inicio" className="hero">
-      <div className="hero-copy">
-        <p className="eyebrow">
-          <span className="red-line" /> CAFÉ DE ESPECIALIDAD · PASTELERÍA
-          JAPONESA
-        </p>
-        <h1>
-          Tu próxima pausa
+      <div className="hero-topline">
+        <span>CAFÉ DE ESPECIALIDAD / PASTELERÍA JAPONESA</span>
+        <span>MENDOZA, ARGENTINA</span>
+      </div>
+      <div className="hero-title">
+        <h1>MUSASHI</h1>
+        <span className="red-stamp">
+          NUEVA
           <br />
-          tiene un{" "}
-          <em>
-            nuevo
+          ETAPA
+        </span>
+      </div>
+      <div className="hero-body">
+        <div className="hero-copy">
+          <span className="section-index">01 / EL PRÓXIMO CAPÍTULO</span>
+          <h2>
+            El café nos reúne.
             <br />
-            capítulo.
-          </em>
-        </h1>
-        <p className="intro">
-          Café, cultura japonesa y algo rico para compartir.
-          <br className="desktop-break" /> Una nueva etapa de Musashi está por
-          escribirse.
-        </p>
-        <div className="hero-actions">
-          <a className="button" href="#propuesta">
-            Explorar la propuesta{" "}
-            <span className="arrow-down">
-              <Arrow />
-            </span>
-          </a>
-          <Instagram className="text-link">Seguí la nueva etapa</Instagram>
+            La cultura
+            <br />
+            <span className="outline-text">nos conecta.</span>
+          </h2>
+          <p>
+            Una nueva etapa. Un punto de encuentro
+            <br className="desktop-break" /> entre café, pastelería y cultura
+            japonesa.
+          </p>
+          <div className="hero-actions">
+            <a className="button" href="#propuesta">
+              Explorar la propuesta <Arrow />
+            </a>
+            <Instagram className="text-link">Seguí la nueva etapa</Instagram>
+          </div>
         </div>
-        <div className="hero-foot">
-          <span className="status-dot" />{" "}
-          {site.stage === "open"
-            ? "Conocé esta nueva etapa"
-            : "Un nuevo espacio. La misma esencia."}
+        <div className="hero-art">
+          <CoffeePrint />
+          <span className="print-caption">
+            ESTUDIO GRÁFICO / CAFÉ & CULTURA
+          </span>
         </div>
       </div>
-      <div className="hero-art">
-        <span className="art-orbit" />
-        <span className="art-caption">UNA PAUSA CON IDENTIDAD</span>
-        <span className="art-number">01 /</span>
-        <CupArt />
-        <div className="art-bottom">
-          <span>CAFÉ & CULTURA</span>
-          <span>MENDOZA, AR</span>
-        </div>
+      <div className="hero-bottom">
+        <span>
+          {site.stage === "open"
+            ? "UN NUEVO CAPÍTULO EN MUSASHI"
+            : "UN NUEVO ESPACIO. LA MISMA ESENCIA."}
+        </span>
+        <a href="#propuesta" aria-label="Continuar a la propuesta">
+          SEGUÍ LEYENDO <span aria-hidden="true">↓</span>
+        </a>
       </div>
     </section>
   );
 }
 function Proposal() {
-  const pillars = [
-    [
-      "01",
-      "Café",
-      "El ritual de hacer una pausa. Un encuentro con el café de especialidad.",
-    ],
-    [
-      "02",
-      "Pastelería japonesa",
-      "Texturas y sabores para descubrir un lado distinto de la merienda.",
-    ],
-    [
-      "03",
-      "Cultura y encuentros",
-      "El universo del anime y la cultura japonesa como punto de encuentro.",
-    ],
-  ];
   return (
-    <section id="propuesta" className="section proposal">
-      <div className="section-heading">
-        <p className="eyebrow">EL UNIVERSO MUSASHI</p>
-        <h2>
-          Tres formas de
-          <br />
-          <em>disfrutar la pausa.</em>
-        </h2>
-        <p>
-          Una propuesta que conecta lo cotidiano
-          <br />
-          con el placer de descubrir algo nuevo.
-        </p>
+    <section id="propuesta" className="proposal section">
+      <div className="editorial-label">
+        <span className="section-index">02 / ENTRE DOS UNIVERSOS</span>
+        <span className="tiny-square" aria-hidden="true" />
       </div>
-      <div className="pillars">
-        {pillars.map(([n, title, text]) => (
-          <article key={n}>
-            <span className="index">{n} /</span>
-            <h3>{title}</h3>
-            <p>{text}</p>
-          </article>
-        ))}
+      <h2>
+        UN POCO DE JAPÓN.
+        <br />
+        UN BUEN CAFÉ.
+        <br />
+        <span className="marked-word">ALGO EN COMÚN.</span>
+      </h2>
+      <div className="proposal-bottom">
+        <span className="caption">CAFÉ / PASTELERÍA / CULTURA</span>
+        <p>
+          El placer de descubrir otro sabor.
+          <br />
+          La emoción de compartir un universo.
+          <br />
+          No hace falta tener un anime favorito.
+        </p>
       </div>
     </section>
   );
@@ -270,6 +262,7 @@ function Menu({ full = false }: { full?: boolean }) {
   const shown = products.filter(
     (p) => category === "Todo" || category === p.category,
   );
+  const Title = full ? "h1" : "h2";
   return (
     <section
       id="carta"
@@ -277,75 +270,67 @@ function Menu({ full = false }: { full?: boolean }) {
     >
       <div className="menu-heading">
         <div>
-          <p className="eyebrow">PEQUEÑOS DESCUBRIMIENTOS</p>
-          {full ? (
-            <h1>
-              Una pausa,
-              <br />
-              <em>muchos sabores.</em>
-            </h1>
-          ) : (
-            <h2>
-              Algo rico.
-              <br />
-              <em>Algo diferente.</em>
-            </h2>
-          )}
+          <span className="section-index">03 / LA CARTA</span>
+          <Title>
+            OTRA FORMA
+            <br />
+            DE <span className="slanted-word">MERENDAR.</span>
+          </Title>
         </div>
-        <div>
-          <p>
+        <div className="menu-intro">
+          <span className="caption">
             {site.draft
-              ? "Selección ilustrativa para el boceto"
-              : "Nuestra carta"}
-          </p>
+              ? "SELECCIÓN ILUSTRATIVA PARA EL BOCETO"
+              : "NUESTRA CARTA"}
+          </span>
           {site.draft && (
-            <p className="muted">
-              Inspirada en antecedentes de Musashi.
+            <p>
+              Antecedentes de Musashi.
               <br />
               Carta y disponibilidad por confirmar.
             </p>
           )}
         </div>
       </div>
-      <div className="filters" role="group" aria-label="Filtrar carta">
-        {["Todo", "Café", "Pastelería"].map((c) => (
-          <button
-            key={c}
-            aria-pressed={category === c}
-            onClick={() => setCategory(c)}
-          >
-            {c}
-          </button>
-        ))}
+      <div className="menu-toolbar">
+        <div className="filters" role="group" aria-label="Filtrar carta">
+          {["Todo", "Café", "Pastelería"].map((c) => (
+            <button
+              key={c}
+              aria-pressed={category === c}
+              onClick={() => setCategory(c)}
+            >
+              {c}
+              <Arrow />
+            </button>
+          ))}
+        </div>
+        <span className="caption menu-toolbar-note">EXPLORÁ LOS SABORES</span>
       </div>
-      <div className="product-grid" aria-live="polite">
+      <div className="product-list" aria-live="polite">
         {shown.map((p) => (
           <article className="product" key={p.id}>
-            <div className={`product-visual ${p.id}`} aria-hidden="true">
-              {p.image ? (
-                <img
-                  src={p.image}
-                  alt=""
-                  width="360"
-                  height="250"
-                  loading="lazy"
-                />
-              ) : p.id === "cafe" ? (
-                <CupArt />
-              ) : (
-                <>
-                  <span className="sweet sweet-one" />
-                  <span className="sweet sweet-two" />
-                  <span className="sweet sweet-three" />
-                </>
-              )}
-              <span className="visual-label">{p.category}</span>
-            </div>
-            <div className="product-description">
+            <span className="product-index" aria-hidden="true">
+              {String(products.indexOf(p) + 1).padStart(2, "0")}
+            </span>
+            <div className="product-name">
+              <span className="caption">{p.category}</span>
               <h3>{p.name}</h3>
+            </div>
+            {p.image && (
+              <img
+                className="product-image"
+                src={p.image}
+                alt={p.name}
+                width="240"
+                height="180"
+                loading="lazy"
+              />
+            )}
+            <div className="product-description">
               <p>{p.description}</p>
               {p.priceARS !== null && (
-                <p>
+                <p className="price">
                   {new Intl.NumberFormat("es-AR", {
                     style: "currency",
                     currency: "ARS",
@@ -365,15 +350,21 @@ function Menu({ full = false }: { full?: boolean }) {
                 <p>{p.confirmedFeatures.join(" · ")}</p>
               )}
             </div>
+            <span className="product-end" aria-hidden="true">
+              /
+            </span>
           </article>
         ))}
       </div>
       {shown.length === 0 && (
-        <p>La carta se compartirá cuando esté confirmada.</p>
+        <p className="empty-menu">
+          La carta se compartirá cuando esté confirmada.
+        </p>
       )}
       {!full && (
-        <a className="text-link menu-link" href="/carta">
-          Explorar la carta ilustrativa <Arrow />
+        <a className="menu-link" href="/carta">
+          Ver la carta ilustrativa completa
+          <Arrow />
         </a>
       )}
     </section>
@@ -381,106 +372,172 @@ function Menu({ full = false }: { full?: boolean }) {
 }
 function Experience() {
   return (
-    <section id="experiencia" className="experience">
-      <div className="experience-art">
-        {site.visuals.spacePhoto ? (
-          <img
-            src={site.visuals.spacePhoto}
-            alt="Espacio Musashi"
-            width="800"
-            height="800"
-            loading="lazy"
-          />
-        ) : (
-          <>
-            <span className="enso" aria-hidden="true" />
-            <div className="experience-type">
-              Una pausa.
-              <br />
-              Un encuentro.
-              <br />
-              <em>Tu universo.</em>
-            </div>
-            <span className="art-note">
-              CULTURA JAPONESA · CAFÉ · ENCUENTROS
-            </span>
-          </>
-        )}
-      </div>
-      <div className="experience-copy">
-        <p className="eyebrow">LA EXPERIENCIA MUSASHI</p>
+    <section id="experiencia" className="experience section">
+      <div className="experience-heading">
+        <span className="section-index">04 / EL UNIVERSO MUSASHI</span>
         <h2>
-          Un lugar para
+          NO ES SOLO
           <br />
-          <em>conectar.</em>
+          <span>LA PAUSA.</span>
         </h2>
-        <p>
-          Hay conversaciones que empiezan con un café. Y encuentros que nacen de
-          compartir el mismo universo.
-        </p>
-        <p>
-          Musashi reúne café, pastelería y cultura japonesa en una propuesta
-          para disfrutar a tu manera. Con o sin un anime favorito.
-        </p>
-        <a className="text-link" href="#contacto">
-          Descubrí la nueva etapa <Arrow />
-        </a>
+      </div>
+      <div className="manga-panels">
+        <div
+          className={`panel panel-main ${site.visuals.spacePhoto ? "has-photo" : ""}`}
+        >
+          {site.visuals.spacePhoto ? (
+            <img
+              src={site.visuals.spacePhoto}
+              alt="Espacio Musashi"
+              width="800"
+              height="800"
+              loading="lazy"
+            />
+          ) : (
+            <>
+              <span className="panel-label">EL PUNTO DE ENCUENTRO</span>
+              <p>
+                ES LO QUE
+                <br />
+                COMPARTÍS
+                <br />
+                <span>EN ELLA.</span>
+              </p>
+              <span className="panel-corner">
+                <Arrow />
+              </span>
+            </>
+          )}
+        </div>
+        <div className="panel panel-story">
+          <span className="caption">CAFÉ + CULTURA JAPONESA</span>
+          <h3>
+            Tu universo.
+            <br />
+            Nuestra mesa.
+          </h3>
+          <p>
+            Una conversación sobre ese capítulo. El descubrimiento de un sabor.
+            Las ganas de volver a encontrarse.
+          </p>
+          <p>
+            Musashi conecta café, pastelería y cultura japonesa. Cada quien trae
+            su propia historia.
+          </p>
+          <a className="text-link" href="#contacto">
+            Conocé la nueva etapa
+            <Arrow />
+          </a>
+        </div>
+        <div className="panel panel-note">
+          <span className="panel-note-index" aria-hidden="true">
+            04
+          </span>
+          <p>
+            CON O SIN
+            <br />
+            ANIME FAVORITO.
+          </p>
+          <span className="caption">HAY ALGO PARA COMPARTIR.</span>
+        </div>
       </div>
     </section>
+  );
+}
+function RamenPrint() {
+  return (
+    <svg
+      className="ramen-print"
+      viewBox="0 0 520 400"
+      fill="none"
+      role="img"
+      aria-label="Ilustración editorial en blanco y negro de un cuenco de ramen"
+    >
+      <path
+        d="M60 164c15 137 102 181 200 181s185-44 200-181"
+        fill="currentColor"
+      />
+      <ellipse
+        cx="260"
+        cy="165"
+        rx="200"
+        ry="57"
+        fill="#080808"
+        stroke="currentColor"
+        strokeWidth="6"
+      />
+      <path
+        d="M106 169c26-35 72-35 104-9s73 24 101-1 57-24 95 8M123 190c28-30 64-25 91-3s61 23 89 0 50-22 82-3M146 143c22-19 40-12 60 2"
+        stroke="currentColor"
+        strokeWidth="5"
+      />
+      <ellipse cx="331" cy="145" rx="37" ry="25" fill="currentColor" />
+      <ellipse cx="331" cy="145" rx="16" ry="12" fill="#080808" />
+      <path
+        d="m343 103 121-95m-99 104 120-94"
+        stroke="currentColor"
+        strokeWidth="7"
+      />
+      <path d="M119 263c41 46 105 60 158 55" stroke="#080808" strokeWidth="3" />
+      <path
+        d="M166 88c-16-22 21-25 8-48M218 78c-20-31 20-33 8-60"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+    </svg>
   );
 }
 function Events() {
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
-  const illustrative = demoEvent.status === "illustrative";
-  if (!site.draft && illustrative)
+  if (!site.draft && demoEvent.status === "illustrative")
     return (
-      <section id="eventos" className="section">
-        <p className="eyebrow">ENCUENTROS ESPECIALES</p>
+      <section id="eventos" className="section events-pending">
+        <span className="section-index">05 / ENCUENTROS ESPECIALES</span>
         <h2>
-          Próximas historias
+          HISTORIAS
           <br />
-          <em>por compartir.</em>
+          POR COMPARTIR.
         </h2>
-        <p>Las novedades se compartirán en nuestro Instagram.</p>
-        <Instagram className="text-link" />
+        <Instagram className="text-link">Las novedades en Instagram</Instagram>
       </section>
     );
   return (
-    <section id="eventos" className="section events">
-      <div className="event-heading">
-        <div>
-          <p className="eyebrow">MÁS ALLÁ DE LA MERIENDA</p>
-          <h2>
-            Hay encuentros
-            <br />
-            <em>que son un capítulo aparte.</em>
-          </h2>
-        </div>
-        <p>
-          Experiencias especiales para disfrutar
-          <br />
-          la cultura japonesa alrededor de la mesa.
-        </p>
+    <section id="eventos" className="events section">
+      <div className="event-label">
+        <span className="section-index">05 / FUERA DE CARTA</span>
+        <span className="caption">EXPERIENCIAS ESPECIALES</span>
       </div>
-      <article className="event-card">
-        <div className="event-art">
-          <CupArt bowl />
+      <article className="event-poster">
+        <div className="poster-title">
+          <span className="caption">UN ENCUENTRO ALREDEDOR DE LA MESA</span>
+          <h2>
+            NOCHE
+            <br />
+            DE <span>RAMEN</span>
+          </h2>
+          <span className="poster-stamp">
+            EJEMPLO DE
+            <br />
+            PRESENTACIÓN
+          </span>
         </div>
-        <div className="event-copy">
-          <span className="tag">EJEMPLO DE PRESENTACIÓN</span>
-          <h3>{demoEvent.title}</h3>
-          <p>{demoEvent.description}</p>
-          <p className="muted">
-            Un antecedente de los encuentros de Musashi, presentado como
-            referencia para futuras experiencias.
+        <div className="poster-art">
+          <RamenPrint />
+        </div>
+        <div className="poster-bottom">
+          <p>
+            Un antecedente de Musashi.
+            <br />
+            Una forma de imaginar los próximos encuentros.
           </p>
           <button
             ref={opener}
             className="text-link"
             onClick={() => dialog.current?.showModal()}
           >
-            Conocer la propuesta <Arrow />
+            Conocer la propuesta
+            <Arrow />
           </button>
         </div>
       </article>
@@ -500,10 +557,10 @@ function Events() {
           >
             ×
           </button>
-          <p className="eyebrow">EJEMPLO DE PRESENTACIÓN</p>
+          <span className="section-index">EJEMPLO DE PRESENTACIÓN</span>
           <h2 id="event-title">{demoEvent.title}</h2>
           <p>
-            Esta tarjeta muestra cómo podría presentarse una experiencia
+            Esta composición muestra cómo podría presentarse una experiencia
             especial. No anuncia un evento próximo ni forma parte de una carta
             diaria.
           </p>
@@ -519,41 +576,55 @@ function Events() {
 }
 function Contact() {
   return (
-    <section id="contacto" className="contact">
-      <p className="eyebrow">LA HISTORIA CONTINÚA</p>
-      <h2>
-        {site.stage === "coming-soon" ? (
-          <>
-            Un nuevo espacio.
+    <section id="contacto" className="contact section">
+      <div className="contact-top">
+        <span className="section-index">06 / LA HISTORIA SIGUE</span>
+        <span className="caption">MUSASHI / MENDOZA</span>
+      </div>
+      <div className="contact-main">
+        <h2>
+          {site.stage === "coming-soon" ? (
+            <>
+              EL PRÓXIMO
+              <br />
+              CAPÍTULO,
+              <br />
+              <span>JUNTOS.</span>
+            </>
+          ) : (
+            <>
+              NOS VEMOS
+              <br />
+              EN <span>MUSASHI.</span>
+            </>
+          )}
+        </h2>
+        <div className="contact-action">
+          <p>
+            {site.stage === "coming-soon"
+              ? "Un nuevo espacio está por escribirse."
+              : "Un nuevo capítulo para compartir."}
             <br />
-            <em>Muchas historias por venir.</em>
-          </>
-        ) : (
-          <>
-            Un nuevo capítulo.
-            <br />
-            <em>Nos encontramos en Musashi.</em>
-          </>
-        )}
-      </h2>
-      <p>
-        Seguí las novedades y descubrí lo que viene
-        <br />
-        en el Instagram oficial de Musashi.
-      </p>
-      {site.business.address && <p>{site.business.address}</p>}
-      {site.business.hours && <p>{site.business.hours}</p>}
-      <Instagram className="button">@musashi.animecafe</Instagram>
-      {site.business.whatsapp && (
-        <a
-          className="text-link"
-          href={`https://wa.me/${site.business.whatsapp}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Consultar por WhatsApp <Arrow />
-        </a>
-      )}
+            Seguí las novedades en nuestro Instagram.
+          </p>
+          {site.business.address && <p>{site.business.address}</p>}
+          {site.business.hours && <p>{site.business.hours}</p>}
+          <Instagram className="contact-instagram">
+            @musashi.animecafe
+          </Instagram>
+          {site.business.whatsapp && (
+            <a
+              className="text-link"
+              href={`https://wa.me/${site.business.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Consultar por WhatsApp
+              <Arrow />
+            </a>
+          )}
+        </div>
+      </div>
     </section>
   );
 }
@@ -568,7 +639,6 @@ function Footer() {
               {label}
             </a>
           ))}
-          <Instagram>Instagram</Instagram>
         </nav>
       </div>
       <div className="footer-bottom">
@@ -578,7 +648,8 @@ function Footer() {
             : "Musashi Anime Café · Mendoza"}
         </span>
         <a href={site.author.url} target="_blank" rel="noopener noreferrer">
-          DESARROLLADO POR {site.author.name} <Arrow />
+          DESARROLLADO POR {site.author.name}
+          <Arrow />
         </a>
       </div>
     </footer>
@@ -606,14 +677,6 @@ function App() {
         ) : (
           <>
             <Hero />
-            <div className="chapter-strip" aria-hidden="true">
-              <span>UN POCO DE JAPÓN</span>
-              <i>✦</i>
-              <span>UN MUCHO DE MUSASHI</span>
-              <i>✦</i>
-              <span>CAFÉ, CULTURA Y ENCUENTROS</span>
-              <i>✦</i>
-            </div>
             <Proposal />
             <Menu />
             <Experience />

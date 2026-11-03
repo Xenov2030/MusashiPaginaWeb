@@ -12,7 +12,9 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("nuevo");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "MUSASHI",
+  );
   await page.getByRole("link", { name: "Explorar la propuesta" }).click();
   await expect(page).toHaveURL(/#propuesta$/);
   await page.getByRole("button", { name: "Conocer la propuesta" }).click();
@@ -56,7 +58,7 @@ test("carta: acceso directo, filtros, recarga y regreso", async ({ page }) => {
   await expect(page.locator(".product")).toHaveCount(4);
   await page.reload();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "muchos sabores",
+    "MERENDAR.",
   );
   await page
     .getByRole("navigation", { name: "Principal", exact: true })
@@ -126,4 +128,35 @@ test("anchos adaptables, teclado y recursos locales", async ({ page }) => {
     page.getByRole("link", { name: "Saltar al contenido" }),
   ).toBeFocused();
   expect(external).toEqual([]);
+});
+
+test("paleta del rediseño: neutros y único acento rojo", async ({ page }) => {
+  for (const route of ["/", "/carta"]) {
+    await page.goto(route);
+    const unexpected = await page.evaluate(() => {
+      const invalid = new Set<string>();
+      for (const element of document.querySelectorAll("body *")) {
+        const style = getComputedStyle(element);
+        for (const property of [
+          "color",
+          "backgroundColor",
+          "borderTopColor",
+          "borderBottomColor",
+          "fill",
+          "stroke",
+        ]) {
+          const value = style.getPropertyValue(
+            property.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`),
+          );
+          const match = value.match(/^rgba?\((\d+), (\d+), (\d+)/);
+          if (!match) continue;
+          const [r, g, b] = match.slice(1).map(Number);
+          if (!(r === g && g === b) && !(r === 197 && g === 22 && b === 36))
+            invalid.add(value);
+        }
+      }
+      return [...invalid];
+    });
+    expect(unexpected).toEqual([]);
+  }
 });
