@@ -50,8 +50,8 @@ La revisión se realizó localmente en Chromium, con escritorio y tamaños móvi
 
 ## La mesa de Musashi
 
-La portada y la carta se organizan ahora como hojas sobre una superficie tejida neutra. `Ambient.tsx` dibuja un árbol con tronco, copa y seis pétalos fijos (tres visibles en móvil). Cada trayectoria dura entre 13 y 18 segundos, con pequeñas variaciones; no se crean partículas durante el scroll. Una variable CSS permite pausarlos sin recalcular posiciones en JavaScript.
+La portada y la carta se organizan ahora como hojas sobre una superficie tejida neutra. `Ambient.tsx` mantiene seis pétalos fijos (tres visibles en móvil). Cada trayectoria dura entre 13 y 18 segundos, con pequeñas variaciones; no se crean partículas durante el scroll. Una variable CSS permite pausarlos sin recalcular posiciones en JavaScript.
 
-El botón «Pausar pétalos / Reanudar pétalos» es accesible por teclado y usa `aria-pressed`; la preferencia se recuerda en `sessionStorage`. El efecto se suspende si el documento está oculto o la portada deja de estar visible. Con movimiento reducido no hay caída ni control innecesario: queda el árbol estático. Los elementos son decorativos, `aria-hidden`, y no capturan clics.
+El botón «Pausar pétalos / Reanudar pétalos» es accesible por teclado y usa `aria-pressed`; la preferencia se recuerda en `sessionStorage`. El efecto se suspende si el documento está oculto o la portada deja de estar visible. Con movimiento reducido no hay caída ni control innecesario: quedan unos pocos pétalos estáticos. Los elementos son decorativos, `aria-hidden`, y no capturan clics.
 
 Las nuevas pruebas comprueban límite de partículas, pausa y reanudación, persistencia al recargar, suspensión fuera de pantalla y ante cambio de visibilidad, y estado estático reducido. Las invitaciones se revelan con un escalonamiento corto y usan el mismo modal con foco de regreso al disparador correcto. La grabación incluye el control de ambiente.

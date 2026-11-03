@@ -8,12 +8,12 @@ Boceto web funcional para presentar al propietario de **Musashi, Mendoza, Argent
 
 **La mesa de Musashi:** cultura japonesa, hospitalidad y el oficio detrás del café, té y coctelería. Esta dirección reemplaza el protagonismo anterior del anime, manga y estudio editorial; el Instagram oficial conserva su URL. Los textos de portada son propuestas para revisión, no eslóganes oficiales.
 
-- Portada como carta sobre una escena ilustrada de mesa, sin reproducir el nuevo local. Identificador provisional, árbol de cerezo de fondo y acciones directas.
+- Portada como carta sobre una escena ilustrada de mesa, sin reproducir el nuevo local. Identificador provisional, pétalos sutiles de fondo y acciones directas.
 - Carta sobre trama neutra inspirada en tatami, hojas blancas, texto negro y acentos rojos. Categorías accesibles de Café, Té y blends, Coctelería y Cocina y pastelería japonesa.
 - Té y coctelería explican la disciplina cuando no hay productos aprobados: no se inventaron blends, cócteles, precios ni disponibilidad.
 - Barista profesional, tea blender y bartender se presentan como un relato de oficio, según la información transmitida por Nicolas, sin credenciales adicionales.
 - Onigiris, encuentros en tatamis y ramen como antecedentes, con detalles en modales accesibles. No se anuncian eventos próximos ni reservas.
-- Cerezos SVG y seis pétalos CSS en escritorio, tres en móvil. Control de pausa, preferencia de sesión, suspensión fuera de pantalla o con la pestaña oculta, y composición estática con movimiento reducido.
+- Seis pétalos CSS en escritorio, tres en móvil. Control de pausa, preferencia de sesión, suspensión fuera de pantalla o con la pestaña oculta, y composición estática con movimiento reducido.
 - Entradas y recortes diferenciados, trazado rojo, filtros con transición de altura, foco gestionado y navegación real con hashes e historial.
 - Imágenes conceptuales locales, prioridad y vista previa para portada, carga diferida inferior y alternativa ante fallo. Sin backend ni nuevas dependencias.
 

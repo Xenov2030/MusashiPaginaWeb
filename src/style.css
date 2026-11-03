@@ -236,8 +236,8 @@ button:hover > .arrow {
 .hero-visual {
   position: absolute;
   top: 35px;
-  right: 180px;
-  width: 78%;
+  right: 0;
+  width: 84%;
   height: 600px;
   z-index: -1;
 }
@@ -357,16 +357,7 @@ button:hover > .arrow {
   z-index: auto;
   overflow: hidden;
 }
-.cherry-tree {
-  position: absolute;
-  right: -80px;
-  bottom: -18px;
-  width: 600px;
-  height: 100%;
-  max-width: none;
-  opacity: 0.78;
-  z-index: -2;
-}
+
 .petal {
   position: absolute;
   top: 145px;
@@ -1232,8 +1223,8 @@ dialog.is-closing::backdrop {
     font-size: 51px;
   }
   .hero-visual {
-    width: 80%;
-    right: 125px;
+    width: 85%;
+    right: 0;
     top: 40px;
     height: 550px;
   }
@@ -1250,10 +1241,7 @@ dialog.is-closing::backdrop {
   .ambient {
     width: 48%;
   }
-  .cherry-tree {
-    width: 520px;
-    right: -130px;
-  }
+
   .menu-leaf {
     padding: 26px;
   }
@@ -1429,13 +1417,7 @@ dialog.is-closing::backdrop {
     right: 0;
     z-index: auto;
   }
-  .cherry-tree {
-    height: 100%;
-    width: 360px;
-    right: -40px;
-    bottom: -6px;
-    opacity: 0.65;
-  }
+
   .petal {
     right: 16px;
     top: 110px;

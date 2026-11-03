@@ -30,6 +30,7 @@ test("pétalos limitados, pausa persistente y pausa fuera de pantalla", async ({
 }) => {
   await page.goto("/");
   await expect(page.locator(".petal")).toHaveCount(6);
+  await expect(page.locator(".cherry-tree, .cherry-branch")).toHaveCount(0);
   await expect(page.locator(".ambient")).toHaveAttribute("aria-hidden", "true");
   await expect(page.locator(".ambient")).toHaveCSS("pointer-events", "none");
   await expect(page.locator(".ambient")).toHaveAttribute(
