@@ -42,4 +42,4 @@ Guardar imágenes optimizadas en `public/images/`, registrar derechos y proceden
 
 Logo y fuentes originales; nombre y retrato autorizado del propietario; fotos del nuevo espacio, detalle y mesa; fotos de productos; carta con precios y disponibilidad; datos comerciales y condiciones; información aprobada de futuros encuentros; explicación directa del nombre, si quiere incorporarla.
 
-Esta iteración queda local para revisión, sin despliegue automático. Mantener noindex y el crédito enlazado: **DESARROLLADO POR NICOLAS AGUIRRES** — https://nicolasaguirrescode.com/.
+El usuario autorizó publicar esta iteración completa en el sitio Netlify existente mediante la rama conectada. Mantener noindex y el crédito enlazado: **DESARROLLADO POR NICOLAS AGUIRRES** — https://nicolasaguirrescode.com/.

@@ -2,7 +2,7 @@
 
 Boceto web funcional para presentar al propietario de **Musashi, Mendoza, Argentina**. Propuesta de diseño y desarrollo de Nicolas Aguirres: café de especialidad, té, coctelería y gastronomía japonesa como invitación a la mesa.
 
-**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify, conectado por el usuario a `desarrollo/boceto-musashi`. Esta dirección de «La mesa de Musashi» permanece local y no se ha enviado a Netlify. URL del sitio: `https://musashiweb.netlify.app/`.
+**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify, conectado por el usuario a `desarrollo/boceto-musashi`. El usuario autorizó publicar todas las actualizaciones de «La mesa de Musashi», incluido el cerezo de fondo y sus pétalos. La entrega se envía a la rama conectada; el estado final se verifica en Netlify. URL del sitio: `https://musashiweb.netlify.app/`.
 
 ## Diseño y contenido
 
@@ -19,7 +19,7 @@ Boceto web funcional para presentar al propietario de **Musashi, Mendoza, Argent
 
 El logo original, las fotos reales del propietario y del nuevo espacio y la carta comercial siguen pendientes. Los datos de oficio y antecedentes proceden del pedido de Nicolas, no de una escucha de audios. La sección histórica opcional queda desactivada por falta de verificación de fuentes: [registro de historia](docs/HISTORIA.md).
 
-**Rama local:** `desarrollo/bienvenida-musashi`. Esta iteración no se subió, fusionó ni desplegó. La indicación del pedido requiere una autorización posterior para publicar; la rama conectada a Netlify conserva la entrega anterior.
+**Rama de desarrollo:** `desarrollo/bienvenida-musashi`. Tras la autorización del usuario, todas las actualizaciones se entregan mediante `desarrollo/boceto-musashi`, conectada al despliegue automático del sitio existente. No se modifica main ni se crea otro sitio.
 
 ## Ejecutar el proyecto
 
@@ -92,8 +92,8 @@ La estructura para consultas futuras por WhatsApp existe como función `reservat
 
 ## Publicación posterior en Netlify
 
-1. Revisar `desarrollo/bienvenida-musashi` y obtener una nueva indicación de publicación para esta dirección artística.
-2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. El usuario conectó previamente `desarrollo/boceto-musashi`; no avanzar esa rama sin indicación posterior; no cambiar el sitio ni el dominio.
+1. Revisar `desarrollo/bienvenida-musashi`. El usuario autorizó la publicación de todas las actualizaciones de esta entrega.
+2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. El usuario conectó previamente `desarrollo/boceto-musashi`; esta entrega avanza esa rama sin cambiar el sitio ni el dominio.
 3. Usar `npm run build`, directorio de publicación `dist` y Node 24. `netlify.toml` ya declara estos valores y la redirección SPA para `/carta`.
 4. Publicar solo con autorización; verificar `/`, `/carta` y su recarga directa en el dominio real, recursos, enlaces y vista móvil.
 
