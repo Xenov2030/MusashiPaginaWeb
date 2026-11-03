@@ -37,3 +37,7 @@ No hay solicitudes de fuentes, imágenes ni scripts de terceros al navegar la p�
 No hay fotografías verificadas de ningún espacio de Musashi ni logo original en el checkout. Se conservaron las siete ilustraciones existentes, sin generar interiores ni sumar adornos japoneses. Los objetos de la ilustración de lectura son conceptuales; no confirman actividades, decoración o instalaciones del café. Los campos de fotografías reales quedan en `null` y no producen recuadros vacíos.
 
 Se registró `kind`, procedencia, texto alternativo, dimensiones y encuadre en `VisualResource`. La variante conceptual de portada usa mezcla de aclarado para integrar el negro sin oscurecer la imagen. Las fotos futuras confirmadas usan una variante sin esa mezcla para conservar su detalle y color. La interfaz mantiene solo negro, blanco, rojo y grises neutros.
+
+## Variantes de carga
+
+Se derivaron `hero-small.webp` (720 px, aproximadamente 75 KB) y `hero-preview.webp` (48 px, 508 bytes) del recurso conceptual ya existente, sin generar una imagen gastronómica nueva. Su función es servir una resolución adecuada y una vista previa durante la carga. Las siete ilustraciones originales conservan su clasificación y procedencia. Los estados de error son tipográficos y no simulan una foto ausente.

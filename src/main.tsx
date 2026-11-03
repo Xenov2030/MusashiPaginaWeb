@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { preload } from "react-dom";
+import { useHashNavigation, useSectionMotion } from "./motion";
 import {
   confirmedProducts,
   demoEvent,
@@ -74,7 +76,7 @@ function Header() {
   const isMenu = window.location.pathname.replace(/\/$/, "") === "/carta";
   const [active, setActive] = useState(isMenu ? "Carta" : "Inicio");
   useEffect(() => {
-    if (isMenu) return;
+    if (isMenu || typeof IntersectionObserver === "undefined") return;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -146,18 +148,105 @@ function Visual({
   priority?: boolean;
   className?: string;
 }) {
+  const image = useRef<HTMLImageElement>(null);
+  const animation = useRef<Animation | null>(null);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
+  if (priority)
+    preload(resource.src, {
+      as: "image",
+      fetchPriority: "high",
+      imageSrcSet: resource.srcSet,
+      imageSizes: resource.sizes,
+    });
+  useEffect(() => {
+    const img = image.current;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    let active = true;
+    let played = false;
+    const ready = () => {
+      if (!active) return;
+      setStatus("ready");
+      if (priority && !played && !reduced.matches && img?.animate) {
+        played = true;
+        animation.current = img.animate(
+          [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }],
+          { duration: 680, easing: "cubic-bezier(.2,.7,.25,1)" },
+        );
+      }
+    };
+    const failed = () => {
+      if (active) setStatus("error");
+    };
+    setStatus("loading");
+    img?.addEventListener("load", ready);
+    img?.addEventListener("error", failed);
+    if (img?.complete) {
+      if (img.naturalWidth) ready();
+      else failed();
+    }
+    const stop = () => {
+      if (reduced.matches) animation.current?.cancel();
+    };
+    reduced.addEventListener("change", stop);
+    return () => {
+      active = false;
+      img?.removeEventListener("load", ready);
+      img?.removeEventListener("error", failed);
+      reduced.removeEventListener("change", stop);
+      animation.current?.cancel();
+    };
+  }, [resource.src, priority]);
   return (
-    <img
-      className={className}
-      src={resource.src}
-      alt={resource.alt}
-      width={resource.width}
-      height={resource.height}
-      style={{ objectPosition: resource.position || "center" }}
-      fetchPriority={priority ? "high" : undefined}
-      loading={priority ? "eager" : "lazy"}
-      data-resource-kind={resource.kind}
-    />
+    <span
+      className={`visual is-${status} ${className}`}
+      style={
+        {
+          "--visual-ratio": `${resource.width} / ${resource.height}`,
+        } as React.CSSProperties
+      }
+      data-visual-state={status}
+    >
+      <img
+        ref={image}
+        className="visual-image"
+        src={resource.src}
+        srcSet={resource.srcSet}
+        sizes={resource.sizes}
+        alt={resource.alt}
+        width={resource.width}
+        height={resource.height}
+        style={{ objectPosition: resource.position || "center" }}
+        fetchPriority={priority ? "high" : undefined}
+        loading={priority ? "eager" : "lazy"}
+        data-resource-kind={resource.kind}
+        aria-hidden={status === "error" ? true : undefined}
+      />
+      {resource.placeholder && (
+        <img
+          className="visual-preview"
+          src={resource.placeholder}
+          alt=""
+          aria-hidden="true"
+          width={resource.width}
+          height={resource.height}
+        />
+      )}
+      {status === "error" && (
+        <span
+          className="visual-error"
+          role="img"
+          aria-label={`${resource.alt}. Imagen no disponible.`}
+        >
+          <span className="error-mark" aria-hidden="true" />
+          <strong>
+            {priority ? "Café, Japón y Musashi." : "Un sabor por descubrir."}
+          </strong>
+          <span>La imagen no está disponible.</span>
+        </span>
+      )}
+    </span>
   );
 }
 function Hero() {
@@ -171,8 +260,10 @@ function Hero() {
       <div className="hero-copy">
         <p className="eyebrow">CAFÉ DE ESPECIALIDAD · PASTELERÍA JAPONESA</p>
         <h1>
-          {copy.hero.greeting}
-          <br />a <em className="brush-word">Musashi.</em>
+          <span className="hero-line">{copy.hero.greeting}</span>
+          <span className="hero-line">
+            a <em className="brush-word">Musashi.</em>
+          </span>
         </h1>
         <p className="hero-intro">{copy.hero.intro}</p>
         <div className="hero-actions">
@@ -202,6 +293,35 @@ function Hero() {
 }
 function Menu({ full = false }: { full?: boolean }) {
   const [category, setCategory] = useState("Todo");
+  const results = useRef<HTMLDivElement>(null);
+  const previousHeight = useRef<number | null>(null);
+  const heightAnimation = useRef<Animation | null>(null);
+  const changeCategory = (next: string) => {
+    if (next === category) return;
+    previousHeight.current =
+      results.current?.getBoundingClientRect().height ?? null;
+    heightAnimation.current?.cancel();
+    setCategory(next);
+  };
+  useLayoutEffect(() => {
+    const el = results.current;
+    const before = previousHeight.current;
+    if (
+      el &&
+      before !== null &&
+      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      el.animate
+    ) {
+      const after = el.getBoundingClientRect().height;
+      if (Math.abs(after - before) > 2)
+        heightAnimation.current = el.animate(
+          [{ height: `${before}px` }, { height: `${after}px` }],
+          { duration: 280, easing: "cubic-bezier(.2,.7,.25,1)" },
+        );
+    }
+    previousHeight.current = null;
+    return () => heightAnimation.current?.cancel();
+  }, [category]);
   const products = site.draft ? demoProducts : confirmedProducts;
   const selection = full
     ? products
@@ -218,7 +338,7 @@ function Menu({ full = false }: { full?: boolean }) {
       id="carta"
       className={`section menu-section ${full ? "full-menu" : ""}`}
     >
-      <div className="menu-heading">
+      <div className="menu-heading" data-reveal="rise">
         <div>
           <p className="eyebrow">CAFÉ & PASTELERÍA JAPONESA</p>
           <Title>
@@ -252,7 +372,7 @@ function Menu({ full = false }: { full?: boolean }) {
           <button
             key={c}
             aria-pressed={category === c}
-            onClick={() => setCategory(c)}
+            onClick={() => changeCategory(c)}
           >
             {c}
           </button>
@@ -262,68 +382,70 @@ function Menu({ full = false }: { full?: boolean }) {
         {shown.length} {shown.length === 1 ? "propuesta" : "propuestas"} ·{" "}
         {category === "Todo" ? "Café y pastelería" : category}
       </p>
-      <div
-        className={full ? "product-details" : "product-selection"}
-        aria-live="polite"
-        key={category}
-      >
-        {shown.map((p, i) => (
-          <article
-            className={`product ${!full && i === 0 ? "product-featured" : ""}`}
-            key={p.id}
-            id={full ? p.id : undefined}
-          >
-            <div className="product-visual">
-              {p.image ? (
-                <Visual resource={p.image} />
-              ) : (
-                <span className="image-fallback">{p.category}</span>
-              )}
-            </div>
-            <div className="product-copy">
-              <span className="eyebrow">{p.category}</span>
-              <h3>{p.name}</h3>
-              <p>{p.description}</p>
-              {full && (
-                <>
-                  <p className="product-extended">{p.detail}</p>
-                  <p className="texture-note">{p.texture}</p>
-                </>
-              )}
-              {p.priceARS !== null && (
-                <p className="price">
-                  {new Intl.NumberFormat("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  }).format(p.priceARS)}
-                </p>
-              )}
-              {!site.draft && (
-                <small>
-                  {p.availability === "available"
-                    ? "Disponible"
-                    : p.availability === "unavailable"
-                      ? "No disponible"
-                      : "Consultar disponibilidad"}
-                </small>
-              )}
-              {p.confirmedFeatures.length > 0 && (
-                <p>{p.confirmedFeatures.join(" · ")}</p>
-              )}
-              {!full && (
-                <a className="product-link" href={`/carta#${p.id}`}>
-                  Conocé este sabor<span aria-hidden="true"> →</span>
-                </a>
-              )}
-            </div>
-          </article>
-        ))}
+      <div className="menu-results" ref={results}>
+        <div
+          className={full ? "product-details" : "product-selection"}
+          aria-live="polite"
+          key={category}
+        >
+          {shown.map((p, i) => (
+            <article
+              className={`product ${!full && i === 0 ? "product-featured" : ""}`}
+              key={p.id}
+              id={full ? p.id : undefined}
+            >
+              <div className="product-visual">
+                {p.image ? (
+                  <Visual resource={p.image} />
+                ) : (
+                  <span className="image-fallback">{p.category}</span>
+                )}
+              </div>
+              <div className="product-copy">
+                <span className="eyebrow">{p.category}</span>
+                <h3>{p.name}</h3>
+                <p>{p.description}</p>
+                {full && (
+                  <>
+                    <p className="product-extended">{p.detail}</p>
+                    <p className="texture-note">{p.texture}</p>
+                  </>
+                )}
+                {p.priceARS !== null && (
+                  <p className="price">
+                    {new Intl.NumberFormat("es-AR", {
+                      style: "currency",
+                      currency: "ARS",
+                    }).format(p.priceARS)}
+                  </p>
+                )}
+                {!site.draft && (
+                  <small>
+                    {p.availability === "available"
+                      ? "Disponible"
+                      : p.availability === "unavailable"
+                        ? "No disponible"
+                        : "Consultar disponibilidad"}
+                  </small>
+                )}
+                {p.confirmedFeatures.length > 0 && (
+                  <p>{p.confirmedFeatures.join(" · ")}</p>
+                )}
+                {!full && (
+                  <a className="product-link" href={`/carta#${p.id}`}>
+                    Conocé este sabor<span aria-hidden="true"> →</span>
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+        {shown.length === 0 && (
+          <p className="empty-menu">
+            La carta se compartirá cuando esté confirmada.
+          </p>
+        )}
       </div>
-      {shown.length === 0 && (
-        <p className="empty-menu">
-          La carta se compartirá cuando esté confirmada.
-        </p>
-      )}
       {!full && (
         <a className="menu-link" href="/carta">
           Más sobre café y pastelería japonesa
@@ -367,18 +489,22 @@ function Experience() {
       className={`experience section ${details.length ? "has-real-details" : ""}`}
     >
       <div className="experience-heading">
-        <p className="eyebrow">LA BIENVENIDA MUSASHI</p>
-        <h2>
-          {copy.experience.title}
-          <br />
-          <em>{copy.experience.subtitle}</em>
-        </h2>
-        <p>{copy.experience.body}</p>
-        <a className="text-link" href="#contacto">
-          Seguimos en contacto<span aria-hidden="true"> →</span>
-        </a>
+        <div data-reveal="rise">
+          <p className="eyebrow">LA BIENVENIDA MUSASHI</p>
+          <h2>
+            {copy.experience.title}
+            <br />
+            <em>{copy.experience.subtitle}</em>
+          </h2>
+        </div>
+        <div className="experience-welcome" data-reveal="rise">
+          <p>{copy.experience.body}</p>
+          <a className="text-link" href="#contacto">
+            Seguimos en contacto<span aria-hidden="true"> →</span>
+          </a>
+        </div>
       </div>
-      <div className="experience-composition">
+      <div className="experience-composition" data-reveal="image">
         <figure className="experience-main">
           <Visual resource={main} />
           <figcaption>
@@ -403,6 +529,55 @@ function Experience() {
 function Events() {
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
+  const closing = useRef(false);
+  const modalAnimation = useRef<Animation | null>(null);
+  const closeModal = () => {
+    const el = dialog.current;
+    if (!el || closing.current || !el.open) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !el.animate) {
+      el.close();
+      return;
+    }
+    closing.current = true;
+    el.classList.add("is-closing");
+    modalAnimation.current?.cancel();
+    const motion = el.animate(
+      [
+        { opacity: 1, transform: "translateY(0) scale(1)" },
+        { opacity: 0, transform: "translateY(8px) scale(.99)" },
+      ],
+      { duration: 160, easing: "ease-in", fill: "forwards" },
+    );
+    modalAnimation.current = motion;
+    motion.finished
+      .then(() => {
+        el.close();
+        motion.cancel();
+        closing.current = false;
+      })
+      .catch(() => {
+        closing.current = false;
+      });
+  };
+  useEffect(() => () => modalAnimation.current?.cancel(), []);
+  const openModal = () => {
+    closing.current = false;
+    modalAnimation.current?.cancel();
+    dialog.current?.classList.remove("is-closing");
+    dialog.current?.showModal();
+    if (
+      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      dialog.current?.animate
+    )
+      modalAnimation.current =
+        dialog.current?.animate(
+          [
+            { opacity: 0.4, transform: "translateY(10px) scale(.99)" },
+            { opacity: 1, transform: "translateY(0) scale(1)" },
+          ],
+          { duration: 220, easing: "ease-out" },
+        ) ?? null;
+  };
   if (!site.draft && demoEvent.status === "illustrative")
     return (
       <section id="eventos" className="section events-pending">
@@ -418,7 +593,12 @@ function Events() {
   return (
     <section id="eventos" className="events section">
       <article className="event-poster">
-        <div className="poster-copy">
+        <div className="poster-copy" data-reveal="poster">
+          <span
+            className="poster-accent"
+            data-reveal="stroke"
+            aria-hidden="true"
+          />
           <p className="eyebrow">EXPERIENCIAS MUSASHI</p>
           <span className="example-tag">Ejemplo de presentación</span>
           <h2>
@@ -428,16 +608,12 @@ function Events() {
           </h2>
           <p>{copy.event.intro}</p>
           <p className="event-context">{copy.event.context}</p>
-          <button
-            ref={opener}
-            className="text-link"
-            onClick={() => dialog.current?.showModal()}
-          >
+          <button ref={opener} className="text-link" onClick={openModal}>
             Conocer la propuesta
             <Arrow />
           </button>
         </div>
-        <figure className="poster-visual">
+        <figure className="poster-visual" data-reveal="image">
           <Visual resource={conceptualVisuals.ramen} />
           <figcaption>ENCUENTROS ALREDEDOR DE LA MESA</figcaption>
         </figure>
@@ -462,16 +638,25 @@ function Events() {
             first?.focus();
           }
         }}
-        onClose={() => opener.current?.focus()}
+        onCancel={(e) => {
+          e.preventDefault();
+          closeModal();
+        }}
+        onClose={() => {
+          closing.current = false;
+          dialog.current?.classList.remove("is-closing");
+          modalAnimation.current?.cancel();
+          opener.current?.focus();
+        }}
         onClick={(e) => {
-          if (e.target === dialog.current) dialog.current.close();
+          if (e.target === dialog.current) closeModal();
         }}
       >
         <div className="dialog-content">
           <button
             className="dialog-close"
             aria-label="Cerrar detalle del evento"
-            onClick={() => dialog.current?.close()}
+            onClick={closeModal}
           >
             ×
           </button>
@@ -553,16 +738,13 @@ function Footer() {
   );
 }
 function App() {
+  useHashNavigation();
+  useSectionMotion();
   const isMenu = window.location.pathname.replace(/\/$/, "") === "/carta";
   useEffect(() => {
     document.title = isMenu
       ? "Carta ilustrativa · Musashi"
       : "Musashi · Un nuevo capítulo";
-    const frame = requestAnimationFrame(() => {
-      const id = window.location.hash.slice(1);
-      if (id) document.getElementById(id)?.scrollIntoView({ block: "start" });
-    });
-    return () => cancelAnimationFrame(frame);
   }, [isMenu]);
   return (
     <>

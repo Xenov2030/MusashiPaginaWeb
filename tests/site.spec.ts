@@ -217,10 +217,10 @@ test("portada gastronómica, selección breve y navegación activa", async ({
       .getByRole("link", { name: "Inicio" }),
   ).toHaveAttribute("aria-current", "location");
   await page.getByRole("button", { name: "Cerrar −" }).click();
-  await expect(page.locator(".hero-visual img")).toBeVisible();
+  await expect(page.locator(".hero-visual .visual-image")).toBeVisible();
   expect(
     await page
-      .locator(".hero-visual img")
+      .locator(".hero-visual .visual-image")
       .evaluate((img) => img.getBoundingClientRect().top),
   ).toBeLessThan(600);
   await expect(page.locator(".product")).toHaveCount(3);
@@ -241,18 +241,15 @@ test("recursos honestos, foco del modal y movimiento reducido", async ({
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await expect(page.locator(".hero-visual img").first()).toHaveAttribute(
-    "fetchpriority",
-    "high",
-  );
-  await expect(page.locator(".hero-visual img").first()).toHaveAttribute(
-    "loading",
-    "eager",
-  );
-  await expect(page.locator(".hero-visual img").first()).toHaveAttribute(
-    "data-resource-kind",
-    "conceptual",
-  );
+  await expect(
+    page.locator(".hero-visual .visual-image").first(),
+  ).toHaveAttribute("fetchpriority", "high");
+  await expect(
+    page.locator(".hero-visual .visual-image").first(),
+  ).toHaveAttribute("loading", "eager");
+  await expect(
+    page.locator(".hero-visual .visual-image").first(),
+  ).toHaveAttribute("data-resource-kind", "conceptual");
   await expect(page.locator(".experience-composition img")).toHaveCount(1);
   await expect(page.locator(".experience-composition img")).toHaveAttribute(
     "data-resource-kind",

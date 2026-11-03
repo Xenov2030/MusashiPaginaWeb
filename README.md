@@ -6,7 +6,7 @@ Boceto web funcional para presentar al propietario de **Musashi Anime Café, Men
 
 ## Diseño y contenido
 
-**La web como bienvenida a Musashi:** se conserva la identidad negro/blanco con rojo puntual y el protagonismo gastronómico. La composición evoluciona sin inventar la apariencia del nuevo local.
+**Bienvenida con movimiento y navegación reforzada:** se conserva la identidad negro/blanco con rojo puntual y el protagonismo gastronómico. La composición evoluciona sin inventar la apariencia del nuevo local.
 
 - Portada integrada con una bienvenida directa, encuadre ligeramente desplazado y trazo rojo. Acciones claras hacia carta e Instagram; aviso discreto de nuevo espacio.
 - Carta visual, filtros accesibles y `/carta` con explicaciones breves. Una nota visible por página concentra el carácter conceptual y la disponibilidad pendiente.
@@ -14,7 +14,10 @@ Boceto web funcional para presentar al propietario de **Musashi Anime Café, Men
 - Ramen como invitación a un encuentro, con imagen primero y contenido a su lado; permanece identificado como ejemplo, sin fechas ni reservas.
 - Modelo `VisualResource` y componente `Visual` para sustituir recursos conceptuales por imágenes autorizadas sin rehacer los componentes. Portada principal y detalle opcional; experiencia con vista, detalle y escena de mesa.
 - Logo reemplazable, recursos locales, imágenes WebP con dimensiones reservadas y carga diferida fuera de portada. Sin nuevas dependencias, backend ni efectos invasivos.
-- Navegación activa, teclado, foco contenido en el modal, Escape y retorno al disparador, movimiento reducido y contraste de textos y controles.
+- Entradas coordinadas de texto y un revelado de portada que empieza al cargar la imagen. Vista previa ligera, variantes responsive y estado de error usable.
+- Revelados distintos por sección: aparición, recorte y trazado rojo. Filtros con transición de altura; modal con apertura y cierre suaves. Se respeta movimiento reducido.
+- Navegación por hash e historial comprobada mediante la posición del destino, incluido acceso directo, atrás/adelante y enlaces desde `/carta`.
+- Teclado, foco contenido en el modal, Escape y retorno al disparador, contraste de lectura y respaldo de bienvenida sin JavaScript.
 
 Los siete recursos de comida siguen siendo ilustraciones generadas para el boceto, no productos, interiores ni instalaciones reales de Musashi. No se añadieron imágenes del local ni materiales de terceros. No se inventan datos comerciales; la nota junto a la carta permite leer el sitio sin una sucesión de advertencias.
 
@@ -43,20 +46,22 @@ La compilación comprueba TypeScript y genera `dist/`. `preview` sirve ese resul
 Pruebas de navegador con Playwright:
 
 ```sh
-npx playwright install chromium
+npx playwright install chromium ffmpeg
 npm run build
 npm run test:e2e
 ```
 
-Si el entorno ya dispone de Chromium:
+Alternativa validada en este entorno con Chromium y FFmpeg del sistema (la revisión de FFmpeg corresponde al Playwright del lockfile actual):
 
 ```sh
-PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
+mkdir -p /tmp/musashi-playwright/ffmpeg-1013
+ln -sfn /usr/bin/ffmpeg /tmp/musashi-playwright/ffmpeg-1013/ffmpeg-linux
+PLAYWRIGHT_BROWSERS_PATH=/tmp/musashi-playwright PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 ```
 
 Las pruebas arrancan el servidor de producción local en el puerto 4173 y comprueban portada, firma, navegación, ruta directa y recarga de `/carta`, filtros, menú móvil, modal y cierre con Escape, recuperación del foco, noindex, carga sin solicitudes externas y desbordamiento en anchos de 320, 390, 768, 1024 y 1440 px. También verifican el destacado de portada, los enlaces de detalle, el valor adicional de `/carta`, las proporciones de las imágenes el foco en el modal, movimiento reducido, contraste y que los colores de la interfaz se limiten a neutros y rojo (las ilustraciones mantienen sus colores naturales). Generan las capturas de `docs/capturas/`.
 
-No constituyen una auditoría completa de accesibilidad ni verifican el estado de sitios externos. En este entorno, la descarga de Chromium de Playwright fue bloqueada por la política de red; se utiliza el Chromium del sistema.
+Los detalles de movimiento, investigación de hashes y pruebas de carga están en [MOVIMIENTO.md](docs/MOVIMIENTO.md). Se incluyen pruebas de imágenes lentas/fallidas y una grabación del recorrido. Las pruebas no constituyen una auditoría completa de accesibilidad ni verifican el estado de sitios externos. En este entorno, la descarga de Chromium de Playwright fue bloqueada por la política de red; se utiliza el Chromium del sistema.
 
 ## Estructura
 
@@ -64,7 +69,8 @@ No constituyen una auditoría completa de accesibilidad ni verifican el estado d
 src/
   content.ts        Configuración, modelos y datos separados de la presentación
   main.tsx          Componentes, portada y ruta de carta
-  style.css         Tokens y diseño adaptable
+  style.css         Tokens, diseño adaptable y movimiento
+  motion.ts         Hashes, historial y revelados progresivos
 public/fonts/       Fuentes WOFF2 locales y licencias OFL
 public/images/      Ilustraciones WebP optimizadas
 index.html          Idioma, metadatos y noindex
@@ -73,7 +79,8 @@ tests/              Pruebas funcionales de navegador
 docs/
   RECURSOS.md       Procedencia y decisiones provisionales
   CONTENIDO.md      Guía de edición y materiales pendientes
-  capturas/         Vista de escritorio y móvil
+  capturas/         Vista de escritorio, móvil y carta
+  grabaciones/      Recorrido WebM de animaciones
 ```
 
 ## Actualizar marca y contenido
@@ -95,7 +102,7 @@ El prototipo incluye `noindex, nofollow` en HTML y `X-Robots-Tag` en Netlify. No
 
 ## Capturas de la propuesta
 
-[Escritorio](docs/capturas/escritorio.png) · [Móvil](docs/capturas/movil.png) · [Carta](docs/capturas/carta.png)
+[Escritorio](docs/capturas/escritorio.png) · [Móvil](docs/capturas/movil.png) · [Carta](docs/capturas/carta.png) · [Grabación de movimiento](docs/grabaciones/recorrido.webm)
 
 ## Pendiente del propietario
 

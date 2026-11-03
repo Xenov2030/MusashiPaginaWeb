@@ -237,29 +237,6 @@ svg.arrow {
   position: relative;
   display: inline-block;
 }
-.brush-word:after {
-  content: "";
-  position: absolute;
-  left: -3px;
-  right: -8px;
-  height: 5px;
-  bottom: -9px;
-  background: var(--red);
-  clip-path: polygon(0 30%, 12% 10%, 85% 0, 100% 44%, 93% 77%, 8% 100%);
-  transform: rotate(-1deg);
-}
-.hero-intro {
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--light-text);
-  max-width: 340px;
-  margin-bottom: 25px;
-}
-.hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 27px;
-}
 .hero-actions .text-link {
   font-size: 12px;
 }
@@ -298,12 +275,12 @@ svg.arrow {
   transform: rotate(-3deg);
   z-index: -1;
 }
-.hero-visual > img:first-child {
+.hero-visual > .visual:first-child {
   width: 100%;
   height: 460px;
   object-fit: cover;
 }
-.hero-conceptual .hero-visual > img:first-child {
+.hero-conceptual .hero-visual > .visual:first-child {
   mix-blend-mode: lighten;
   transform: rotate(-2deg);
 }
@@ -330,7 +307,7 @@ svg.arrow {
   padding: 18px 0 25px 18px;
   margin-left: 0;
 }
-.hero-real .hero-visual > img:first-child {
+.hero-real .hero-visual > .visual:first-child {
   height: 430px;
   object-fit: cover;
 }
@@ -410,15 +387,6 @@ svg.arrow {
 .filters button[aria-pressed="true"] {
   font-weight: 800;
 }
-.filters button[aria-pressed="true"]:after {
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--red);
-  content: "";
-}
 .filters button:hover {
   color: var(--red);
 }
@@ -457,7 +425,7 @@ svg.arrow {
 .product:hover .product-visual img {
   transform: scale(1.025);
 }
-.product-featured .product-visual img {
+.product-featured .product-visual .visual {
   aspect-ratio: 1.35;
 }
 .product-copy .eyebrow {
@@ -481,16 +449,6 @@ svg.arrow {
   line-height: 1.75;
   color: var(--muted);
   margin-bottom: 15px;
-}
-.product-link {
-  font-size: 12px;
-  display: inline-flex;
-  gap: 10px;
-  padding: 5px 0;
-  border-bottom: 1px solid var(--line);
-}
-.product-link:hover {
-  border-color: var(--black);
 }
 .menu-link {
   display: flex;
@@ -553,7 +511,7 @@ svg.arrow {
   grid-column: 1;
   grid-row: 1;
 }
-.product-details .product-visual img {
+.product-details .product-visual .visual {
   aspect-ratio: 1.2;
   max-height: 380px;
 }
@@ -587,19 +545,6 @@ svg.arrow {
   font-size: 14px;
   color: var(--muted);
 }
-.experience {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  align-items: center;
-  gap: 70px;
-  background: var(--white);
-  padding-top: 70px;
-  padding-bottom: 65px;
-}
-.experience-heading {
-  padding-left: 28px;
-  position: relative;
-}
 .experience-heading:before {
   content: "";
   position: absolute;
@@ -619,30 +564,9 @@ svg.arrow {
 .experience-heading em {
   font-weight: 400;
 }
-.experience-heading > p:not(.eyebrow) {
-  font-size: 14px;
-  color: var(--muted);
-  max-width: 340px;
-  line-height: 1.85;
-}
 .experience-heading .text-link {
   font-size: 12px;
   gap: 20px;
-}
-.experience-composition {
-  min-width: 0;
-}
-.experience-main {
-  position: relative;
-  overflow: hidden;
-  padding: 10px 10px 0;
-  border: 1px solid var(--line);
-}
-.experience-main img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1.65;
-  object-fit: cover;
 }
 .experience-main figcaption {
   font-size: 8px;
@@ -659,14 +583,10 @@ svg.arrow {
 .experience-details:has(figure:only-child) {
   grid-template-columns: 1fr;
 }
-.experience-details figure img {
+.experience-details figure .visual {
   width: 100%;
   height: 160px;
   object-fit: cover;
-}
-.poster-copy .eyebrow {
-  color: var(--light-text);
-  margin-bottom: 14px;
 }
 .poster-copy h2 em {
   font-weight: 400;
@@ -836,13 +756,6 @@ dialog::backdrop {
   margin: -10px 0 -10px -12px;
   position: relative;
 }
-.poster-visual img {
-  width: 100%;
-  height: 100%;
-  min-height: 380px;
-  max-height: 430px;
-  object-fit: cover;
-}
 .poster-visual figcaption {
   position: absolute;
   bottom: 18px;
@@ -888,6 +801,274 @@ dialog::backdrop {
   margin: 0;
   font-size: 36px;
   max-width: 420px;
+} /* Visible by default; the observer animates only elements already in view. */
+.visual {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--visual-ratio);
+  overflow: hidden;
+  isolation: isolate;
+}
+.visual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.visual-image {
+  z-index: 1;
+  opacity: 1;
+}
+.visual-preview {
+  z-index: 0;
+  pointer-events: none;
+  object-fit: cover;
+}
+.visual.is-loading .visual-image,
+.visual.is-error .visual-image {
+  opacity: 0;
+}
+.visual-error {
+  position: absolute;
+  inset: 12%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: clamp(12px, 3vw, 36px);
+  gap: 12px;
+  background: var(--white);
+  color: var(--black);
+  border: 1px solid var(--line);
+}
+.visual-error strong {
+  font-size: clamp(15px, 2vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+.visual-error > span:last-child {
+  font-size: 11px;
+  line-height: 1.6;
+}
+.error-mark {
+  width: 38px;
+  height: 3px;
+  background: var(--red);
+  transform: rotate(-2deg);
+}
+.hero-line {
+  display: block;
+  animation: hero-line 520ms cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+}
+.hero-line:nth-child(2) {
+  animation-delay: 75ms;
+}
+.hero-intro {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--light-text);
+  max-width: 340px;
+  margin-bottom: 25px;
+  animation: hero-line 480ms 110ms cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+  animation: hero-line 450ms 180ms cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+}
+.brush-word:after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  right: -8px;
+  height: 5px;
+  bottom: -9px;
+  background: var(--red);
+  clip-path: polygon(0 30%, 12% 10%, 85% 0, 100% 44%, 93% 77%, 8% 100%);
+  transform: rotate(-1deg);
+  transform-origin: left;
+  animation: brush-arrive 550ms 200ms cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+}
+@keyframes hero-line {
+  from {
+    opacity: 0.6;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes brush-arrive {
+  from {
+    transform: scaleX(0.1) rotate(-1deg);
+  }
+  to {
+    transform: scaleX(1) rotate(-1deg);
+  }
+}
+.menu-results {
+  overflow: clip;
+  padding: 6px;
+  margin: -6px;
+}
+.filters button:after {
+  transform-origin: left;
+  transition: transform 200ms ease;
+}
+.filters button[aria-pressed="true"]:after {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--red);
+  content: "";
+  clip-path: polygon(0 25%, 90% 0, 100% 55%, 4% 100%);
+  animation: brush-arrive 200ms ease-out;
+}
+.product-link {
+  font-size: 12px;
+  display: inline-flex;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  transition:
+    border-color 180ms,
+    color 180ms;
+}
+.product-link:hover {
+  color: var(--red);
+  border-color: var(--red);
+}
+.button,
+.text-link,
+.menu-link,
+.contact-instagram {
+  transition:
+    background 180ms,
+    color 180ms,
+    transform 180ms;
+}
+.button:active,
+.menu-link:active {
+  transform: translateY(2px);
+}
+.arrow {
+  transition: transform 180ms ease;
+}
+a:hover > .arrow,
+button:hover > .arrow {
+  transform: translate(2px, -2px);
+}
+a:focus-visible > .arrow,
+button:focus-visible > .arrow {
+  transform: translate(2px, -2px);
+}
+.hero-visual > .visual {
+  aspect-ratio: auto;
+}
+.hero-detail.visual {
+  position: absolute;
+  width: 31%;
+  aspect-ratio: 1;
+}
+.experience {
+  display: grid;
+  align-items: center;
+  background: var(--white);
+  padding-top: 70px;
+  padding-bottom: 65px;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+.experience-heading {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  padding-left: 25px;
+}
+.experience-heading > div > h2 {
+  margin-bottom: 0;
+}
+.experience-welcome p {
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 450px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.experience-composition {
+  min-width: 0;
+  width: 92%;
+  margin-left: auto;
+}
+.experience-main .visual {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 2.15;
+  height: auto;
+}
+.experience-main {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 10px 0;
+  border: 1px solid var(--line);
+  transform: rotate(-0.6deg);
+  transform-origin: center;
+}
+.poster-accent {
+  display: block;
+  width: 56px;
+  height: 4px;
+  background: var(--red);
+  margin-bottom: 24px;
+  transform-origin: left;
+  clip-path: polygon(0 30%, 95% 0, 100% 70%, 4% 100%);
+}
+.poster-visual > .visual {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  max-height: 430px;
+  object-fit: cover;
+  aspect-ratio: auto;
+}
+.poster-copy .eyebrow {
+  color: var(--light-text);
+  margin-bottom: 12px;
+}
+.poster-copy .example-tag {
+  margin-bottom: 18px;
+}
+dialog[open]::backdrop {
+  animation: backdrop-in 220ms ease-out;
+}
+dialog.is-closing::backdrop {
+  animation: backdrop-out 160ms ease-in forwards;
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 @media (min-width: 1800px) {
   body {
@@ -905,7 +1086,7 @@ dialog::backdrop {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
-  .hero-visual img {
+  .hero-visual > .visual {
     height: 430px;
   }
   .hero-actions {
@@ -935,7 +1116,7 @@ dialog::backdrop {
   .product-featured h3 {
     font-size: 30px;
   }
-  .experience-main img {
+  .experience-main .visual {
     height: 250px;
   }
   .experience-composition {
@@ -950,7 +1131,7 @@ dialog::backdrop {
   .hero h1 {
     font-size: 57px;
   }
-  .hero-visual > img:first-child {
+  .hero-visual > .visual:first-child {
     height: 410px;
   }
   .hero-intro {
@@ -975,7 +1156,7 @@ dialog::backdrop {
   .poster-copy {
     padding: 30px;
   }
-  .poster-visual img {
+  .poster-visual > .visual {
     height: 380px;
     min-height: 370px;
   }
@@ -1041,7 +1222,7 @@ dialog::backdrop {
     font-size: 12px;
     gap: 15px;
   }
-  .hero-visual img {
+  .hero-visual > .visual {
     height: 250px;
     width: 100%;
     object-fit: cover;
@@ -1093,7 +1274,7 @@ dialog::backdrop {
     grid-row: auto;
     display: block;
   }
-  .product-featured .product-visual img {
+  .product-featured .product-visual .visual {
     aspect-ratio: 1.5;
     max-height: 260px;
   }
@@ -1147,7 +1328,7 @@ dialog::backdrop {
     grid-column: auto;
     grid-row: auto;
   }
-  .product-details .product-visual img {
+  .product-details .product-visual .visual {
     aspect-ratio: 1.5;
     max-height: 280px;
   }
@@ -1174,11 +1355,7 @@ dialog::backdrop {
   .menu-guide p {
     font-size: 14px;
   }
-  .experience-heading > p:last-child {
-    font-size: 14px;
-    max-width: 100%;
-    margin-bottom: 0;
-  }
+
   .poster-copy .eyebrow {
     font-size: 9px;
     margin-bottom: 12px;
@@ -1256,16 +1433,6 @@ dialog::backdrop {
     line-height: 1.07;
     margin-bottom: 27px;
   }
-  .hero-intro {
-    font-size: 14px;
-    line-height: 1.75;
-    max-width: 310px;
-    margin-bottom: 19px;
-  }
-  .hero-actions {
-    gap: 24px;
-    margin-top: 0;
-  }
   .stage-note {
     margin-top: 20px;
     font-size: 9px;
@@ -1276,7 +1443,7 @@ dialog::backdrop {
     margin: -3px 0 0;
     padding: 8px 0 0;
   }
-  .hero-visual > img:first-child {
+  .hero-visual > .visual:first-child {
     height: 235px;
     width: 100%;
     object-fit: cover;
@@ -1298,7 +1465,7 @@ dialog::backdrop {
     padding: 10px 0 0 8px;
     margin-left: 0;
   }
-  .hero-real .hero-visual > img:first-child {
+  .hero-real .hero-visual > .visual:first-child {
     height: 235px;
   }
   .hero-detail {
@@ -1336,47 +1503,13 @@ dialog::backdrop {
     min-height: 38px;
     font-size: 11px;
   }
-  .experience {
-    flex-direction: column;
-    align-items: stretch;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding-top: 46px;
-    padding-bottom: 45px;
-  }
-  .experience-heading {
-    padding-left: 18px;
-  }
   .experience-heading:before {
     top: 40px;
     height: 47px;
   }
-  .experience-heading h2 {
-    font-size: 33px;
-    line-height: 1.14;
-    margin-bottom: 17px;
-  }
-  .experience-heading > p:not(.eyebrow) {
-    font-size: 14px;
-    max-width: 100%;
-    line-height: 1.8;
-    margin-bottom: 13px;
-  }
+
   .experience-heading .text-link {
     font-size: 12px;
-  }
-  .experience-composition {
-    grid-template-rows: auto 85px;
-    gap: 7px;
-    display: block;
-  }
-  .experience-main {
-    padding: 6px 6px 0;
-  }
-  .experience-main img {
-    aspect-ratio: 1.5;
-    height: auto;
   }
   .experience-main figcaption {
     font-size: 7px;
@@ -1387,7 +1520,7 @@ dialog::backdrop {
     gap: 7px;
     margin-top: 7px;
   }
-  .experience-details figure img {
+  .experience-details figure .visual {
     height: 110px;
   }
   .events {
@@ -1403,7 +1536,7 @@ dialog::backdrop {
     grid-row: 1;
     margin: -3px 0 0;
   }
-  .poster-visual img {
+  .poster-visual > .visual {
     height: 235px;
     min-height: 0;
     max-height: none;
@@ -1450,15 +1583,92 @@ dialog::backdrop {
     font-size: 31px;
     max-width: 340px;
   }
+  .hero-line {
+    animation-duration: 380ms;
+  }
+  .hero-line:nth-child(2) {
+    animation-delay: 50ms;
+  }
+  .hero-intro {
+    font-size: 14px;
+    line-height: 1.75;
+    max-width: 310px;
+    margin-bottom: 19px;
+    animation-duration: 350ms;
+    animation-delay: 70ms;
+  }
+  .hero-actions {
+    gap: 24px;
+    margin-top: 0;
+    animation-duration: 350ms;
+    animation-delay: 110ms;
+  }
+  .hero-detail.visual {
+    width: 30%;
+  }
+  .visual-error {
+    inset: 10%;
+    padding: 18px;
+    gap: 8px;
+  }
+  .experience {
+    flex-direction: column;
+    align-items: stretch;
+    display: grid;
+    padding-top: 46px;
+    padding-bottom: 45px;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .experience-heading {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding-left: 18px;
+  }
+  .experience-heading h2 {
+    line-height: 1.14;
+    margin-bottom: 17px;
+    font-size: 32px;
+  }
+  .experience-welcome p {
+    font-size: 14px;
+    max-width: 100%;
+    line-height: 1.75;
+  }
+  .experience-composition {
+    grid-template-rows: auto 85px;
+    gap: 7px;
+    display: block;
+    width: 100%;
+  }
+  .experience-main .visual {
+    height: auto;
+    aspect-ratio: 1.5;
+  }
+  .experience-main {
+    padding: 6px 6px 0;
+    transform: none;
+  }
+  .poster-accent {
+    width: 42px;
+    height: 3px;
+    margin-bottom: 18px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *:before,
   *:after {
     animation: none !important;
     transition: none !important;
+  }
+  .hero-line,
+  .hero-intro,
+  .hero-actions {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  html {
+    scroll-behavior: auto;
   }
 }

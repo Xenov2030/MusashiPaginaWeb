@@ -15,7 +15,7 @@ La configuración vive en `src/content.ts`. Los textos de bienvenida y la nota d
 
 ## Recurso visual compartido
 
-`VisualResource` describe cada imagen mediante `src`, `alt`, `width`, `height`, `kind` (`conceptual` o `confirmed`), `source` (procedencia) y `position` opcional (encuadre CSS). El componente `Visual` usa esa información en portada, carta, experiencia y evento, con dimensiones reservadas, prioridad alta para la imagen principal y carga diferida en las inferiores.
+`VisualResource` describe cada imagen mediante `src`, `alt`, `width`, `height`, `kind` (`conceptual` o `confirmed`), `source` (procedencia), `position` opcional (encuadre CSS), y las opciones `placeholder`, `srcSet` y `sizes` para la carga progresiva. El componente `Visual` usa esa información en portada, carta, experiencia y evento, con dimensiones reservadas, prioridad alta para la imagen principal y carga diferida en las inferiores.
 
 Solo asignar `kind: 'confirmed'` a una foto verificada y autorizada. Completar su procedencia y un texto alternativo que describa lo que efectivamente muestra. El cambio de clasificación no valida un archivo por sí solo. Guardar las imágenes optimizadas en `public/images/` y registrar la autorización en `RECURSOS.md`.
 

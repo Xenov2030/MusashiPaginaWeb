@@ -5,6 +5,9 @@ export interface VisualResource {
   height: number;
   kind: "conceptual" | "confirmed";
   position?: string;
+  placeholder?: string;
+  srcSet?: string;
+  sizes?: string;
   source: string;
 }
 export const conceptualVisuals: Record<
@@ -19,6 +22,9 @@ export const conceptualVisuals: Record<
 > = {
   hero: {
     src: "/images/hero.webp",
+    placeholder: "/images/hero-preview.webp",
+    srcSet: "/images/hero-small.webp 720w, /images/hero.webp 1200w",
+    sizes: "(max-width: 700px) calc(100vw - 44px), 55vw",
     alt: "Ilustración conceptual de café y mochis sobre cerámica; no representa productos reales de Musashi",
     width: 1200,
     height: 800,
