@@ -10,8 +10,14 @@ import {
   conceptualVisuals,
   copy,
   type VisualResource,
+  categories,
+  disciplines,
+  craft,
+  encounters,
+  historicalContext,
 } from "./content";
 import "./style.css";
+import { Ambient } from "./Ambient";
 
 const Arrow = () => (
   <svg
@@ -28,7 +34,7 @@ const Arrow = () => (
 const nav = [
   ["Inicio", "/#inicio"],
   ["Carta", "/carta"],
-  ["Experiencia", "/#experiencia"],
+  ["El oficio", "/#experiencia"],
   ["Eventos", "/#eventos"],
   ["Contacto", "/#contacto"],
 ];
@@ -55,16 +61,11 @@ function Brand() {
   return (
     <a className="brand" href="/" aria-label="Musashi, inicio">
       {site.visuals.logo ? (
-        <img
-          src={site.visuals.logo}
-          alt="Musashi Anime Café"
-          width="160"
-          height="64"
-        />
+        <img src={site.visuals.logo} alt="Musashi" width="160" height="64" />
       ) : (
         <>
           <strong>MUSASHI</strong>
-          <small>ANIME CAFÉ / MENDOZA</small>
+          <small>CAFÉ · TÉ · COCTELERÍA</small>
         </>
       )}
     </a>
@@ -251,18 +252,24 @@ function Visual({
 }
 function Hero() {
   const scene = site.visuals.heroScene ?? conceptualVisuals.hero;
-  const detail = site.visuals.heroDetail;
   return (
     <section
       id="inicio"
-      className={`hero ${scene.kind === "confirmed" ? "hero-real" : "hero-conceptual"}`}
+      className={`hero table-hero ${scene.kind === "confirmed" ? "hero-real" : "hero-conceptual"}`}
     >
-      <div className="hero-copy">
-        <p className="eyebrow">CAFÉ DE ESPECIALIDAD · PASTELERÍA JAPONESA</p>
+      <figure className="hero-visual">
+        <Visual resource={scene} priority />
+        <figcaption>
+          LA MESA DE MUSASHI / UNA INTERPRETACIÓN CONCEPTUAL
+        </figcaption>
+      </figure>
+      <div className="hero-copy hero-paper">
+        <p className="eyebrow">MENDOZA · CULTURA JAPONESA</p>
         <h1>
-          <span className="hero-line">{copy.hero.greeting}</span>
+          <span className="hero-line">{copy.hero.headline[0]}</span>
+          <span className="hero-line">{copy.hero.headline[1]}</span>
           <span className="hero-line">
-            a <em className="brush-word">Musashi.</em>
+            <em className="brush-word">Musashi.</em>
           </span>
         </h1>
         <p className="hero-intro">{copy.hero.intro}</p>
@@ -271,23 +278,17 @@ function Hero() {
             Explorar la carta
             <Arrow />
           </a>
-          <Instagram className="text-link">Instagram</Instagram>
+          <a className="text-link" href="#experiencia">
+            Nuestra propuesta<span aria-hidden="true"> →</span>
+          </a>
         </div>
         <p className="stage-note">
-          <span className="stage-indicator" aria-hidden="true" />
           {site.stage === "open"
             ? "Conocé nuestra propuesta."
             : copy.hero.stage}
         </p>
       </div>
-      <figure className={`hero-visual ${detail ? "with-detail" : ""}`}>
-        <Visual resource={scene} priority />
-        {detail && <Visual resource={detail} className="hero-detail" />}
-        <figcaption>
-          <span>CAFÉ, JAPÓN Y UN MOMENTO PARA VOS.</span>
-          <span>MENDOZA / ARGENTINA</span>
-        </figcaption>
-      </figure>
+      <Ambient />
     </section>
   );
 }
@@ -340,193 +341,224 @@ function Menu({ full = false }: { full?: boolean }) {
     >
       <div className="menu-heading" data-reveal="rise">
         <div>
-          <p className="eyebrow">CAFÉ & PASTELERÍA JAPONESA</p>
+          <p className="eyebrow">LA MESA DE MUSASHI</p>
           <Title>
-            {full ? (
-              <>
-                Conocé los sabores.
-                <br />
-                <em>Descubrí sus historias.</em>
-              </>
-            ) : (
-              <>
-                {copy.menu.title}
-                <br />
-                <em className="menu-subtitle">{copy.menu.subtitle}</em>
-              </>
-            )}
+            {full ? "Una carta para descubrir." : copy.menu.title}
+            <br />
+            <em className="menu-subtitle">{copy.menu.subtitle}</em>
           </Title>
         </div>
-        <div className="menu-intro">
-          <span>
-            {site.draft ? "Una selección para descubrir" : "Nuestra carta"}
-          </span>
-          <a className="text-link" href="/#experiencia">
-            Conocé la propuesta<span aria-hidden="true"> →</span>
-          </a>
-        </div>
+        <span className="menu-edition">Tomate un ratito.</span>
       </div>
       {site.draft && <p className="draft-note">{copy.draftNote}</p>}
-      <div className="filters" role="group" aria-label="Filtrar carta">
-        {["Todo", "Café", "Pastelería"].map((c) => (
-          <button
-            key={c}
-            aria-pressed={category === c}
-            onClick={() => changeCategory(c)}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
-      <p className="filter-result" role="status">
-        {shown.length} {shown.length === 1 ? "propuesta" : "propuestas"} ·{" "}
-        {category === "Todo" ? "Café y pastelería" : category}
-      </p>
-      <div className="menu-results" ref={results}>
-        <div
-          className={full ? "product-details" : "product-selection"}
-          aria-live="polite"
-          key={category}
-        >
-          {shown.map((p, i) => (
-            <article
-              className={`product ${!full && i === 0 ? "product-featured" : ""}`}
-              key={p.id}
-              id={full ? p.id : undefined}
+      <div className="menu-leaf">
+        <div className="menu-leaf-top">
+          <span>MUSASHI</span>
+          <span>
+            {full ? "Carta de propuesta" : "Una selección ilustrativa"}
+          </span>
+        </div>
+        <div className="filters" role="group" aria-label="Filtrar carta">
+          {["Todo", ...categories].map((c) => (
+            <button
+              key={c}
+              aria-pressed={category === c}
+              onClick={() => changeCategory(c)}
             >
-              <div className="product-visual">
-                {p.image ? (
-                  <Visual resource={p.image} />
-                ) : (
-                  <span className="image-fallback">{p.category}</span>
-                )}
-              </div>
-              <div className="product-copy">
-                <span className="eyebrow">{p.category}</span>
-                <h3>{p.name}</h3>
-                <p>{p.description}</p>
-                {full && (
-                  <>
-                    <p className="product-extended">{p.detail}</p>
-                    <p className="texture-note">{p.texture}</p>
-                  </>
-                )}
-                {p.priceARS !== null && (
-                  <p className="price">
-                    {new Intl.NumberFormat("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                    }).format(p.priceARS)}
-                  </p>
-                )}
-                {!site.draft && (
-                  <small>
-                    {p.availability === "available"
-                      ? "Disponible"
-                      : p.availability === "unavailable"
-                        ? "No disponible"
-                        : "Consultar disponibilidad"}
-                  </small>
-                )}
-                {p.confirmedFeatures.length > 0 && (
-                  <p>{p.confirmedFeatures.join(" · ")}</p>
-                )}
-                {!full && (
-                  <a className="product-link" href={`/carta#${p.id}`}>
-                    Conocé este sabor<span aria-hidden="true"> →</span>
-                  </a>
-                )}
-              </div>
-            </article>
+              {c}
+            </button>
           ))}
         </div>
-        {shown.length === 0 && (
-          <p className="empty-menu">
-            La carta se compartirá cuando esté confirmada.
-          </p>
+        <p className="filter-result" role="status">
+          {shown.length} {shown.length === 1 ? "propuesta" : "propuestas"} ·{" "}
+          {category === "Todo" ? "Selección de la propuesta" : category}
+        </p>
+        <div className="menu-results" ref={results}>
+          <div
+            className={full ? "product-details" : "product-selection"}
+            aria-live="polite"
+            key={category}
+          >
+            {shown.map((p, i) => (
+              <article
+                className={`product ${!full && i === 0 ? "product-featured" : ""}`}
+                key={p.id}
+                id={full ? p.id : undefined}
+              >
+                <div className="product-visual">
+                  {p.image ? (
+                    <Visual resource={p.image} />
+                  ) : (
+                    <span className="image-fallback">{p.category}</span>
+                  )}
+                </div>
+                <div className="product-copy">
+                  <span className="eyebrow">{p.category}</span>
+                  <h3>{p.name}</h3>
+                  <p>{p.description}</p>
+                  {full && (
+                    <>
+                      <p className="product-extended">{p.detail}</p>
+                      <p className="texture-note">{p.texture}</p>
+                    </>
+                  )}
+                  {p.priceARS !== null && (
+                    <p className="price">
+                      {new Intl.NumberFormat("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      }).format(p.priceARS)}
+                    </p>
+                  )}
+                  {!site.draft && (
+                    <small>
+                      {p.availability === "available"
+                        ? "Disponible"
+                        : p.availability === "unavailable"
+                          ? "No disponible"
+                          : "Consultar disponibilidad"}
+                    </small>
+                  )}
+                  {p.confirmedFeatures.length > 0 && (
+                    <p>{p.confirmedFeatures.join(" · ")}</p>
+                  )}
+                  {!full && (
+                    <a className="product-link" href={`/carta#${p.id}`}>
+                      Conocé este sabor<span aria-hidden="true"> →</span>
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+          {shown.length === 0 && (
+            <article className="discipline-sheet" aria-live="polite">
+              <span className="eyebrow">{category}</span>
+              <h3>
+                {category === "Té y blends"
+                  ? disciplines["Té y blends"].title
+                  : category === "Coctelería"
+                    ? disciplines["Coctelería"].title
+                    : "La carta, a su tiempo."}
+              </h3>
+              <p>
+                {category === "Té y blends"
+                  ? disciplines["Té y blends"].description
+                  : category === "Coctelería"
+                    ? disciplines["Coctelería"].description
+                    : "La selección se incorporará cuando esté confirmada."}
+              </p>
+              <small>
+                {category === "Té y blends"
+                  ? disciplines["Té y blends"].note
+                  : category === "Coctelería"
+                    ? disciplines["Coctelería"].note
+                    : ""}
+              </small>
+            </article>
+          )}
+        </div>
+        {!full && (
+          <a className="menu-link" href="/carta">
+            Más sobre café y pastelería japonesa
+            <Arrow />
+          </a>
+        )}
+        {full && (
+          <aside className="menu-guide">
+            <h2>
+              ¿Es tu primera vez con
+              <br />
+              la pastelería japonesa?
+            </h2>
+            <div>
+              <p>
+                Podés empezar por las texturas: el mochi es elástico, el
+                dorayaki es esponjoso y el cheesecake japonés, aireado. Son
+                preparaciones distintas, no una lista de sabores confirmados.
+              </p>
+              <p>
+                Cuando esté disponible la carta oficial, podrás consultar
+                opciones, ingredientes y precios. Para información alimentaria,
+                esperá la confirmación del equipo.
+              </p>
+              <Instagram className="text-link">
+                Consultar en Instagram
+              </Instagram>
+            </div>
+          </aside>
         )}
       </div>
-      {!full && (
-        <a className="menu-link" href="/carta">
-          Más sobre café y pastelería japonesa
-          <Arrow />
-        </a>
-      )}
-      {full && (
-        <aside className="menu-guide">
-          <h2>
-            ¿Es tu primera vez con
-            <br />
-            la pastelería japonesa?
-          </h2>
-          <div>
-            <p>
-              Podés empezar por las texturas: el mochi es elástico, el dorayaki
-              es esponjoso y el cheesecake japonés, aireado. Son preparaciones
-              distintas, no una lista de sabores confirmados.
-            </p>
-            <p>
-              Cuando esté disponible la carta oficial, podrás consultar
-              opciones, ingredientes y precios. Para información alimentaria,
-              esperá la confirmación del equipo.
-            </p>
-            <Instagram className="text-link">Consultar en Instagram</Instagram>
-          </div>
-        </aside>
-      )}
     </section>
   );
 }
 function Experience() {
-  const main = site.visuals.experienceSpace ?? conceptualVisuals.experience;
+  const resource =
+    site.owner.portrait ??
+    site.visuals.experienceSpace ??
+    conceptualVisuals.experience;
   const details = [
     site.visuals.experienceDetail,
     site.visuals.experienceTable,
-  ].filter((resource): resource is VisualResource => resource !== null);
+  ].filter((x): x is VisualResource => x !== null);
   return (
-    <section
-      id="experiencia"
-      className={`experience section ${details.length ? "has-real-details" : ""}`}
-    >
-      <div className="experience-heading">
-        <div data-reveal="rise">
-          <p className="eyebrow">LA BIENVENIDA MUSASHI</p>
-          <h2>
-            {copy.experience.title}
-            <br />
-            <em>{copy.experience.subtitle}</em>
-          </h2>
-        </div>
-        <div className="experience-welcome" data-reveal="rise">
-          <p>{copy.experience.body}</p>
+    <section id="experiencia" className="experience craft-section section">
+      <div className="craft-heading" data-reveal="rise">
+        <p className="eyebrow">EL OFICIO DETRÁS DE MUSASHI</p>
+        <h2>
+          La curiosidad invita.
+          <br />
+          <em>El oficio cuida.</em>
+        </h2>
+        <p>
+          {site.owner.name
+            ? `${site.owner.name} es barista profesional, tea blender y bartender.`
+            : "Detrás de Musashi hay un barista profesional, tea blender y bartender."}{" "}
+          Tres miradas para descubrir una bebida, con atención a los detalles.
+        </p>
+      </div>
+      <div className="craft-story">
+        <figure className="experience-composition" data-reveal="image">
+          <div className="experience-main">
+            <Visual resource={resource} />
+          </div>
+          <figcaption>
+            {resource.kind === "conceptual"
+              ? "UNA INTERPRETACIÓN ILUSTRADA DEL OFICIO"
+              : "UNA MIRADA A MUSASHI"}
+          </figcaption>
+        </figure>
+        <div className="craft-notes">
+          {craft.map((item, i) => (
+            <article
+              key={item.title}
+              className={`craft-note craft-note-${i + 1}`}
+              data-reveal="rise"
+            >
+              <span className="craft-rule" aria-hidden="true" />
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
           <a className="text-link" href="#contacto">
             Seguimos en contacto<span aria-hidden="true"> →</span>
           </a>
         </div>
       </div>
-      <div className="experience-composition" data-reveal="image">
-        <figure className="experience-main">
-          <Visual resource={main} />
-          <figcaption>
-            {main.kind === "conceptual"
-              ? "CAFÉ + LECTURA / UNA COMPOSICIÓN CONCEPTUAL"
-              : "EL ESPACIO MUSASHI"}
-          </figcaption>
-        </figure>
-        {details.length > 0 && (
-          <div className="experience-details">
-            {details.map((resource) => (
-              <figure key={resource.src}>
-                <Visual resource={resource} />
-              </figure>
-            ))}
-          </div>
-        )}
-      </div>
+      {details.length > 0 && (
+        <div className="experience-details">
+          {details.map((resource) => (
+            <figure key={resource.src}>
+              <Visual resource={resource} />
+            </figure>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
 function Events() {
+  const [selected, setSelected] = useState(2);
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
   const closing = useRef(false);
@@ -580,44 +612,99 @@ function Events() {
   };
   if (!site.draft && demoEvent.status === "illustrative")
     return (
-      <section id="eventos" className="section events-pending">
-        <p className="eyebrow">ENCUENTROS ESPECIALES</p>
+      <section id="eventos" className="section">
+        <p className="eyebrow">ENCUENTROS MUSASHI</p>
         <h2>
-          Las próximas experiencias,
+          Las novedades,
           <br />
           en nuestro Instagram.
         </h2>
         <Instagram className="text-link">Ver novedades</Instagram>
       </section>
     );
+  const choose = (index: number) => {
+    opener.current = document.activeElement as HTMLButtonElement;
+    setSelected(index);
+    openModal();
+  };
   return (
-    <section id="eventos" className="events section">
-      <article className="event-poster">
-        <div className="poster-copy" data-reveal="poster">
-          <span
-            className="poster-accent"
-            data-reveal="stroke"
-            aria-hidden="true"
-          />
-          <p className="eyebrow">EXPERIENCIAS MUSASHI</p>
-          <span className="example-tag">Ejemplo de presentación</span>
-          <h2>
-            Noche
+    <section id="eventos" className="events encounters-section section">
+      <div className="encounter-heading" data-reveal="rise">
+        <p className="eyebrow">ENCUENTROS MUSASHI</p>
+        <h2>
+          Alrededor
+          <br />
+          <em>de la mesa.</em>
+        </h2>
+        <p>
+          Onigiris, tatamis y ramen forman parte de los antecedentes de Musashi.
+          Estas notas recuerdan la propuesta; no anuncian próximos eventos.
+        </p>
+      </div>
+      <div className="encounter-table">
+        <article className="encounter-note onigiri-note" data-reveal="poster">
+          <span className="example-tag">Antecedente de encuentro</span>
+          <h3>
+            Noches de
             <br />
-            de <em>Ramen.</em>
-          </h2>
-          <p>{copy.event.intro}</p>
-          <p className="event-context">{copy.event.context}</p>
-          <button ref={opener} className="text-link" onClick={openModal}>
-            Conocer la propuesta
-            <Arrow />
+            onigiris.
+          </h3>
+          <p>{encounters[0].description}</p>
+          <button className="text-link" onClick={() => choose(0)}>
+            Conocer onigiris<span aria-hidden="true"> →</span>
           </button>
-        </div>
-        <figure className="poster-visual" data-reveal="image">
-          <Visual resource={conceptualVisuals.ramen} />
-          <figcaption>ENCUENTROS ALREDEDOR DE LA MESA</figcaption>
-        </figure>
-      </article>
+        </article>
+        <article
+          className="encounter-note tatami-note"
+          data-reveal="rise"
+          data-motion-delay="100"
+        >
+          <span className="eyebrow">OTRA FORMA DE REUNIRSE</span>
+          <h3>
+            Encuentros
+            <br />
+            en tatamis.
+          </h3>
+          <p>{encounters[1].description}</p>
+          <button className="text-link" onClick={() => choose(1)}>
+            Conocer tatamis<span aria-hidden="true"> →</span>
+          </button>
+        </article>
+        <article
+          className="event-poster ramen-note"
+          data-reveal="image"
+          data-motion-delay="140"
+        >
+          <figure className="poster-visual">
+            <Visual resource={conceptualVisuals.ramen} />
+            <figcaption>
+              IMAGEN CONCEPTUAL / NO ES UN REGISTRO DEL ENCUENTRO
+            </figcaption>
+          </figure>
+          <div className="poster-copy">
+            <span
+              className="poster-accent"
+              data-reveal="stroke"
+              aria-hidden="true"
+            />
+            <span className="example-tag">Ejemplo de presentación</span>
+            <h3>
+              Noche
+              <br />
+              de Ramen.
+            </h3>
+            <p>{encounters[2].description}</p>
+            <button
+              ref={opener}
+              className="text-link"
+              onClick={() => choose(2)}
+            >
+              Conocer la propuesta
+              <Arrow />
+            </button>
+          </div>
+        </article>
+      </div>
       <dialog
         ref={dialog}
         aria-labelledby="event-title"
@@ -661,12 +748,8 @@ function Events() {
             ×
           </button>
           <p className="eyebrow">EJEMPLO DE PRESENTACIÓN</p>
-          <h2 id="event-title">{demoEvent.title}</h2>
-          <p>
-            Este afiche muestra cómo podría presentarse una experiencia
-            especial. No anuncia un evento próximo ni forma parte de una carta
-            diaria.
-          </p>
+          <h2 id="event-title">{encounters[selected].title}</h2>
+          <p>{encounters[selected].detail}</p>
           <p>
             No hay fecha, precio, cupos ni reservas habilitadas. Las novedades
             confirmadas se compartirán por el canal oficial.
@@ -674,6 +757,33 @@ function Events() {
           <Instagram className="button">Ver Instagram oficial</Instagram>
         </div>
       </dialog>
+    </section>
+  );
+}
+function NameHistory() {
+  if (
+    !historicalContext.enabled ||
+    !historicalContext.verified ||
+    !historicalContext.paragraphs.length ||
+    !historicalContext.sources.length
+  )
+    return null;
+  return (
+    <section className="name-history section">
+      <p className="eyebrow">UNA PAUSA CULTURAL</p>
+      <h2>{historicalContext.title}</h2>
+      {historicalContext.paragraphs.map((text) => (
+        <p key={text}>{text}</p>
+      ))}
+      <ul>
+        {historicalContext.sources.map((source) => (
+          <li key={source.url}>
+            <a href={source.url} target="_blank" rel="noopener noreferrer">
+              {source.title}
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -726,7 +836,7 @@ function Footer() {
       </div>
       <div className="footer-bottom">
         <span>
-          Musashi Anime Café · Mendoza
+          Musashi · Mendoza
           {site.draft ? " · Propuesta de diseño" : ""}
         </span>
         <a href={site.author.url} target="_blank" rel="noopener noreferrer">
@@ -743,8 +853,8 @@ function App() {
   const isMenu = window.location.pathname.replace(/\/$/, "") === "/carta";
   useEffect(() => {
     document.title = isMenu
-      ? "Carta ilustrativa · Musashi"
-      : "Musashi · Un nuevo capítulo";
+      ? "Carta de propuesta · Musashi"
+      : "Musashi · La mesa de Musashi";
   }, [isMenu]);
   return (
     <>
@@ -765,6 +875,7 @@ function App() {
             <Menu />
             <Experience />
             <Events />
+            <NameHistory />
             <Contact />
           </>
         )}

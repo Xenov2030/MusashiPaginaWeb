@@ -130,7 +130,13 @@ export function useSectionMotion() {
                     ];
           const animation = el.animate(frames, {
             duration: kind === "image" ? 620 : kind === "poster" ? 560 : 440,
-            delay: kind === "stroke" ? 160 : 0,
+            delay: Math.min(
+              240,
+              Math.max(
+                0,
+                Number(el.dataset.motionDelay) || (kind === "stroke" ? 160 : 0),
+              ),
+            ),
             easing: "cubic-bezier(.2,.7,.25,1)",
           });
           animations.add(animation);

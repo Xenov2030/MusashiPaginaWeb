@@ -7,8 +7,8 @@ test("portada lenta: contenido y navegación disponibles, revelado al cargar", a
   const gate = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("**/images/hero*.webp", async (route) => {
-    if (!route.request().url().includes("hero-preview")) await gate;
+  await page.route("**/images/mesa*.webp", async (route) => {
+    if (!route.request().url().includes("mesa-preview")) await gate;
     await route.continue();
   });
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -45,8 +45,8 @@ test("portada lenta: contenido y navegación disponibles, revelado al cargar", a
 test("fallo de imagen: alternativa visible y controles utilizables", async ({
   page,
 }) => {
-  await page.route("**/images/hero*.webp", (route) =>
-    route.request().url().includes("hero-preview")
+  await page.route("**/images/mesa*.webp", (route) =>
+    route.request().url().includes("mesa-preview")
       ? route.continue()
       : route.abort(),
   );
@@ -83,10 +83,14 @@ test("revelado único, filtros con foco y recorrido grabado", async ({
     );
     // Pausas deliberadas para que la grabación muestre entradas y transiciones completas.
     await page.waitForTimeout(1100);
+    await page.getByRole("button", { name: "Pausar pétalos" }).click();
+    await page.waitForTimeout(350);
+    await page.getByRole("button", { name: "Reanudar pétalos" }).click();
+    await page.waitForTimeout(450);
     await page.getByRole("link", { name: "Explorar la carta" }).click();
     await page.waitForTimeout(750);
     const filter = page.getByRole("button", {
-      name: "Pastelería",
+      name: "Cocina y pastelería japonesa",
       exact: true,
     });
     await filter.focus();
@@ -129,7 +133,7 @@ test("sin JavaScript: bienvenida y contacto de respaldo", async ({
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Bienvenidos a Musashi.",
+    "Hay un lugar para vos en Musashi.",
   );
   await expect(
     page.getByRole("link", { name: "Ir al Instagram oficial" }),

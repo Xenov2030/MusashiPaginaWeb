@@ -36,7 +36,7 @@ Las pruebas miden la posición real frente al scroll máximo del documento. Comp
 
 ## Imágenes y fallos
 
-La portada conserva dimensiones y prioridad alta, añade preload y variantes de 720/1200 px. `hero-preview.webp` pesa 508 bytes y proporciona contexto visual mientras llega el recurso de alta resolución. Las imágenes inferiores mantienen carga diferida.
+La portada conserva dimensiones y prioridad alta, añade preload y variantes de 720/1400 px. `mesa-preview.webp` pesa 408 bytes y proporciona contexto visual mientras llega el recurso de alta resolución. Las imágenes inferiores mantienen carga diferida.
 
 `Visual` gestiona estados de carga, imagen lista y error. La máscara se reproduce al cargar, no mediante un retraso fijo; al finalizar o cancelar, no queda un estilo que oculte la imagen. En caso de fallo, aparece una alternativa tipográfica con información gastronómica, sin bloquear el texto ni las acciones. La página también incluye bienvenida y contacto estáticos si el módulo JavaScript no llega a ejecutarse.
 
@@ -47,3 +47,11 @@ Las pruebas incluyen carga retenida, error de red de la portada, navegación uti
 La grabación `docs/grabaciones/recorrido.webm` se obtiene en `tests/motion.spec.ts`, con pausas breves deliberadas para mostrar transiciones completas. Se usaron Chromium y FFmpeg instalados en este entorno. La grabación dura aproximadamente siete segundos; las capturas estáticas muestran los estados finales sin animaciones.
 
 La revisión se realizó localmente en Chromium, con escritorio y tamaños móviles emulados. No acredita comportamiento en dispositivos físicos ni una publicación en Netlify. El logo, las fuentes de marca y las fotos reales siguen pendientes; las imágenes existentes continúan identificadas como conceptuales.
+
+## La mesa de Musashi
+
+La portada y la carta se organizan ahora como hojas sobre una superficie tejida neutra. `Ambient.tsx` dibuja una rama original y seis pétalos fijos (tres visibles en móvil). Cada trayectoria dura entre 8 y 12 segundos, con pequeñas variaciones; no se crean partículas durante el scroll. Una variable CSS permite pausarlos sin recalcular posiciones en JavaScript.
+
+El botón «Pausar pétalos / Reanudar pétalos» es accesible por teclado y usa `aria-pressed`; la preferencia se recuerda en `sessionStorage`. El efecto se suspende si el documento está oculto o la portada deja de estar visible. Con movimiento reducido no hay caída ni control innecesario: queda la rama estática. Los elementos son decorativos, `aria-hidden`, y no capturan clics.
+
+Las nuevas pruebas comprueban límite de partículas, pausa y reanudación, persistencia al recargar, suspensión fuera de pantalla y ante cambio de visibilidad, y estado estático reducido. Las invitaciones se revelan con un escalonamiento corto y usan el mismo modal con foco de regreso al disparador correcto. La grabación incluye el control de ambiente.

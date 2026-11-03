@@ -24,7 +24,7 @@ test("hash: Inicio, enlace de Experiencia, atrás, adelante y acceso directo", a
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Principal", exact: true })
-    .getByRole("link", { name: "Experiencia" })
+    .getByRole("link", { name: "El oficio" })
     .click();
   await atSection(page, "experiencia");
   await page.getByRole("link", { name: "Seguimos en contacto" }).click();
@@ -41,7 +41,7 @@ test("hash: desde /carta y movimiento reducido", async ({ page }) => {
   await page.goto("/carta");
   await page
     .getByRole("navigation", { name: "Principal", exact: true })
-    .getByRole("link", { name: "Experiencia" })
+    .getByRole("link", { name: "El oficio" })
     .click();
   await atSection(page, "experiencia");
   await page.goto("/carta#mochi");

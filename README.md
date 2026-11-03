@@ -1,27 +1,25 @@
-# MUSASHI · Anime Café
+# MUSASHI · La mesa de Musashi
 
-Boceto web funcional para presentar al propietario de **Musashi Anime Café, Mendoza, Argentina**. Propuesta de diseño y desarrollo de Nicolas Aguirres: café de especialidad, pastelería japonesa y cultura como punto de encuentro.
+Boceto web funcional para presentar al propietario de **Musashi, Mendoza, Argentina**. Propuesta de diseño y desarrollo de Nicolas Aguirres: café de especialidad, té, coctelería y gastronomía japonesa como invitación a la mesa.
 
-**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify, conectado por el usuario a `desarrollo/boceto-musashi`. La publicación de la bienvenida y las animaciones fue autorizada; se entrega mediante la rama conectada y el estado final se consulta en Netlify. URL del sitio: `https://musashiweb.netlify.app/`.
+**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify, conectado por el usuario a `desarrollo/boceto-musashi`. Esta dirección de «La mesa de Musashi» permanece local y no se ha enviado a Netlify. URL del sitio: `https://musashiweb.netlify.app/`.
 
 ## Diseño y contenido
 
-**Blanco y negro invertidos, con movimiento y navegación reforzada:** se invierten los fondos y textos neutros: portada y cabecera blancas; carta, experiencia y cierre oscuros. El rojo sigue como acento y las imágenes mantienen sus colores. Los botones rojos conservan texto blanco por contraste. La composición evoluciona sin inventar la apariencia del nuevo local.
+**La mesa de Musashi:** cultura japonesa, hospitalidad y el oficio detrás del café, té y coctelería. Esta dirección reemplaza el protagonismo anterior del anime, manga y estudio editorial; el Instagram oficial conserva su URL. Los textos de portada son propuestas para revisión, no eslóganes oficiales.
 
-- Portada integrada con una bienvenida directa, encuadre ligeramente desplazado y trazo rojo. Acciones claras hacia carta e Instagram; aviso discreto de nuevo espacio.
-- Carta visual, filtros accesibles y `/carta` con explicaciones breves. Una nota visible por página concentra el carácter conceptual y la disponibilidad pendiente.
-- Experiencia breve: una sola imagen conceptual y un texto de bienvenida. Se retiró el mosaico repetido de recortes de productos.
-- Ramen como invitación a un encuentro, con imagen primero y contenido a su lado; permanece identificado como ejemplo, sin fechas ni reservas.
-- Modelo `VisualResource` y componente `Visual` para sustituir recursos conceptuales por imágenes autorizadas sin rehacer los componentes. Portada principal y detalle opcional; experiencia con vista, detalle y escena de mesa.
-- Logo reemplazable, recursos locales, imágenes WebP con dimensiones reservadas y carga diferida fuera de portada. Sin nuevas dependencias, backend ni efectos invasivos.
-- Entradas coordinadas de texto y un revelado de portada que empieza al cargar la imagen. Vista previa ligera, variantes responsive y estado de error usable.
-- Revelados distintos por sección: aparición, recorte y trazado rojo. Filtros con transición de altura; modal con apertura y cierre suaves. Se respeta movimiento reducido.
-- Navegación por hash e historial comprobada mediante la posición del destino, incluido acceso directo, atrás/adelante y enlaces desde `/carta`.
-- Teclado, foco contenido en el modal, Escape y retorno al disparador, contraste de lectura y respaldo de bienvenida sin JavaScript.
+- Portada como carta sobre una escena ilustrada de mesa, sin reproducir el nuevo local. Identificador provisional, rama de cerezo parcial y acciones directas.
+- Carta sobre trama neutra inspirada en tatami, hojas blancas, texto negro y acentos rojos. Categorías accesibles de Café, Té y blends, Coctelería y Cocina y pastelería japonesa.
+- Té y coctelería explican la disciplina cuando no hay productos aprobados: no se inventaron blends, cócteles, precios ni disponibilidad.
+- Barista profesional, tea blender y bartender se presentan como un relato de oficio, según la información transmitida por Nicolas, sin credenciales adicionales.
+- Onigiris, encuentros en tatamis y ramen como antecedentes, con detalles en modales accesibles. No se anuncian eventos próximos ni reservas.
+- Cerezos SVG y seis pétalos CSS en escritorio, tres en móvil. Control de pausa, preferencia de sesión, suspensión fuera de pantalla o con la pestaña oculta, y composición estática con movimiento reducido.
+- Entradas y recortes diferenciados, trazado rojo, filtros con transición de altura, foco gestionado y navegación real con hashes e historial.
+- Imágenes conceptuales locales, prioridad y vista previa para portada, carga diferida inferior y alternativa ante fallo. Sin backend ni nuevas dependencias.
 
-Los siete recursos de comida siguen siendo ilustraciones generadas para el boceto, no productos, interiores ni instalaciones reales de Musashi. No se añadieron imágenes del local ni materiales de terceros. No se inventan datos comerciales; la nota junto a la carta permite leer el sitio sin una sucesión de advertencias.
+El logo original, las fotos reales del propietario y del nuevo espacio y la carta comercial siguen pendientes. Los datos de oficio y antecedentes proceden del pedido de Nicolas, no de una escucha de audios. La sección histórica opcional queda desactivada por falta de verificación de fuentes: [registro de historia](docs/HISTORIA.md).
 
-**Rama de desarrollo:** `desarrollo/bienvenida-musashi`. Tras la autorización del usuario, esta entrega se sube a `desarrollo/boceto-musashi`, conectada al despliegue automático de Netlify, sin modificar `main`. Un push no confirma por sí solo que la compilación remota haya terminado.
+**Rama local:** `desarrollo/bienvenida-musashi`. Esta iteración no se subió, fusionó ni desplegó. La indicación del pedido requiere una autorización posterior para publicar; la rama conectada a Netlify conserva la entrega anterior.
 
 ## Ejecutar el proyecto
 
@@ -61,7 +59,7 @@ PLAYWRIGHT_BROWSERS_PATH=/tmp/musashi-playwright PLAYWRIGHT_CHROMIUM_EXECUTABLE_
 
 Las pruebas arrancan el servidor de producción local en el puerto 4173 y comprueban portada, firma, navegación, ruta directa y recarga de `/carta`, filtros, menú móvil, modal y cierre con Escape, recuperación del foco, noindex, carga sin solicitudes externas y desbordamiento en anchos de 320, 390, 768, 1024 y 1440 px. También verifican el destacado de portada, los enlaces de detalle, el valor adicional de `/carta`, las proporciones de las imágenes el foco en el modal, movimiento reducido, contraste y que los colores de la interfaz se limiten a neutros y rojo (las ilustraciones mantienen sus colores naturales). Generan las capturas de `docs/capturas/`.
 
-Los detalles de movimiento, investigación de hashes y pruebas de carga están en [MOVIMIENTO.md](docs/MOVIMIENTO.md). Se incluyen pruebas de imágenes lentas/fallidas y una grabación del recorrido. Las pruebas no constituyen una auditoría completa de accesibilidad ni verifican el estado de sitios externos. En este entorno, la descarga de Chromium de Playwright fue bloqueada por la política de red; se utiliza el Chromium del sistema.
+Los detalles de movimiento, investigación de hashes y pruebas de carga están en [MOVIMIENTO.md](docs/MOVIMIENTO.md). Se incluyen pruebas de imágenes lentas/fallidas y una grabación del recorrido. Además se prueban las cuatro categorías, sus estados sin productos, las tres invitaciones y la pausa de pétalos. Las pruebas no constituyen una auditoría completa de accesibilidad ni verifican el estado de sitios externos. En este entorno, la descarga de Chromium de Playwright fue bloqueada por la política de red; se utiliza el Chromium del sistema.
 
 ## Estructura
 
@@ -71,6 +69,7 @@ src/
   main.tsx          Componentes, portada y ruta de carta
   style.css         Tokens, diseño adaptable y movimiento
   motion.ts         Hashes, historial y revelados progresivos
+  Ambient.tsx       Rama, pétalos y pausa accesible
 public/fonts/       Fuentes WOFF2 locales y licencias OFL
 public/images/      Ilustraciones WebP optimizadas
 index.html          Idioma, metadatos y noindex
@@ -93,8 +92,8 @@ La estructura para consultas futuras por WhatsApp existe como función `reservat
 
 ## Publicación posterior en Netlify
 
-1. Revisar `desarrollo/bienvenida-musashi`. El usuario autorizó la publicación de esta entrega.
-2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. El usuario conectó previamente `desarrollo/boceto-musashi`; esta entrega se publica avanzando esa rama, sin cambiar el sitio ni el dominio.
+1. Revisar `desarrollo/bienvenida-musashi` y obtener una nueva indicación de publicación para esta dirección artística.
+2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. El usuario conectó previamente `desarrollo/boceto-musashi`; no avanzar esa rama sin indicación posterior; no cambiar el sitio ni el dominio.
 3. Usar `npm run build`, directorio de publicación `dist` y Node 24. `netlify.toml` ya declara estos valores y la redirección SPA para `/carta`.
 4. Publicar solo con autorización; verificar `/`, `/carta` y su recarga directa en el dominio real, recursos, enlaces y vista móvil.
 

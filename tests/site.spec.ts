@@ -13,7 +13,7 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Bienvenidos",
+    "Hay un lugar",
   );
   await page.getByRole("link", { name: "Explorar la carta" }).click();
   await expect(page).toHaveURL(/#carta$/);
@@ -46,6 +46,10 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
     ),
   );
   await page.evaluate(() => scrollTo(0, 0));
+  await page.evaluate(() => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement.blur();
+  });
   await page.screenshot({
     path: "docs/capturas/escritorio.png",
     fullPage: true,
@@ -61,7 +65,9 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
 test("carta: acceso directo, filtros, recarga y regreso", async ({ page }) => {
   await page.goto("/carta");
   await expect(page.locator(".product")).toHaveCount(4);
-  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
+    .click();
   await expect(page.locator(".product")).toHaveCount(3);
   await expect(
     page.getByRole("heading", { name: "Café de especialidad", exact: true }),
@@ -82,6 +88,10 @@ test("carta: acceso directo, filtros, recarga y regreso", async ({ page }) => {
       }),
     ),
   );
+  await page.evaluate(() => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement.blur();
+  });
   await page.screenshot({
     path: "docs/capturas/carta.png",
     fullPage: true,
@@ -89,11 +99,11 @@ test("carta: acceso directo, filtros, recarga y regreso", async ({ page }) => {
   });
   await page.reload();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Conocé los sabores.",
+    "Una carta para descubrir.",
   );
   await page
     .getByRole("navigation", { name: "Principal", exact: true })
-    .getByRole("link", { name: "Experiencia" })
+    .getByRole("link", { name: "El oficio" })
     .click();
   await expect(page.locator("#experiencia")).toBeVisible();
 });
@@ -120,7 +130,9 @@ test("móvil: menú, cierre con Escape, filtros y captura sin desbordamiento", a
     .getByRole("link", { name: "Carta", exact: true })
     .click();
   await expect(page).toHaveURL(/\/carta$/);
-  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
+    .click();
   await expect(page.locator(".product")).toHaveCount(3);
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
@@ -138,6 +150,10 @@ test("móvil: menú, cierre con Escape, filtros y captura sin desbordamiento", a
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+  await page.evaluate(() => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement.blur();
+  });
   await page.screenshot({
     path: "docs/capturas/movil.png",
     fullPage: true,
@@ -225,7 +241,9 @@ test("portada gastronómica, selección breve y navegación activa", async ({
   ).toBeLessThan(600);
   await expect(page.locator(".product")).toHaveCount(3);
   await expect(page.locator(".product-featured h3")).toHaveText("Mochi");
-  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
+    .click();
   await expect(page.locator(".product")).toHaveCount(2);
   await expect(page.getByRole("status")).toContainText("2 propuestas");
   await page.getByRole("link", { name: "Conocé este sabor" }).first().click();
@@ -271,9 +289,11 @@ test("recursos honestos, foco del modal y movimiento reducido", async ({
     .toBe(true);
   await expect(page.locator(".draft-note")).toHaveCount(1);
   await expect(page.locator(".draft-note")).toContainText(
-    "no productos ni espacios reales",
+    "Imágenes conceptuales",
   );
-  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
+    .click();
   expect(
     await page
       .locator(".product-selection")
@@ -318,7 +338,7 @@ test("contraste de lectura y controles", async ({ page }) => {
       return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
     };
     const pairs = [
-      [".hero-intro", ".hero"],
+      [".hero-intro", ".hero-paper"],
       [".hero-actions .button", ".hero-actions .button"],
       [".draft-note", ".menu-section"],
       [".poster-copy>p:not(.eyebrow)", ".event-poster"],
