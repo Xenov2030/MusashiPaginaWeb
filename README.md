@@ -6,20 +6,20 @@ Boceto web funcional para presentar al propietario de **Musashi Anime Café, Men
 
 ## Diseño y contenido
 
-**Rediseño editorial:** negro `#080808` y blanco `#FFFFFF` dominantes, con rojo `#C51624` como acento. Esta dirección reemplaza por completo la propuesta cálida anterior. Tokens centralizados, títulos de gran escala, líneas rectas y composiciones distintas en cada sección.
+**Segunda iteración gastronómica:** negro y blanco dominantes, rojo como acento. Los colores naturales aparecen únicamente en las ilustraciones de comida. Se conserva React + TypeScript + Vite, sin servicios nuevos ni dependencias para efectos.
 
-- Portada negra asimétrica: MUSASHI como identificador tipográfico provisional, marco blanco, sello rojo y una ilustración monocroma propia. No se creó ni reinterpretó un logo.
-- Transición blanca con una frase editorial de gran tamaño, sin las tres tarjetas anteriores.
-- Carta HTML en **`/carta`**, filtros funcionales, filas numeradas, separadores y descripciones legibles. Sin imágenes de productos inventadas ni precios sin confirmar.
-- Experiencia en paneles de diferentes proporciones, con una trama puntual y un espacio preparado para fotografía real autorizada.
-- «Noche de Ramen» como afiche independiente con detalle en un modal accesible. Sigue siendo un ejemplo, sin fechas ni reservas.
-- Cierre directo con Instagram y firma del desarrollador.
-- Menú móvil, navegación por teclado, foco visible y respeto por movimiento reducido.
-- Recursos locales, sin feed de Instagram, backend, analítica ni cookies de seguimiento.
+- Cabecera compacta y portada con «Café, Japón y algo para compartir», sin la marca gigante ni el rótulo de estudio gráfico.
+- Siete ilustraciones originales generadas para el boceto: café, mochi, dorayaki, cheesecake, ramen, portada y una composición de manga con merienda. No son fotografías ni productos reales de Musashi.
+- Selección de tres propuestas en portada, con mochi destacado y café y dorayaki secundarios. Filtros con transición breve y cantidad de resultados anunciada.
+- **`/carta`** agrega el cheesecake, explicaciones ampliadas de cada preparación, notas de textura y una guía introductoria. Los enlaces de producto llegan a sus detalles mediante anclas estables.
+- Experiencia con una ilustración protagonista y dos recortes de detalle de esa misma composición. No se simula el local ni su equipamiento.
+- Afiche de ramen con presencia gastronómica, identificación de ejemplo y modal accesible. No anuncia fechas ni habilita reservas.
+- Estado activo de navegación, menú móvil, foco visible, cierre del modal con Escape y retorno al disparador.
+- Imágenes WebP locales optimizadas, dimensiones reservadas y carga diferida fuera de portada. Sin fotos externas, feed de Instagram, backend, analítica ni cookies de seguimiento.
 
-No se publican dirección, horarios, teléfono, fecha de inauguración, reseñas ni políticas no confirmadas. La dirección anterior no se presenta como vigente. El contexto de próxima apertura procede del brief, no de una comprobación actual del negocio. Los textos son propuestas editoriales para aprobación.
+No se publican dirección, horarios, teléfono, precios, fecha de inauguración, reseñas ni políticas no confirmadas. La carta ilustrativa se mantiene separada de los datos confirmados. El contexto de nuevo espacio procede del brief, no de una comprobación actual del negocio. Los textos son propuestas editoriales para aprobación.
 
-**Rama de desarrollo del rediseño:** `desarrollo/rediseno-editorial-musashi`. Tras la aprobación del usuario, la entrega se publica avanzando `desarrollo/boceto-musashi`, conectada a Netlify, sin modificar `main`. Los próximos cambios de esa rama activan la publicación automática.
+**Rama de desarrollo:** `desarrollo/rediseno-editorial-musashi`. El usuario autorizó publicar esta iteración automáticamente: se avanza `desarrollo/boceto-musashi`, conectada a Netlify, sin modificar `main` ni crear otro sitio. El estado final del despliegue se consulta en Netlify; un push no acredita por sí solo una publicación exitosa.
 
 ## Ejecutar el proyecto
 
@@ -55,7 +55,7 @@ Si el entorno ya dispone de Chromium:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 ```
 
-Las pruebas arrancan el servidor de producción local en el puerto 4173 y comprueban portada, firma, navegación, ruta directa y recarga de `/carta`, filtros, menú móvil, modal y cierre con Escape, recuperación del foco, noindex, carga sin solicitudes externas y desbordamiento en anchos de 320, 390, 768, 1024 y 1440 px. También verifican que los colores calculados se limiten a neutros y rojo. Generan las capturas de `docs/capturas/`.
+Las pruebas arrancan el servidor de producción local en el puerto 4173 y comprueban portada, firma, navegación, ruta directa y recarga de `/carta`, filtros, menú móvil, modal y cierre con Escape, recuperación del foco, noindex, carga sin solicitudes externas y desbordamiento en anchos de 320, 390, 768, 1024 y 1440 px. También verifican el destacado de portada, los enlaces de detalle, el valor adicional de `/carta`, las proporciones de las imágenes y que los colores de la interfaz se limiten a neutros y rojo (las ilustraciones mantienen sus colores naturales). Generan las capturas de `docs/capturas/`.
 
 No constituyen una auditoría completa de accesibilidad ni verifican el estado de sitios externos. En este entorno, la descarga de Chromium de Playwright fue bloqueada por la política de red; se utiliza el Chromium del sistema.
 
@@ -67,6 +67,7 @@ src/
   main.tsx          Componentes, portada y ruta de carta
   style.css         Tokens y diseño adaptable
 public/fonts/       Fuentes WOFF2 locales y licencias OFL
+public/images/      Ilustraciones WebP optimizadas
 index.html          Idioma, metadatos y noindex
 netlify.toml        Build, redirecciones SPA y cabeceras
 tests/              Pruebas funcionales de navegador
@@ -84,10 +85,10 @@ La [guía de contenido](docs/CONTENIDO.md) detalla cómo reemplazar logo, imáge
 
 La estructura para consultas futuras por WhatsApp existe como función `reservationLink`, pero no se activa sin número oficial. Una consulta no confirma una reserva. No se implementan pagos, señas ni disponibilidad automática.
 
-## Publicación futura en Netlify
+## Publicación en Netlify
 
 1. Revisar la rama `desarrollo/rediseno-editorial-musashi` y obtener aprobación del contenido.
-2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. El usuario conectó previamente `desarrollo/boceto-musashi`; no cambiar la rama de producción ni activar despliegues del rediseño sin una indicación posterior.
+2. Desde **el sitio existente** de Netlify, conectar este repositorio y seleccionar explícitamente la rama que deba publicarse. No crear otro sitio si ya existe uno. El usuario conectó previamente `desarrollo/boceto-musashi`; la publicación de esta iteración ya fue autorizada expresamente.
 3. Usar `npm run build`, directorio de publicación `dist` y Node 24. `netlify.toml` ya declara estos valores y la redirección SPA para `/carta`.
 4. Publicar solo con autorización; verificar `/`, `/carta` y su recarga directa en el dominio real, recursos, enlaces y vista móvil.
 
@@ -95,7 +96,7 @@ El prototipo incluye `noindex, nofollow` en HTML y `X-Robots-Tag` en Netlify. No
 
 ## Capturas de la propuesta
 
-[Escritorio](docs/capturas/escritorio.png) · [Móvil](docs/capturas/movil.png)
+[Escritorio](docs/capturas/escritorio.png) · [Móvil](docs/capturas/movil.png) · [Carta](docs/capturas/carta.png)
 
 ## Pendiente del propietario
 

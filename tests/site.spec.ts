@@ -13,10 +13,10 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "MUSASHI",
+    "Café, Japón",
   );
-  await page.getByRole("link", { name: "Explorar la propuesta" }).click();
-  await expect(page).toHaveURL(/#propuesta$/);
+  await page.getByRole("link", { name: "Explorar la carta" }).click();
+  await expect(page).toHaveURL(/#carta$/);
   await page.getByRole("button", { name: "Conocer la propuesta" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Tab");
@@ -37,10 +37,24 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
   );
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
+  await page.locator("img").evaluateAll((images) =>
+    Promise.all(
+      images.map((img) => {
+        img.loading = "eager";
+        return img.decode();
+      }),
+    ),
+  );
+  await page.evaluate(() => scrollTo(0, 0));
   await page.screenshot({
     path: "docs/capturas/escritorio.png",
     fullPage: true,
+    animations: "disabled",
   });
+  for (const img of await page.locator(".product-selection img").all()) {
+    const box = await img.boundingBox();
+    expect(box!.height / box!.width).toBeLessThan(1.5);
+  }
   expect(errors).toEqual([]);
 });
 
@@ -56,9 +70,26 @@ test("carta: acceso directo, filtros, recarga y regreso", async ({ page }) => {
   await expect(page.locator(".product")).toHaveCount(1);
   await page.getByRole("button", { name: "Todo", exact: true }).click();
   await expect(page.locator(".product")).toHaveCount(4);
+  await expect(page.locator(".product-extended")).toHaveCount(4);
+  await expect(
+    page.getByRole("heading", { name: /primera vez/ }),
+  ).toBeVisible();
+  await page.locator("img").evaluateAll((images) =>
+    Promise.all(
+      images.map((img) => {
+        img.loading = "eager";
+        return img.decode();
+      }),
+    ),
+  );
+  await page.screenshot({
+    path: "docs/capturas/carta.png",
+    fullPage: true,
+    animations: "disabled",
+  });
   await page.reload();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "MERENDAR.",
+    "Conocé los sabores.",
   );
   await page
     .getByRole("navigation", { name: "Principal", exact: true })
@@ -93,12 +124,25 @@ test("móvil: menú, cierre con Escape, filtros y captura sin desbordamiento", a
   await expect(page.locator(".product")).toHaveCount(3);
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
+  await page.locator("img").evaluateAll((images) =>
+    Promise.all(
+      images.map((img) => {
+        img.loading = "eager";
+        return img.decode();
+      }),
+    ),
+  );
+  await page.evaluate(() => scrollTo(0, 0));
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await page.screenshot({ path: "docs/capturas/movil.png", fullPage: true });
+  await page.screenshot({
+    path: "docs/capturas/movil.png",
+    fullPage: true,
+    animations: "disabled",
+  });
 });
 
 test("anchos adaptables, teclado y recursos locales", async ({ page }) => {
@@ -159,4 +203,35 @@ test("paleta del rediseño: neutros y único acento rojo", async ({ page }) => {
     });
     expect(unexpected).toEqual([]);
   }
+});
+
+test("portada gastronómica, selección breve y navegación activa", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Menú +" }).click();
+  await expect(
+    page
+      .getByRole("navigation", { name: "Principal", exact: true })
+      .getByRole("link", { name: "Inicio" }),
+  ).toHaveAttribute("aria-current", "location");
+  await page.getByRole("button", { name: "Cerrar −" }).click();
+  await expect(page.locator(".hero-visual img")).toBeVisible();
+  expect(
+    await page
+      .locator(".hero-visual img")
+      .evaluate((img) => img.getBoundingClientRect().top),
+  ).toBeLessThan(600);
+  await expect(page.locator(".product")).toHaveCount(3);
+  await expect(page.locator(".product-featured h3")).toHaveText("Mochi");
+  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  await expect(page.locator(".product")).toHaveCount(2);
+  await expect(page.getByRole("status")).toContainText("2 propuestas");
+  await page.getByRole("link", { name: "Conocé este sabor" }).first().click();
+  await expect(page).toHaveURL(/\/carta#mochi$/);
+  await expect(page.locator("#mochi")).toBeAttached();
+  await expect(
+    page.getByRole("heading", { name: "Mochi", exact: true }),
+  ).toBeInViewport();
 });

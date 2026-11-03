@@ -4,6 +4,8 @@ export interface Product {
   category: "Café" | "Pastelería";
   description: string;
   priceARS: number | null;
+  detail: string;
+  texture: string;
   image?: string;
   availability: "pending" | "available" | "unavailable";
   confirmedFeatures: string[];
@@ -38,37 +40,52 @@ export const site = {
 export const demoProducts: Product[] = [
   {
     id: "cafe",
+    detail:
+      "El café de especialidad pone atención en la calidad y el recorrido del grano. Esta categoría representa uno de los ejes de la propuesta de Musashi; los granos, métodos y bebidas concretas se incorporarán cuando estén confirmados.",
+    texture: "Un universo por descubrir, una taza a la vez.",
+    image: "/images/cafe.webp",
     name: "Café de especialidad",
     category: "Café",
-    description: "El punto de partida para una pausa con identidad propia.",
+    description: "Café de especialidad, el comienzo de una buena merienda.",
     priceARS: null,
     availability: "pending",
     confirmedFeatures: [],
   },
   {
     id: "mochi",
+    detail:
+      "El mochi es una preparación japonesa de textura elástica. En su versión dulce puede acompañarse de diferentes rellenos. La ilustración explora esa forma, pero no confirma un sabor ni una receta de Musashi.",
+    texture: "Su particularidad está en la textura suave y elástica.",
+    image: "/images/mochi.webp",
     name: "Mochi",
     category: "Pastelería",
-    description: "Un pequeño dulce japonés de textura suave y elástica.",
+    description: "Un dulce japonés pequeño, suave y de textura elástica.",
     priceARS: null,
     availability: "pending",
     confirmedFeatures: [],
   },
   {
     id: "dorayaki",
+    detail:
+      "El dorayaki reúne dos discos de masa parecidos a pequeños panqueques con un relleno dulce. Es un clásico de la pastelería japonesa y aparece entre los antecedentes de Musashi. Los rellenos de una futura carta requieren confirmación.",
+    texture: "Una masa esponjosa que se disfruta bocado a bocado.",
+    image: "/images/dorayaki.webp",
     name: "Dorayaki",
     category: "Pastelería",
-    description: "Dos pequeños discos de masa que abrazan un relleno dulce.",
+    description: "Dos discos de masa esponjosa con un corazón dulce.",
     priceARS: null,
     availability: "pending",
     confirmedFeatures: [],
   },
   {
     id: "cheesecake",
+    detail:
+      "El cheesecake japonés es una interpretación ligera y aireada de la torta de queso. Su textura lo distingue de otras versiones más densas. Se incluye como antecedente ilustrativo, sin afirmar una receta ni disponibilidad actual.",
+    texture: "Ligero, delicado y de miga aireada.",
+    image: "/images/cheesecake.webp",
     name: "Cheesecake japonés",
     category: "Pastelería",
-    description:
-      "Una versión japonesa de la torta de queso, ligera y esponjosa.",
+    description: "La versión japonesa de la torta de queso: suave y aireada.",
     priceARS: null,
     availability: "pending",
     confirmedFeatures: [],

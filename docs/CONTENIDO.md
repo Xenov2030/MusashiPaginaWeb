@@ -13,7 +13,7 @@ Editar `src/content.ts`:
 
 ## Carta
 
-Agregar datos aprobados a `confirmedProducts`; mantener separados los ejemplos de `demoProducts`. El modelo `Product` incluye `name`, `category`, `description`, `priceARS`, `image`, `availability` y `confirmedFeatures`. Precio `null` se omite; no usar cero para representar un precio desconocido. Las imágenes son opcionales: la carta se presenta en filas editoriales sin recuadros vacíos. Al incorporar imágenes, se alternan sus alturas sin convertir la carta en una cuadrícula. Las características alimentarias requieren confirmación expresa.
+Agregar datos aprobados a `confirmedProducts`; mantener separados los ejemplos de `demoProducts`. El modelo `Product` incluye `name`, `category`, `description`, `detail`, `texture`, `priceARS`, `image`, `availability` y `confirmedFeatures`. Precio `null` se omite; no usar cero para representar un precio desconocido. La portada muestra tres propuestas, con mochi destacado cuando existe; `/carta` muestra todos los productos y agrega `detail` (explicación amplia) y `texture` (nota breve). Las imágenes son opcionales y tienen texto alternativo; para la entrega oficial, reemplazar las ilustraciones por fotos autorizadas y ajustar el texto alternativo si corresponde. Los enlaces `/carta#id` dependen de identificadores estables. Las características alimentarias requieren confirmación expresa.
 
 Las categorías iniciales son Café y Pastelería. Para ampliarlas, actualizar el tipo y las opciones de filtro en el componente `Menu`.
 
