@@ -2,7 +2,7 @@
 
 Boceto web funcional para presentar al propietario de **Musashi Anime Café, Mendoza, Argentina**. Propuesta de diseño y desarrollo de Nicolas Aguirres: café de especialidad, pastelería japonesa y cultura como punto de encuentro.
 
-**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify. El usuario conectó previamente la rama de la propuesta anterior; este rediseño no se desplegó. URL del sitio configurado por el usuario; no verificada para este rediseño: `https://musashiweb.netlify.app/`.
+**Estado:** prototipo para revisión. No es un sitio oficial publicado ni una carta comercial confirmada. Preparado para Netlify, conectado por el usuario a `desarrollo/boceto-musashi`. La publicación del rediseño fue autorizada; el estado del despliegue se consulta en Netlify. URL del sitio: `https://musashiweb.netlify.app/`.
 
 ## Diseño y contenido
 
@@ -19,7 +19,7 @@ Boceto web funcional para presentar al propietario de **Musashi Anime Café, Men
 
 No se publican dirección, horarios, teléfono, fecha de inauguración, reseñas ni políticas no confirmadas. La dirección anterior no se presenta como vigente. El contexto de próxima apertura procede del brief, no de una comprobación actual del negocio. Los textos son propuestas editoriales para aprobación.
 
-**Rama de revisión:** `desarrollo/rediseno-editorial-musashi`. La rama anterior `desarrollo/boceto-musashi` quedó sin cambios porque está conectada a la publicación automática de Netlify. Este rediseño no se fusionó ni se desplegó. Para publicarlo se necesita una indicación posterior.
+**Rama de desarrollo del rediseño:** `desarrollo/rediseno-editorial-musashi`. Tras la aprobación del usuario, la entrega se publica avanzando `desarrollo/boceto-musashi`, conectada a Netlify, sin modificar `main`. Los próximos cambios de esa rama activan la publicación automática.
 
 ## Ejecutar el proyecto
 
