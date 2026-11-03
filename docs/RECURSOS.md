@@ -28,7 +28,7 @@ La nota global identifica el boceto. Las descripciones alternativas y los pies d
 
 ## Recursos gráficos y tipografía
 
-- Rama de cerezo SVG original del proyecto, dibujada en `src/Ambient.tsx`. Flores blancas, centros rojos mínimos y ramas grises. Es una decoración ambiental, no un logo o emblema de Musashi.
+- Árbol de cerezo SVG original del proyecto, dibujado en `src/Ambient.tsx`. Flores blancas, centros rojos mínimos y ramas grises. Es una decoración ambiental, no un logo o emblema de Musashi.
 - Seis pétalos CSS fijos en escritorio, tres en móvil. No se generan partículas ilimitadas. Pausa accesible y preferencia en `sessionStorage`; se suspende con pestaña oculta o fuera de pantalla. Composición estática con movimiento reducido.
 - Trama tejida abstracta creada con líneas CSS en grises sobre negro. Evoca tatami sin afirmar reproducir el nuevo espacio.
 - Hojas de carta blancas, tinta negra y trazos rojos puntuales. Sombras solo neutras para sugerir papel, sin nueva paleta beige o dorada.

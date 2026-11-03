@@ -8,7 +8,7 @@ Boceto web funcional para presentar al propietario de **Musashi, Mendoza, Argent
 
 **La mesa de Musashi:** cultura japonesa, hospitalidad y el oficio detrás del café, té y coctelería. Esta dirección reemplaza el protagonismo anterior del anime, manga y estudio editorial; el Instagram oficial conserva su URL. Los textos de portada son propuestas para revisión, no eslóganes oficiales.
 
-- Portada como carta sobre una escena ilustrada de mesa, sin reproducir el nuevo local. Identificador provisional, rama de cerezo parcial y acciones directas.
+- Portada como carta sobre una escena ilustrada de mesa, sin reproducir el nuevo local. Identificador provisional, árbol de cerezo de fondo y acciones directas.
 - Carta sobre trama neutra inspirada en tatami, hojas blancas, texto negro y acentos rojos. Categorías accesibles de Café, Té y blends, Coctelería y Cocina y pastelería japonesa.
 - Té y coctelería explican la disciplina cuando no hay productos aprobados: no se inventaron blends, cócteles, precios ni disponibilidad.
 - Barista profesional, tea blender y bartender se presentan como un relato de oficio, según la información transmitida por Nicolas, sin credenciales adicionales.
