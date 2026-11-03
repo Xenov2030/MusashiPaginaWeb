@@ -6,7 +6,7 @@ Boceto web funcional para presentar al propietario de **Musashi Anime Café, Men
 
 ## Diseño y contenido
 
-**Bienvenida con movimiento y navegación reforzada:** se conserva la identidad negro/blanco con rojo puntual y el protagonismo gastronómico. La composición evoluciona sin inventar la apariencia del nuevo local.
+**Blanco y negro invertidos, con movimiento y navegación reforzada:** se invierten los fondos y textos neutros: portada y cabecera blancas; carta, experiencia y cierre oscuros. El rojo sigue como acento y las imágenes mantienen sus colores. Los botones rojos conservan texto blanco por contraste. La composición evoluciona sin inventar la apariencia del nuevo local.
 
 - Portada integrada con una bienvenida directa, encuadre ligeramente desplazado y trazo rojo. Acciones claras hacia carta e Instagram; aviso discreto de nuevo espacio.
 - Carta visual, filtros accesibles y `/carta` con explicaciones breves. Una nota visible por página concentra el carácter conceptual y la disponibilidad pendiente.

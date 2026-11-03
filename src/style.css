@@ -1,12 +1,13 @@
 @import url("/fonts/fonts.css");
 :root {
-  --black: #080808;
-  --white: #fff;
+  --ink: #fff;
+  --paper: #080808;
   --red: #c51624;
-  --muted: #686868;
-  --line: #d6d6d6;
-  --dark-line: #373737;
-  --light-text: #c4c4c4;
+  --muted: #b3b3b3;
+  --line: #373737;
+  --dark-line: #bcbcbc;
+  --light-text: #555;
+  --on-accent: #fff;
   --font: "Musashi Sans", Arial, sans-serif;
   --space: clamp(22px, 5.5vw, 88px);
   --section: clamp(50px, 6vw, 90px);
@@ -20,8 +21,8 @@ html {
 }
 body {
   margin: 0;
-  background: var(--white);
-  color: var(--black);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font);
   font-size: 16px;
   line-height: 1.65;
@@ -114,16 +115,16 @@ svg.arrow {
   gap: 26px;
   min-height: 50px;
   background: var(--red);
-  color: var(--white);
+  color: var(--on-accent);
   padding: 14px 21px;
   font-size: 13px;
   font-weight: 600;
   transition: background 0.18s;
 }
 .button:hover {
-  background: var(--white);
-  color: var(--black);
-  outline: 1px solid var(--black);
+  background: var(--paper);
+  color: var(--ink);
+  outline: 1px solid var(--ink);
 }
 .text-link {
   display: inline-flex;
@@ -138,7 +139,7 @@ svg.arrow {
   transition: color 0.18s;
 }
 .text-link:hover {
-  color: var(--red);
+  border-color: var(--red);
 }
 .brand {
   display: inline-flex;
@@ -162,8 +163,8 @@ svg.arrow {
 }
 .header {
   padding: 0 var(--space);
-  background: var(--black);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--paper);
   position: relative;
   z-index: 10;
 }
@@ -210,8 +211,8 @@ svg.arrow {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   padding: 28px var(--space) 36px;
-  background: var(--black);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--paper);
   gap: 0;
   align-items: center;
   isolation: isolate;
@@ -281,7 +282,7 @@ svg.arrow {
   object-fit: cover;
 }
 .hero-conceptual .hero-visual > .visual:first-child {
-  mix-blend-mode: lighten;
+  mix-blend-mode: normal;
   transform: rotate(-2deg);
 }
 .hero-visual figcaption {
@@ -301,7 +302,7 @@ svg.arrow {
   width: 31%;
   aspect-ratio: 1;
   object-fit: cover;
-  border: 5px solid var(--black);
+  border: 5px solid var(--ink);
 }
 .hero-real .hero-visual {
   padding: 18px 0 25px 18px;
@@ -388,7 +389,7 @@ svg.arrow {
   font-weight: 800;
 }
 .filters button:hover {
-  color: var(--red);
+  border-color: var(--red);
 }
 .filter-result {
   font-size: 10px;
@@ -414,7 +415,7 @@ svg.arrow {
 }
 .product-visual {
   overflow: hidden;
-  background: var(--black);
+  background: var(--ink);
 }
 .product-visual img {
   width: 100%;
@@ -455,7 +456,7 @@ svg.arrow {
   justify-content: center;
   align-items: center;
   gap: 35px;
-  border: 1px solid var(--black);
+  border: 1px solid var(--ink);
   padding: 13px 24px;
   font-size: 13px;
   min-height: 50px;
@@ -466,8 +467,8 @@ svg.arrow {
     color 0.18s;
 }
 .menu-link:hover {
-  background: var(--black);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--paper);
 }
 .product {
   position: relative;
@@ -479,7 +480,7 @@ svg.arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: var(--paper);
   font-size: 12px;
   letter-spacing: 0.13em;
 }
@@ -522,7 +523,7 @@ svg.arrow {
   max-width: 580px;
 }
 .product-details .product-extended {
-  color: var(--black);
+  color: var(--ink);
   font-size: 15px;
 }
 .texture-note {
@@ -617,14 +618,14 @@ svg.arrow {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  border-bottom: 1px solid var(--black);
+  border-bottom: 1px solid var(--ink);
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.03em;
   padding: 10px 0;
 }
 .contact-instagram:hover {
-  color: var(--red);
+  border-color: var(--red);
 }
 .contact-action > .text-link {
   margin-top: 17px;
@@ -648,7 +649,7 @@ svg.arrow {
   flex-wrap: wrap;
 }
 .footer a:hover {
-  color: var(--red);
+  border-color: var(--red);
 }
 .footer-bottom {
   display: flex;
@@ -664,7 +665,7 @@ svg.arrow {
   display: flex;
   align-items: center;
   gap: 15px;
-  color: var(--black);
+  color: var(--ink);
   font-size: 10px;
   font-weight: 600;
 }
@@ -677,8 +678,8 @@ svg.arrow {
   left: 10px;
   top: 10px;
   padding: 12px;
-  background: var(--white);
-  color: var(--black);
+  background: var(--paper);
+  color: var(--ink);
   z-index: 99;
   transform: translateY(-160%);
 }
@@ -686,9 +687,9 @@ svg.arrow {
   transform: none;
 }
 dialog {
-  border: 1px solid var(--black);
-  background: var(--white);
-  color: var(--black);
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
   max-width: 580px;
   width: calc(100% - 32px);
   padding: 0;
@@ -716,8 +717,8 @@ dialog::backdrop {
   height: 44px;
 }
 .dialog-content .button:hover {
-  background: var(--black);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--paper);
 }
 .empty-menu {
   padding: 25px 0;
@@ -733,22 +734,22 @@ dialog::backdrop {
   }
 } /* Encuentro: imagen al frente, invitación a su lado. */
 .events {
-  color: var(--white);
-  background: var(--white);
+  color: var(--paper);
+  background: var(--paper);
   padding-top: 25px;
   padding-bottom: 50px;
 }
 .event-poster {
   align-items: center;
-  background: var(--black);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--paper);
   display: grid;
   grid-template-columns: 1.02fr 0.98fr;
   gap: 0;
   position: relative;
 }
 .poster-visual {
-  background: var(--black);
+  background: var(--ink);
   min-width: 0;
   grid-column: 1;
   grid-row: 1;
@@ -760,8 +761,8 @@ dialog::backdrop {
   position: absolute;
   bottom: 18px;
   left: 22px;
-  background: var(--black);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--paper);
   font-size: 8px;
   padding: 6px 9px;
   letter-spacing: 0.08em;
@@ -840,8 +841,8 @@ dialog::backdrop {
   align-items: start;
   padding: clamp(12px, 3vw, 36px);
   gap: 12px;
-  background: var(--white);
-  color: var(--black);
+  background: var(--paper);
+  color: var(--ink);
   border: 1px solid var(--line);
 }
 .visual-error strong {
@@ -943,7 +944,7 @@ dialog::backdrop {
     color 180ms;
 }
 .product-link:hover {
-  color: var(--red);
+  border-color: var(--red);
   border-color: var(--red);
 }
 .button,
@@ -981,7 +982,7 @@ button:focus-visible > .arrow {
 .experience {
   display: grid;
   align-items: center;
-  background: var(--white);
+  background: var(--paper);
   padding-top: 70px;
   padding-bottom: 65px;
   grid-template-columns: 1fr;
@@ -1192,7 +1193,7 @@ dialog.is-closing::backdrop {
     left: 0;
     right: 0;
     padding: 12px 22px 24px;
-    background: var(--black);
+    background: var(--ink);
     border-bottom: 1px solid var(--dark-line);
     flex-direction: column;
     gap: 0;

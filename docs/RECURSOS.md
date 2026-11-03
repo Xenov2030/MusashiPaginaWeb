@@ -36,8 +36,12 @@ No hay solicitudes de fuentes, imágenes ni scripts de terceros al navegar la p�
 
 No hay fotografías verificadas de ningún espacio de Musashi ni logo original en el checkout. Se conservaron las siete ilustraciones existentes, sin generar interiores ni sumar adornos japoneses. Los objetos de la ilustración de lectura son conceptuales; no confirman actividades, decoración o instalaciones del café. Los campos de fotografías reales quedan en `null` y no producen recuadros vacíos.
 
-Se registró `kind`, procedencia, texto alternativo, dimensiones y encuadre en `VisualResource`. La variante conceptual de portada usa mezcla de aclarado para integrar el negro sin oscurecer la imagen. Las fotos futuras confirmadas usan una variante sin esa mezcla para conservar su detalle y color. La interfaz mantiene solo negro, blanco, rojo y grises neutros.
+Se registró `kind`, procedencia, texto alternativo, dimensiones y encuadre en `VisualResource`. En el tema invertido, las ilustraciones y las fotos futuras preservan sus colores sin mezcla de aclarado ni filtros de inversión; el encuadre oscuro contrasta con la portada clara. La interfaz mantiene solo negro, blanco, rojo y grises neutros.
 
 ## Variantes de carga
 
 Se derivaron `hero-small.webp` (720 px, aproximadamente 75 KB) y `hero-preview.webp` (48 px, 508 bytes) del recurso conceptual ya existente, sin generar una imagen gastronómica nueva. Su función es servir una resolución adecuada y una vista previa durante la carga. Las siete ilustraciones originales conservan su clasificación y procedencia. Los estados de error son tipográficos y no simulan una foto ausente.
+
+## Inversión de superficies
+
+Se invirtieron los papeles del blanco y negro de la interfaz. `--paper` es ahora el fondo oscuro y `--ink` el texto claro; las zonas inversas (cabecera, portada y afiche) son claras con texto oscuro. Se ajustaron grises y estados de interacción. El rojo conserva su valor y los botones rojos usan texto blanco para legibilidad. No se aplicaron filtros de inversión a las imágenes; la portada ya no usa mezcla de aclarado, porque sobre blanco haría desaparecer el recurso gastronómico.
