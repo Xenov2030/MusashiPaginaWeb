@@ -55,4 +55,4 @@ No se incorporan backend, pagos, señas, mapas falsos ni formularios que aparent
 
 Pedir logo original, referencias tipográficas verificables, una foto amplia del nuevo espacio, un detalle representativo y una escena de mesa o preparación. Pedir además fotos de productos autorizadas y datos oficiales de dirección, horarios, carta, contacto y reservas. No usar audios sin transcripción como requisitos confirmados.
 
-La publicación de esta iteración queda pendiente de una indicación posterior. Conservar noindex durante la revisión y el crédito enlazado: **DESARROLLADO POR NICOLAS AGUIRRES** — https://nicolasaguirrescode.com/.
+El usuario autorizó la publicación de esta iteración en el sitio Netlify existente. Conservar noindex durante la revisión y el crédito enlazado: **DESARROLLADO POR NICOLAS AGUIRRES** — https://nicolasaguirrescode.com/.
