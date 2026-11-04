@@ -373,7 +373,7 @@ export function ExperienceContact() {
           Un poquito de misterio: la dirección se comparte por WhatsApp al
           confirmar una reserva.
         </p>
-        <a className="text-link" href="#reservas">
+        <a className="text-link" href="/#reservas">
           Preparar una consulta de reserva<span aria-hidden="true"> ↓</span>
         </a>
         <a

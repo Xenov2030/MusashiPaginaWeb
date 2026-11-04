@@ -9,6 +9,11 @@ async function readyImages(page: import("@playwright/test").Page) {
       }),
     ),
   );
+  await page.evaluate(() => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement.blur();
+    scrollTo(0, 0);
+  });
 }
 test("escritorio: identidad real, experiencia, ampliación de imagen y firma", async ({
   page,
@@ -70,16 +75,14 @@ test("carta: recursos aportados, filtros, acceso directo y recarga", async ({
   page,
 }) => {
   await page.goto("/carta#taiyaki");
-  await expect(page.locator(".product")).toHaveCount(11);
+  await expect(page.locator(".product")).toHaveCount(6);
   await expect(page.locator("#taiyaki")).toBeInViewport();
   await page.reload();
   await expect(page.locator("#taiyaki")).toBeInViewport();
-  await page
-    .getByRole("button", { name: "Café y creaciones de autor", exact: true })
-    .click();
-  await expect(page.locator(".product")).toHaveCount(6);
+  await page.getByRole("button", { name: "Café frío", exact: true }).click();
+  await expect(page.locator(".product")).toHaveCount(2);
   await page.getByRole("button", { name: "Pastelería", exact: true }).click();
-  await expect(page.locator(".product")).toHaveCount(5);
+  await expect(page.locator(".product")).toHaveCount(1);
   await page.getByRole("button", { name: "Todo", exact: true }).click();
   await expect(page.locator(".price")).toHaveCount(0);
   await readyImages(page);
@@ -152,17 +155,16 @@ test("consultas diferenciadas, sin agenda ficticia ni dirección pública", asyn
     "Consultar por bienestar",
     "Consultar por las cenas",
   ])
-    await expect(page.getByRole("link", { name, exact: true })).toHaveAttribute(
-      "href",
-      "https://www.instagram.com/musashi.animecafe/",
-    );
+    await expect(
+      page.getByRole("link", { name: new RegExp("^" + name) }),
+    ).toHaveAttribute("href", "https://www.instagram.com/musashi.animecafe/");
   await expect(page.locator("#agenda")).toContainText(
     "Todavía no hay encuentros publicados",
   );
   await expect(page.locator(".featured-event,.event-archive")).toHaveCount(0);
   await expect(page.locator('iframe[src*="maps"]')).toHaveCount(0);
   await expect(page.locator("#reservas")).toContainText(
-    "la dirección se comparte por WhatsApp al confirmar",
+    "La dirección se comparte al confirmar la reserva",
   );
   await expect(page.locator(".pet-friendly").first()).toContainText(
     "Pet friendly",

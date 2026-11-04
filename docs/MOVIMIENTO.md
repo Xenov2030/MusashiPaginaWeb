@@ -13,3 +13,7 @@ El carrusel de la agenda se conserva para eventos anteriores realmente publicado
 Las pruebas comprueban carga lenta/error, navegación, filtros, zoom, foco, cinco anchos, contraste, reproducción automática y movimiento reducido. Las capturas y `docs/grabaciones/recorrido.webm` se generan con Chromium local. No sustituyen pruebas en dispositivos físicos ni acreditan publicación o conexión real a Google Calendar.
 
 La metáfora nueva de la puerta es un marco abstracto en CSS, sin reproducción de una fachada ni interacción obligatoria. La imagen principal se descubre desde el centro con una máscara breve de 520 ms al cargar; el texto y los enlaces están disponibles desde el primer render. Con movimiento reducido la escena aparece estática.
+
+## Carta estacional
+
+`SeasonalMenu` conserva el foco de los filtros y anima la altura durante 240 ms, cancelando la transición anterior si se vuelve a cambiar de categoría. No espera para mostrar resultados ni obliga a arrastrar. Con movimiento reducido se actualiza inmediatamente. El visor mantiene la imagen completa y añade el aviso de demo o inclusión pendiente. Las imágenes inferiores se cargan de forma diferida y tienen dimensiones reservadas.

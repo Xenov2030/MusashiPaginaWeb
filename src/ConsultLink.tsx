@@ -1,12 +1,7 @@
 import type { ReactNode } from "react";
-import { site } from "./content";
-import { whatsappContactUrl } from "./reservations";
+import { reservationContact, topicRoute } from "./reservation-config";
 export function consultationUrl(topic: string) {
-  const official =
-    !site.business.whatsappTest && whatsappContactUrl(site.business.whatsapp);
-  return official
-    ? `${official}?text=${encodeURIComponent(`Hola Musashi, quisiera consultar por ${topic}.`)}`
-    : site.instagram;
+  return reservationContact(topicRoute(topic)).href;
 }
 export function ConsultLink({
   topic,
@@ -25,6 +20,9 @@ export function ConsultLink({
       rel="noopener noreferrer"
     >
       {children}
+      {reservationContact(topicRoute(topic)).channel === "instagram" && (
+        <small className="consult-destination"> · Instagram</small>
+      )}
       <svg
         width="16"
         height="16"

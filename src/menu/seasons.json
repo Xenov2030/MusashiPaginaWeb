@@ -1,0 +1,73 @@
+{
+  "selectedSeasonId": "verano-prueba",
+  "seasons": [
+    {
+      "id": "verano-prueba",
+      "name": "Verano",
+      "year": null,
+      "status": "demo",
+      "heading": "Una muestra del próximo verano",
+      "intro": "Un primer recorrido visual con café e infusiones frías. Es una muestra para evaluar la presentación; la temporada podrá incluir también propuestas calientes.",
+      "categories": [
+        "Café frío",
+        "Té e infusiones frías",
+        "Creaciones de autor",
+        "Pastelería"
+      ],
+      "products": [
+        {
+          "productId": "demo-cafe-hielo",
+          "category": "Café frío",
+          "role": "demonstration",
+          "priceARS": null,
+          "availability": "unconfirmed"
+        },
+        {
+          "productId": "demo-latte-frio",
+          "category": "Café frío",
+          "role": "demonstration",
+          "priceARS": null,
+          "availability": "unconfirmed"
+        },
+        {
+          "productId": "demo-infusion-citrica",
+          "category": "Té e infusiones frías",
+          "role": "demonstration",
+          "priceARS": null,
+          "availability": "unconfirmed"
+        },
+        {
+          "productId": "demo-te-frutal",
+          "category": "Té e infusiones frías",
+          "role": "demonstration",
+          "priceARS": null,
+          "availability": "unconfirmed"
+        },
+        {
+          "productId": "vagabond",
+          "category": "Creaciones de autor",
+          "role": "brand-reference",
+          "priceARS": null,
+          "availability": "unconfirmed"
+        },
+        {
+          "productId": "taiyaki",
+          "category": "Pastelería",
+          "role": "brand-reference",
+          "priceARS": null,
+          "availability": "unconfirmed"
+        }
+      ]
+    },
+    {
+      "id": "verano-borrador",
+      "name": "Verano",
+      "year": null,
+      "status": "draft",
+      "heading": "Carta de verano",
+      "intro": "Contenido pendiente del propietario.",
+      "categories": [],
+      "products": []
+    }
+  ]
+}

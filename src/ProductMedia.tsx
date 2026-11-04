@@ -4,10 +4,14 @@ export function ProductMedia({
   resource,
   name,
   children,
+  notice,
+  description,
 }: {
   resource: VisualResource;
   name: string;
   children: ReactNode;
+  notice?: string;
+  description?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   return (
@@ -40,6 +44,7 @@ export function ProductMedia({
         >
           ×
         </button>
+        {notice && <p className="media-notice">{notice}</p>}
         <img
           src={resource.src}
           alt={resource.alt}
@@ -49,9 +54,13 @@ export function ProductMedia({
         />
         <p>
           {name} ·{" "}
-          {resource.format === "graphic" ? "Gráfica original" : "Imagen"} de
-          Musashi
+          {resource.kind === "conceptual"
+            ? "Imagen conceptual"
+            : resource.format === "graphic"
+              ? "Afiche de Musashi"
+              : "Imagen aportada por Musashi"}
         </p>
+        {description && <p className="media-description">{description}</p>}
       </dialog>
     </>
   );

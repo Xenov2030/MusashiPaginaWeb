@@ -3616,3 +3616,369 @@ summary:focus-visible {
     max-width: 266px;
   }
 }
+
+/* Carta estacional: mismos componentes para prueba y publicación confirmada. */
+.seasonal-menu .menu-heading {
+  align-items: start;
+  gap: 2rem;
+}
+.seasonal-menu .menu-heading h1,
+.seasonal-menu .menu-heading h2 {
+  max-width: 760px;
+  font-size: clamp(35px, 4vw, 56px);
+}
+.season-intro {
+  max-width: 650px;
+  font-size: 14px;
+  color: #d5d5d5;
+  line-height: 1.7;
+  margin-top: 1.5rem;
+}
+.season-stamp {
+  display: inline-block;
+  flex-shrink: 0;
+  border: 1px solid #aaa;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  font-family: var(--display);
+  font-size: 24px;
+  line-height: 1.3;
+  transform: rotate(2deg);
+}
+.season-stamp small {
+  display: block;
+  font-family: var(--font);
+  font-size: 8px;
+  letter-spacing: 0.13em;
+  margin-top: 0.5rem;
+}
+.season-demo-notice {
+  border-left: 3px solid var(--red);
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.7;
+  background: #ffffff0a;
+  margin: 0 0 25px;
+  max-width: 850px;
+}
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  animation: filter-enter 180ms ease-out;
+}
+.season-product {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 24px;
+}
+.season-product .product-visual {
+  background: #f2f2f2;
+}
+.season-product .product-visual .visual,
+.season-product .product-image-button .visual.visual-graphic {
+  aspect-ratio: 4/3 !important;
+  max-height: 280px;
+}
+.season-product .visual-image {
+  object-fit: contain;
+}
+.season-product .visual-graphic .visual-image {
+  object-fit: contain;
+}
+.season-product .product-copy {
+  padding: 20px 0 0;
+}
+.season-product h3 {
+  font-size: 29px;
+  letter-spacing: -0.035em;
+}
+.season-product .product-copy > p:not(.eyebrow) {
+  font-size: 13px;
+  line-height: 1.65;
+}
+.season-product .product-copy .season-price {
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+.season-product .product-copy .season-role {
+  font-size: 10px;
+  color: #555;
+  border-left: 2px solid var(--red);
+  padding-left: 10px;
+  line-height: 1.6;
+}
+.season-image-kind {
+  font-size: 9px;
+  color: #646464;
+}
+.brand-archive {
+  margin-top: 35px;
+  padding: 25px;
+  background: #fff;
+  color: #111;
+}
+.brand-archive summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: 25px;
+  line-height: 1.3;
+}
+.brand-archive summary span {
+  font-family: var(--font);
+  font-size: 11px;
+  align-self: center;
+}
+.brand-archive > p {
+  font-size: 12px;
+  color: #555;
+  margin-top: 20px;
+}
+.brand-archive-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+  margin-top: 25px;
+}
+.brand-catalog-item {
+  min-width: 0;
+  scroll-margin-top: 25px;
+}
+.brand-catalog-item .visual {
+  aspect-ratio: 2/3;
+}
+.brand-catalog-item h3 {
+  font-size: 24px;
+  margin-top: 16px;
+}
+.brand-catalog-item p,
+.brand-catalog-item small {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #555;
+}
+.media-dialog .media-description,
+.media-dialog .media-notice {
+  max-width: 620px;
+  margin: 14px auto 0;
+  line-height: 1.6;
+  font-size: 12px;
+}
+.media-dialog .media-notice {
+  border-left: 2px solid var(--red);
+  padding: 8px 14px;
+  color: #eee;
+  text-align: left;
+}
+.reservation-selector {
+  background: #fff;
+  color: #111;
+  border: 1px solid var(--line);
+  padding: 25px;
+}
+.reservation-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+}
+.reservation-options button {
+  padding: 12px 8px;
+  font-size: 12px;
+  background: #f1f1f1;
+  border: 1px solid transparent;
+  min-height: 48px;
+}
+.reservation-options button[aria-pressed="true"] {
+  border-color: var(--red);
+  background: #fff;
+}
+.reservation-route {
+  padding-top: 25px;
+}
+.reservation-route h3 {
+  font-size: 32px;
+}
+.reservation-route > p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
+}
+.reservation-route .reservation-clarification {
+  font-size: 11px;
+  margin-top: 20px;
+}
+.consult-destination {
+  font-size: 10px;
+  font-weight: 400;
+  color: inherit;
+}
+.header-reservations {
+  border: 1px solid #777;
+  padding: 9px 14px !important;
+}
+.header-reservations:hover {
+  border-color: var(--red);
+}
+.season-empty {
+  font-size: 14px;
+  padding: 30px 0;
+}
+.season-empty a {
+  margin-left: 15px;
+}
+.availability-note {
+  font-size: 11px;
+  color: #555;
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .nav {
+    gap: 10px;
+  }
+  .nav a {
+    font-size: 9px;
+  }
+  .brand-compact .brand-name {
+    font-size: 17px;
+    letter-spacing: 0.06em;
+  }
+  .brand.brand-compact {
+    gap: 8px;
+  }
+  .header-inner {
+    gap: 12px;
+  }
+  .header-social {
+    display: none;
+  }
+}
+@media (max-width: 800px) and (min-width: 701px) {
+  .brand-compact .brand-image {
+    width: 60px;
+    height: 60px;
+  }
+  .brand-compact .brand-image img {
+    width: 84px;
+    height: 84px;
+    left: -13px;
+    top: -5px;
+  }
+  .brand-compact .brand-name {
+    font-size: 15px;
+  }
+  .nav {
+    gap: 8px;
+  }
+}
+@media (max-width: 700px) {
+  .seasonal-menu .menu-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .seasonal-menu .menu-heading h1,
+  .seasonal-menu .menu-heading h2 {
+    font-size: 35px;
+  }
+  .season-intro {
+    font-size: 12px;
+    margin-top: 15px;
+  }
+  .season-stamp {
+    font-size: 20px;
+    padding: 10px 18px;
+    transform: none;
+    align-self: flex-start;
+  }
+  .season-stamp small {
+    margin-top: 4px;
+  }
+  .season-demo-notice {
+    font-size: 11px;
+    margin-top: 20px;
+  }
+  .season-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .season-product .product-visual .visual,
+  .season-product .product-image-button .visual.visual-graphic {
+    max-height: 210px;
+    aspect-ratio: 4/3 !important;
+  }
+  .season-product .product-copy {
+    padding-top: 15px;
+  }
+  .season-product h3 {
+    font-size: 27px;
+  }
+  .season-product .product-copy > p:not(.eyebrow) {
+    font-size: 12px;
+  }
+  .brand-archive {
+    padding: 20px;
+  }
+  .brand-archive summary {
+    display: block;
+    font-size: 24px;
+  }
+  .brand-archive summary span {
+    display: block;
+    margin-top: 10px;
+  }
+  .brand-archive-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .brand-catalog-item .product-image-button .visual.visual-graphic {
+    aspect-ratio: 4/3 !important;
+    max-height: 250px;
+  }
+  .brand-catalog-item .visual {
+    max-height: 250px;
+  }
+  .reservation-selector {
+    padding: 18px;
+  }
+  .reservation-options {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .reservation-options button {
+    min-height: 44px;
+    text-align: left;
+    padding-inline: 14px;
+  }
+  .reservation-route h3 {
+    font-size: 29px;
+  }
+  .consult-destination {
+    font-size: 9px;
+  }
+  .whatsapp-bubble > span {
+    font-size: 10px;
+  }
+  .whatsapp-bubble svg {
+    width: 24px;
+    height: 24px;
+  }
+  .nav {
+    gap: 0;
+  }
+  .nav a {
+    font-size: 15px;
+  }
+}
+.hero-consult .text-link {
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 44px;
+  padding-block: 10px;
+  border-bottom: 1px solid var(--red);
+}

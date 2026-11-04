@@ -18,7 +18,7 @@ Los precios son `null` y la disponibilidad sigue `pending`. Recibir publicacione
 
 `ExperienceSections.tsx` organiza la calma y atención personalizada, el oficio, las cenas, el tatami privado y bienestar. No inventar capacidad, tarifas, duración, equipamiento ni política de uso del tatami. En bienestar no agregar beneficios médicos, curaciones, acreditaciones ni profesionales no identificados por el cliente.
 
-Los enlaces de `ConsultLink.tsx` usan Instagram, el canal oficial confirmado. Si se configura un WhatsApp oficial y se desactiva `whatsappTest`, preparan consultas diferenciadas por tema. Actualmente el número personal de Nicolas está autorizado solo para pruebas: se identifica en burbuja y formulario y no recibe consultas como si fuera el negocio.
+Los enlaces de `ConsultLink.tsx` resuelven los tres campos independientes de `src/reservation-config.ts`. Actualmente son `null`; se usa Instagram oficial con destino visible. Mesa, Tatami y Bienestar no comparten contactos por defecto. El número personal utilizado en pruebas anteriores no se utiliza en los nuevos recorridos. Ver [carta estacional y reservas](CARTA_ESTACIONAL.md).
 
 La dirección no se almacena en el frontend. Se comparte manualmente por WhatsApp al confirmar la reserva. El envío de una solicitud no confirma un lugar ni un horario. No hay pagos ni gestión automática de cupos.
 
@@ -36,7 +36,7 @@ Concepto confirmado: **MUSASHI — Japón detrás de una puerta**. `copy.hero.ti
 
 `ownerStory` contiene los tres momentos autorizados: origen como Anime Café, exploración de propuestas y nueva etapa como cafetería japonesa oculta. Sin fechas, hitos añadidos ni afirmaciones de primacía. Los superlativos de «primero en Mendoza» no cuentan con verificación independiente y se omiten. La frase «El camino cambia, la esencia permanece» se usa una sola vez, como cierre de la historia del negocio. No confundir esta sección con la historia del nombre/Miyamoto, que permanece desactivada.
 
-`beveragePolicy` centraliza el título «Cada creación, tal como fue concebida» y el texto autorizado. `BeveragePolicy` lo muestra en Cafetería y antes de los filtros/productos de la carta, también en `/carta`. La política solo habla de azúcar y edulcorantes adicionales para agregar: no declara ausencia de azúcar en las recetas, aptitud para diabetes, beneficios de salud ni un perfil de sabor. Esos datos individuales siguen pendientes de confirmación.
+`beveragePolicy` centraliza el título «Cada bebida, tal como fue elaborada» y el texto autorizado. `BeveragePolicy` lo muestra en Cafetería y antes de los filtros/productos de la carta, también en `/carta`. La política solo habla de azúcar y edulcorantes adicionales para agregar: no declara ausencia de azúcar en las recetas, aptitud para diabetes, beneficios de salud ni un perfil de sabor. Esos datos individuales siguen pendientes de confirmación.
 
 ## Transcripciones y alcohol
 
@@ -45,3 +45,9 @@ Las seis descripciones de bebidas se transcribieron desde ingredientes o descrip
 `Product.alcohol: "indicated"` se usa únicamente cuando el afiche menciona licor: Samurai Coffee, Vagabond, Red Dragon y Midori Kensei. La etiqueta aparece junto a la descripción HTML, antes de consultar. `not-stated` no significa sin alcohol ni apto para niños: no se publica una etiqueta de ausencia de alcohol para Bubble Yakuza o Praliné Negro.
 
 El inventario central está en `resources/inventory.json`. Conserva la ruta original, SHA-256, alias del brief, versión web, descripción, sección y estado. Los nombres numéricos se vincularon visualmente con los archivos del ZIP anterior; no se afirma que tengan el mismo nombre o idéntica codificación. No falta ninguno de los trece contenidos solicitados.
+
+## Carta estacional de prueba
+
+La selección pública de `/carta` ahora procede de `src/menu/seasons.json` y `src/menu/catalog.ts`. `suppliedProducts` sigue siendo el archivo de creaciones documentadas de la marca, no la carta estacional vigente. Se conserva como referencia ampliable, con inclusión pendiente. La demo tiene seis productos; ver [inventario](INVENTARIO_VERANO.md). Solo el propietario puede confirmar una publicación real y el cambio de temporada es manual.
+
+La política de bebidas usa «Cada bebida, tal como fue elaborada»; las palabras anteriores se retiraron del contenido del sitio. No se añaden etiquetas dietéticas. Los ejemplos fríos son inventados únicamente para la revisión, con imágenes conceptuales identificadas y sin acciones de pedido o reserva.

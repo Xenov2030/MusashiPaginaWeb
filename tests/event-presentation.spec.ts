@@ -8,23 +8,18 @@ const base = {
   conditions: [],
   imageUrl: "https://images.example.com/event.webp",
 };
-test("burbuja de WhatsApp visible en ambas páginas y sin enviar mensajes", async ({
+test("acceso flotante a reservas en inicio y carta sin números no confirmados", async ({
   page,
 }) => {
   for (const path of ["/", "/carta"]) {
     await page.goto(path);
-    const bubble = page.getByRole("link", {
-      name: "Abrir WhatsApp de prueba — contacto de Nicolas",
-    });
+    const bubble = page.getByRole("link", { name: "Ver opciones de reservas" });
     await expect(bubble).toBeVisible();
     await expect(bubble).toHaveCSS("position", "fixed");
-    await expect(bubble).toHaveAttribute(
-      "href",
-      /^https:\/\/wa.me\/5492615349682\?text=/,
-    );
-    await expect(bubble).toContainText("DE PRUEBA");
+    await expect(bubble).toHaveAttribute("href", "/#reservas");
     await page.locator("footer").scrollIntoViewIfNeeded();
     await expect(bubble).toBeInViewport();
+    await expect(page.locator('a[href*="wa.me"]')).toHaveCount(0);
   }
 });
 test("el próximo evento usa su imagen y los anteriores forman un carrusel", async ({

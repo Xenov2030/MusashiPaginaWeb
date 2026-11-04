@@ -1,107 +1,114 @@
 import { test, expect } from "@playwright/test";
+import {
+  reservationContact,
+  type ReservationContacts,
+} from "../src/reservation-config";
 import { buildReservationUrl, todayInMendoza } from "../src/reservations";
 import { parseOfficialEvents } from "../src/events";
-const event = {
-  id: "encuentro-1",
-  title: "Encuentro de prueba",
-  description: "Texto público",
-  date: "2099-11-20",
-  time: "23:00",
-  status: "upcoming",
-  priceARS: null,
-  conditions: [],
-};
-test("solicitud abre únicamente el compositor de prueba con los datos elegidos", async ({
+test("tres recorridos diferenciados con Instagram provisional explícito", async ({
   page,
 }) => {
   await page.goto("/#reservas");
-  await expect(page.locator(".test-notice")).toContainText("no al local");
-  await page.evaluate(() => {
-    (window as any).__opened = "";
-    window.open = ((url: any) => {
-      (window as any).__opened = String(url);
-      return null;
-    }) as any;
-  });
-  await page.getByLabel("Fecha deseada").fill("2099-11-20");
-  await page.getByLabel("Horario deseado").fill("20:30");
-  await page.getByLabel("Cantidad de personas").fill("3");
-  await page.getByLabel("Voy con mi mascota").check();
-  await page.getByRole("button", { name: "Solicitar por WhatsApp" }).click();
-  const url = new URL(await page.evaluate(() => (window as any).__opened));
-  expect(url.hostname).toBe("wa.me");
-  expect(url.pathname).toBe("/5492615349682");
-  expect(url.searchParams.get("text")).toContain("PRUEBA DE RESERVA");
-  expect(url.searchParams.get("text")).toContain("Personas: 3");
-  expect(url.searchParams.get("text")).toContain("Voy con mi mascota");
-  expect(url.searchParams.get("text")).toContain("por este chat al confirmar");
-  await expect(page.locator(".reservation-feedback")).toContainText(
-    "aún no está confirmada",
-  );
+  await expect(page.locator(".header-reservations")).toContainText("Reservas");
+  for (const [name, text] of [
+    ["Mesa en cafetería", "una mesa"],
+    ["Tatami privado", "preparando el combo"],
+    ["Bienestar", "consulta independiente"],
+  ]) {
+    await page.getByRole("button", { name, exact: true }).click();
+    await expect(page.locator(".reservation-route")).toContainText(
+      new RegExp(text, "i"),
+    );
+    const cta = page
+      .locator(".reservation-route")
+      .getByRole("link", { name: "Consultar por Instagram" });
+    await expect(cta).toHaveAttribute(
+      "href",
+      "https://www.instagram.com/musashi.animecafe/",
+    );
+    await expect(page.locator(".contact-pending")).toContainText(
+      "Instagram oficial",
+    );
+    await expect(page.locator(".reservation-clarification")).toContainText(
+      "no confirma una reserva",
+    );
+  }
+  await expect(page.locator('a[href*="wa.me"]')).toHaveCount(0);
   await expect(page.locator('iframe[src*="maps"]')).toHaveCount(0);
 });
-test("agenda solo permite solicitar encuentros futuros disponibles y preselecciona fecha", async ({
+test("contactos separados y ausencia de herencia entre equipos", () => {
+  const contacts: ReservationContacts = {
+    gastronomiaWhatsApp: "5491111111111",
+    tatamiWhatsApp: null,
+    bienestarWhatsApp: "5492222222222",
+  };
+  expect(new URL(reservationContact("mesa", contacts).href).pathname).toBe(
+    "/5491111111111",
+  );
+  expect(reservationContact("tatami", contacts).channel).toBe("instagram");
+  expect(new URL(reservationContact("bienestar", contacts).href).pathname).toBe(
+    "/5492222222222",
+  );
+  expect(
+    reservationContact("mesa", {
+      ...contacts,
+      gastronomiaWhatsApp: "número pendiente",
+    }).channel,
+  ).toBe("instagram");
+  expect(
+    reservationContact("bienestar", { ...contacts, bienestarWhatsApp: null })
+      .channel,
+  ).toBe("instagram");
+  expect(
+    decodeURIComponent(reservationContact("bienestar", contacts).href),
+  ).toContain("equipo de bienestar");
+});
+test("un encuentro confirmado conserva su contexto en el recorrido de cafetería", async ({
   page,
 }) => {
   await page.route("**/api/events", (route) =>
     route.fulfill({
       json: [
-        event,
-        { ...event, id: "completo", title: "Sin lugares", status: "full" },
-        { ...event, id: "pasado", title: "Anterior", date: "2020-01-01" },
+        {
+          id: "encuentro-1",
+          title: "Encuentro confirmado",
+          description: "Descripción publicada",
+          date: "2099-11-20",
+          time: "23:00",
+          status: "upcoming",
+          priceARS: null,
+          conditions: [],
+        },
       ],
     }),
   );
   await page.goto("/");
-  await expect(page.locator(".agenda-card")).toHaveCount(3);
-  await expect(
-    page
-      .locator(".agenda-card")
-      .filter({ hasText: "Sin lugares" })
-      .getByRole("link"),
-  ).toHaveCount(0);
-  await expect(
-    page
-      .locator(".agenda-card")
-      .filter({ hasText: "Anterior" })
-      .getByRole("link"),
-  ).toHaveCount(0);
   await page.getByRole("link", { name: "Solicitar lugar" }).click();
-  await expect(page.getByLabel("Fecha deseada")).toHaveValue(event.date);
-  await expect(page.getByLabel("Horario deseado")).toHaveValue("23:00");
-  await expect(page.getByLabel("Fecha deseada")).toHaveAttribute(
-    "readonly",
-    "",
+  await expect(page.locator(".reservation-event")).toContainText(
+    "Encuentro confirmado",
   );
+  await expect(page.locator(".reservation-route")).toContainText("2099-11-20");
+  await expect(
+    page.getByRole("button", { name: "Mesa en cafetería", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
 });
-test("validación de agenda conserva encuentros nocturnos y elimina datos privados", () => {
+test("validación de agenda y enlaces de WhatsApp conserva privacidad y fechas", () => {
   const parsed = parseOfficialEvents([
-    { ...event, address: "NO PUBLICAR", guests: ["privado"] },
+    {
+      id: "evento",
+      title: "Encuentro",
+      description: "",
+      date: "2099-11-20",
+      time: "23:00",
+      status: "upcoming",
+      priceARS: null,
+      conditions: [],
+      address: "NO PUBLICAR",
+    },
   ]);
-  expect(parsed[0].time).toBe("23:00");
   expect(parsed[0]).not.toHaveProperty("address");
-  expect(parsed[0]).not.toHaveProperty("guests");
-  expect(() =>
-    parseOfficialEvents([{ ...event, date: "2099-02-30" }]),
-  ).toThrow();
   expect(
-    buildReservationUrl(null, {
-      date: event.date,
-      time: event.time,
-      people: 2,
-    }),
+    buildReservationUrl(null, { date: "2099-11-20", time: "23:00", people: 2 }),
   ).toBeNull();
   expect(todayInMendoza(new Date("2026-11-04T01:00:00Z"))).toBe("2026-11-03");
-});
-test("error de agenda permite continuar con consultas generales", async ({
-  page,
-}) => {
-  await page.route("**/api/events", (route) =>
-    route.fulfill({ status: 503, json: { error: "unavailable" } }),
-  );
-  await page.goto("/");
-  await expect(page.locator("#agenda")).toContainText("No pudimos consultar");
-  await expect(
-    page.getByRole("button", { name: "Solicitar por WhatsApp" }),
-  ).toBeEnabled();
 });

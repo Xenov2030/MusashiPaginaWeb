@@ -90,7 +90,7 @@ test("revelado único, filtros con foco y recorrido grabado", async ({
     await page.locator("#carta").scrollIntoViewIfNeeded();
     await page.waitForTimeout(750);
     const filter = page.getByRole("button", {
-      name: "Pastelería",
+      name: "Café frío",
       exact: true,
     });
     await filter.focus();

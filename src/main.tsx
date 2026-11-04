@@ -1,17 +1,9 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { preload } from "react-dom";
+import { Visual } from "./Visual";
+import { SeasonalMenu } from "./SeasonalMenu";
 import { useHashNavigation, useSectionMotion } from "./motion";
-import {
-  suppliedProducts,
-  site,
-  conceptualVisuals,
-  copy,
-  type VisualResource,
-  categories,
-  disciplines,
-  historicalContext,
-} from "./content";
+import { site, conceptualVisuals, copy, historicalContext } from "./content";
 import "./style.css";
 import { Reservations, PetFriendly } from "./Reservations";
 import { OfficialAgenda, useOfficialEvents } from "./OfficialAgenda";
@@ -25,10 +17,7 @@ import {
   Wellbeing,
   ExperienceContact,
 } from "./ExperienceSections";
-import { ConsultLink } from "./ConsultLink";
-import { BeveragePolicy } from "./BeveragePolicy";
 import { OwnerHistory } from "./OwnerHistory";
-import { ProductMedia } from "./ProductMedia";
 import { Ambient } from "./Ambient";
 
 const Arrow = () => (
@@ -46,6 +35,7 @@ const Arrow = () => (
 const nav = [
   ["La experiencia", "/#experiencia"],
   ["Carta", "/carta"],
+  ["Reservas", "/#reservas"],
   ["Tatami", "/#tatami"],
   ["Cenas", "/#cenas"],
   ["Bienestar", "/#bienestar"],
@@ -158,6 +148,9 @@ function Header() {
           {nav.map(([label, href]) => (
             <a
               key={label}
+              className={
+                label === "Reservas" ? "header-reservations" : undefined
+              }
               href={href}
               aria-current={
                 active === label ? (isMenu ? "page" : "location") : undefined
@@ -171,116 +164,6 @@ function Header() {
         <Instagram className="header-social">Instagram</Instagram>
       </div>
     </header>
-  );
-}
-function Visual({
-  resource,
-  priority = false,
-  className = "",
-}: {
-  resource: VisualResource;
-  priority?: boolean;
-  className?: string;
-}) {
-  const image = useRef<HTMLImageElement>(null);
-  const animation = useRef<Animation | null>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">(
-    "loading",
-  );
-  if (priority)
-    preload(resource.src, {
-      as: "image",
-      fetchPriority: "high",
-      imageSrcSet: resource.srcSet,
-      imageSizes: resource.sizes,
-    });
-  useEffect(() => {
-    const img = image.current;
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    let active = true;
-    let played = false;
-    const ready = () => {
-      if (!active) return;
-      setStatus("ready");
-      if (priority && !played && !reduced.matches && img?.animate) {
-        played = true;
-        animation.current = img.animate(
-          [{ clipPath: "inset(0 50% 0 50%)" }, { clipPath: "inset(0 0 0 0)" }],
-          { duration: 520, easing: "cubic-bezier(.2,.7,.25,1)" },
-        );
-      }
-    };
-    const failed = () => {
-      if (active) setStatus("error");
-    };
-    setStatus("loading");
-    img?.addEventListener("load", ready);
-    img?.addEventListener("error", failed);
-    if (img?.complete) {
-      if (img.naturalWidth) ready();
-      else failed();
-    }
-    const stop = () => {
-      if (reduced.matches) animation.current?.cancel();
-    };
-    reduced.addEventListener("change", stop);
-    return () => {
-      active = false;
-      img?.removeEventListener("load", ready);
-      img?.removeEventListener("error", failed);
-      reduced.removeEventListener("change", stop);
-      animation.current?.cancel();
-    };
-  }, [resource.src, priority]);
-  return (
-    <span
-      className={`visual is-${status} ${resource.format === "graphic" ? "visual-graphic" : ""} ${className}`}
-      style={
-        {
-          "--visual-ratio": `${resource.width} / ${resource.height}`,
-        } as React.CSSProperties
-      }
-      data-visual-state={status}
-    >
-      <img
-        ref={image}
-        className="visual-image"
-        src={resource.src}
-        srcSet={resource.srcSet}
-        sizes={resource.sizes}
-        alt={resource.alt}
-        width={resource.width}
-        height={resource.height}
-        style={{ objectPosition: resource.position || "center" }}
-        fetchPriority={priority ? "high" : undefined}
-        loading={priority ? "eager" : "lazy"}
-        data-resource-kind={resource.kind}
-        aria-hidden={status === "error" ? true : undefined}
-      />
-      {resource.placeholder && (
-        <img
-          className="visual-preview"
-          src={resource.placeholder}
-          alt=""
-          aria-hidden="true"
-          width={resource.width}
-          height={resource.height}
-        />
-      )}
-      {status === "error" && (
-        <span
-          className="visual-error"
-          role="img"
-          aria-label={`${resource.alt}. Imagen no disponible.`}
-        >
-          <span className="error-mark" aria-hidden="true" />
-          <strong>
-            {priority ? "Café, Japón y Musashi." : "Un sabor por descubrir."}
-          </strong>
-          <span>La imagen no está disponible.</span>
-        </span>
-      )}
-    </span>
   );
 }
 function Hero() {
@@ -319,213 +202,13 @@ function Hero() {
           </a>
         </div>
         <div className="hero-consult">
-          <ConsultLink topic="la experiencia de Musashi">
-            Consultanos
-          </ConsultLink>
+          <a className="text-link" href="#reservas">
+            Reservas <Arrow />
+          </a>
         </div>
         {copy.hero.stage && <p className="stage-note">{copy.hero.stage}</p>}
       </div>
       <Ambient />
-    </section>
-  );
-}
-function Menu({ full = false }: { full?: boolean }) {
-  const [category, setCategory] = useState("Todo");
-  const results = useRef<HTMLDivElement>(null);
-  const previousHeight = useRef<number | null>(null);
-  const heightAnimation = useRef<Animation | null>(null);
-  const changeCategory = (next: string) => {
-    if (next === category) return;
-    previousHeight.current =
-      results.current?.getBoundingClientRect().height ?? null;
-    heightAnimation.current?.cancel();
-    setCategory(next);
-  };
-  useLayoutEffect(() => {
-    const el = results.current;
-    const before = previousHeight.current;
-    if (
-      el &&
-      before !== null &&
-      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
-      el.animate
-    ) {
-      const after = el.getBoundingClientRect().height;
-      if (Math.abs(after - before) > 2)
-        heightAnimation.current = el.animate(
-          [{ height: `${before}px` }, { height: `${after}px` }],
-          { duration: 280, easing: "cubic-bezier(.2,.7,.25,1)" },
-        );
-    }
-    previousHeight.current = null;
-    return () => heightAnimation.current?.cancel();
-  }, [category]);
-  const products = suppliedProducts;
-  const selection = full
-    ? products
-    : products.filter((p) =>
-        ["pasteleria", "vagabond", "taiyaki"].includes(p.id),
-      );
-  const shown = selection.filter(
-    (p) => category === "Todo" || category === p.category,
-  );
-  const Title = full ? "h1" : "h2";
-  return (
-    <section
-      id="carta"
-      className={`section menu-section ${full ? "full-menu" : ""}`}
-    >
-      <div className="menu-heading" data-reveal="rise">
-        <div>
-          <p className="eyebrow">LA MESA DE MUSASHI</p>
-          <Title>
-            {copy.menu.title}
-            <br />
-            <em className="menu-subtitle">{copy.menu.subtitle}</em>
-          </Title>
-        </div>
-        <span className="menu-edition">Tomate un ratito.</span>
-      </div>
-      <p className="draft-note">{copy.draftNote}</p>
-      <div className="menu-leaf">
-        <div className="menu-leaf-top">
-          <span>MUSASHI</span>
-          <span>
-            {full ? "Carta de Musashi" : "Una selección para descubrir"}
-          </span>
-        </div>
-        <BeveragePolicy />
-        <div className="filters" role="group" aria-label="Filtrar carta">
-          {["Todo", ...categories].map((c) => (
-            <button
-              key={c}
-              aria-pressed={category === c}
-              onClick={() => changeCategory(c)}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-        <p className="filter-result" role="status">
-          {shown.length} {shown.length === 1 ? "propuesta" : "propuestas"} ·{" "}
-          {category === "Todo" ? "Selección de la propuesta" : category}
-        </p>
-        <div className="menu-results" ref={results}>
-          <div
-            className={full ? "product-details" : "product-selection"}
-            aria-live="polite"
-            key={category}
-          >
-            {shown.map((p, i) => (
-              <article
-                className={`product ${!full && i === 0 ? "product-featured" : ""}`}
-                key={p.id}
-                id={full ? p.id : undefined}
-              >
-                <div className="product-visual">
-                  {p.image ? (
-                    <ProductMedia resource={p.image} name={p.name}>
-                      <Visual resource={p.image} />
-                    </ProductMedia>
-                  ) : (
-                    <span className="image-fallback">{p.category}</span>
-                  )}
-                </div>
-                <div className="product-copy">
-                  <span className="eyebrow">{p.category}</span>
-                  <h3>{p.name}</h3>
-                  <p>{p.description}</p>
-                  {p.alcohol === "indicated" && (
-                    <span className="alcohol-note">
-                      Contiene alcohol · indicado en el afiche
-                    </span>
-                  )}
-                  {full && (
-                    <>
-                      <p className="product-extended">{p.detail}</p>
-                      <ConsultLink topic={p.name}>
-                        Consultar esta propuesta
-                      </ConsultLink>
-                    </>
-                  )}
-                  {p.priceARS !== null && (
-                    <p className="price">
-                      {new Intl.NumberFormat("es-AR", {
-                        style: "currency",
-                        currency: "ARS",
-                      }).format(p.priceARS)}
-                    </p>
-                  )}
-                  {!site.draft && (
-                    <small>
-                      {p.availability === "available"
-                        ? "Disponible"
-                        : p.availability === "unavailable"
-                          ? "No disponible"
-                          : "Consultar disponibilidad"}
-                    </small>
-                  )}
-                  {p.confirmedFeatures.length > 0 && (
-                    <p>{p.confirmedFeatures.join(" · ")}</p>
-                  )}
-                  {!full && (
-                    <a className="product-link" href={`/carta#${p.id}`}>
-                      Conocé este sabor<span aria-hidden="true"> →</span>
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-          {shown.length === 0 && (
-            <article className="discipline-sheet" aria-live="polite">
-              <span className="eyebrow">{category}</span>
-              <h3>
-                {category === "Té y blends"
-                  ? disciplines["Té y blends"].title
-                  : category === "Coctelería"
-                    ? disciplines["Coctelería"].title
-                    : "La carta, a su tiempo."}
-              </h3>
-              <p>
-                {category === "Té y blends"
-                  ? disciplines["Té y blends"].description
-                  : category === "Coctelería"
-                    ? disciplines["Coctelería"].description
-                    : "La selección se incorporará cuando esté confirmada."}
-              </p>
-              <small>
-                {category === "Té y blends"
-                  ? disciplines["Té y blends"].note
-                  : category === "Coctelería"
-                    ? disciplines["Coctelería"].note
-                    : ""}
-              </small>
-            </article>
-          )}
-        </div>
-        {!full && (
-          <a className="menu-link" href="/carta">
-            Ver la carta completa
-            <Arrow />
-          </a>
-        )}
-        {full && (
-          <aside className="menu-guide">
-            <h2>Elegí tu pausa.</h2>
-            <div>
-              <p>
-                Estas son propuestas compartidas por Musashi. Consultá al equipo
-                por las opciones actuales, ingredientes, alérgenos y precios
-                antes de pedir.
-              </p>
-              <Instagram className="text-link">
-                Consultar en Instagram
-              </Instagram>
-            </div>
-          </aside>
-        )}
-      </div>
     </section>
   );
 }
@@ -611,7 +294,7 @@ function App() {
       <main id="contenido">
         {isMenu ? (
           <>
-            <Menu full />
+            <SeasonalMenu full />
             <Reservations events={agenda.events} />
             <ExperienceContact />
           </>
@@ -620,7 +303,7 @@ function App() {
             <Hero />
             <Essence />
             <CoffeeIntro />
-            <Menu />
+            <SeasonalMenu />
             <PastryGallery />
             <Dinner />
             <OfficialAgenda {...agenda} />

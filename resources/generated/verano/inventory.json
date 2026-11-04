@@ -1,0 +1,34 @@
+[
+  {
+    "id": "cafe-hielo",
+    "original": "resources/generated/verano/cafe-hielo.png",
+    "web": "/media/verano/cafe-hielo.webp",
+    "source": "OpenAI imagegen, generado para esta carta de prueba",
+    "status": "conceptual; producto inventado para revisión, no creación atribuida a Musashi",
+    "section": "Carta de verano de prueba"
+  },
+  {
+    "id": "latte-frio",
+    "original": "resources/generated/verano/latte-frio.png",
+    "web": "/media/verano/latte-frio.webp",
+    "source": "OpenAI imagegen, generado para esta carta de prueba",
+    "status": "conceptual; producto inventado para revisión, no creación atribuida a Musashi",
+    "section": "Carta de verano de prueba"
+  },
+  {
+    "id": "infusion-citrica",
+    "original": "resources/generated/verano/infusion-citrica.png",
+    "web": "/media/verano/infusion-citrica.webp",
+    "source": "OpenAI imagegen, generado para esta carta de prueba",
+    "status": "conceptual; producto inventado para revisión, no creación atribuida a Musashi",
+    "section": "Carta de verano de prueba"
+  },
+  {
+    "id": "te-frutal",
+    "original": "resources/generated/verano/te-frutal.png",
+    "web": "/media/verano/te-frutal.webp",
+    "source": "OpenAI imagegen, generado para esta carta de prueba",
+    "status": "conceptual; producto inventado para revisión, no creación atribuida a Musashi",
+    "section": "Carta de verano de prueba"
+  }
+]

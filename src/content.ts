@@ -156,8 +156,6 @@ export const site = {
     petFriendly: true,
     hours: null as string | null,
     reservationConditions: null as string | null,
-    whatsapp: "5492615349682" as string | null, // Número personal autorizado para pruebas.
-    whatsappTest: true,
   },
 };
 const suppliedProduct = (
@@ -378,7 +376,7 @@ export const hospitality = {
 
 // Relato y política suministrados por el propietario. No implican afirmaciones dietéticas.
 export const beveragePolicy = {
-  title: "Cada creación, tal como fue concebida",
+  title: "Cada bebida, tal como fue elaborada",
   text: "Nuestras bebidas se sirven según su receta de autor. No ofrecemos azúcar ni edulcorantes adicionales para agregarles",
 };
 export const ownerStory = {

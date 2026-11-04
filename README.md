@@ -1,104 +1,114 @@
-# MUSASHI · Japón detrás de una puerta
+# MUSASHI — Japón detrás de una puerta
 
-Propuesta de la web de una cafetería oculta y un espacio de inspiración japonesa: café de especialidad, pastelería japonesa, cenas, tatami privado y bienestar. Implementada sobre el proyecto existente con React, TypeScript y Vite. Noindex permanece activo.
+Web de una cafetería oculta en Mendoza, con café de especialidad, pastelería japonesa, cenas, tatami privado y bienestar. React, TypeScript y Vite; identidad negro/blanco/rojo, hojas sobre tatami, logo original y movimientos suaves.
 
-## Revisar esta entrega
+## Esta entrega
 
-Implementación preparada en `desarrollo/identidad-musashi`. El usuario autorizó ahora desplegarla para probar las funciones. Se publica mediante la rama `desarrollo/boceto-musashi`, conectada al sitio existente de Netlify, conservando el dominio y noindex. No se hace merge a `main`.
+Rama local: `desarrollo/carta-estacional`. El nuevo pedido exige revisión sin merge ni despliegue automático: esta entrega no se envía a las ramas remotas ni a Netlify.
 
-- [Portada con el concepto del propietario](docs/capturas/portada.png)
-- [Tatami con la marca](docs/capturas/tatami.png)
-- [Bienestar](docs/capturas/bienestar.png)
-- [Creaciones y oficio](docs/capturas/creaciones.png)
-- [Historia de Musashi](docs/capturas/historia.png)
-- [Política de bebidas](docs/capturas/politica-bebidas.png)
-- [Inicio en escritorio](docs/capturas/escritorio.png)
-- [Inicio en móvil](docs/capturas/movil.png)
-- [Carta](docs/capturas/carta.png)
-- [Recorrido grabado](docs/grabaciones/recorrido.webm)
-- [Miniatura interactiva del video](docs/capturas/video.png)
+- `/carta` es la dirección permanente para enlaces y un eventual QR, independientemente de la temporada.
+- «Una muestra del próximo verano»: seis productos con imágenes, cuatro ejemplos nuevos de bebidas frías y dos referencias de la marca pendientes de inclusión. No se anuncia una carta vigente ni un año no confirmado.
+- Filtros de categoría, detalles accesibles, precios por confirmar y avisos de prueba. Los productos demo no permiten pedidos ni reservas.
+- Reservas con acceso destacado en cabecera y portada: Mesa en cafetería, Tatami privado y Bienestar, con tres contactos independientes. Actualmente los tres WhatsApp están pendientes; cada recorrido explica que la consulta provisional se dirige a Instagram oficial.
+- Política actualizada: «Cada bebida, tal como fue elaborada». No implica ausencia de azúcar ni una propiedad dietética.
+- Se conservan historia, materiales de la marca, afiches completos, video con miniatura y reproducción voluntaria, privacidad de la dirección, pet friendly, noindex y firma.
 
-## Ejecución y compilación
-
-Node 24 recomendado (mínimo 22.12).
+## Revisar
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Vite muestra la dirección de la vista local, normalmente `http://localhost:5173`. Para revisar la compilación de producción:
+Node 24 recomendado; mínimo 22.12. Vite muestra la dirección local, normalmente `http://localhost:5173`. Abrir `/carta` para la muestra completa.
 
 ```bash
 npm run build
 npm run preview
-```
-
-La ruta `/carta` admite acceso directo y recarga. Los enlaces desde la carta vuelven a la sección correspondiente de Inicio.
-
-## Qué incluye
-
-- Navegación: La experiencia, Carta, Tatami, Cenas, Bienestar, Nuestra historia y Contacto.
-- Portada «Japón detrás de una puerta», frase del propietario, con el logo completo aportado, encuadre abstracto de apertura y revelado breve sin bloqueo. Acceso inmediato a la carta y la experiencia. Logo original conservado sin rediseño; la cabecera usa un recorte de presentación del símbolo mediante CSS, con sus trazos y colores intactos. El pie conserva la imagen completa.
-- Historia real en tres momentos, sin fechas ni superlativos no verificados. «El camino cambia, la esencia permanece» se reserva al cierre de esa historia.
-- Política de bebidas visible en Cafetería y en la carta: receta de autor; no se ofrecen azúcar ni edulcorantes adicionales para agregar a las bebidas. Esto no significa que las recetas sean libres de azúcar ni atribuye propiedades dietéticas.
-- Carta sobre trama de tatami con once propuestas: seis creaciones de bebidas, Taiyaki Red Velvet y cuatro piezas con títulos descriptivos provisionales. Las seis bebidas tienen descripciones HTML transcritas de la parte legible de los afiches, con alcohol indicado en Samurai Coffee, Vagabond, Red Dragon y Midori Kensei. En las demás no se infiere ausencia de alcohol. Gráficas completas con `object-fit: contain` y ampliación accesible; precios y disponibilidad pendientes.
-- Galería de tres imágenes distintas de pastelería. Se distingue material fotográfico, gráfica promocional y composición conceptual.
-- Cenas y antecedentes de onigiris, ramen y tatamis, sin convertirlos en anuncios futuros.
-- Tatami privado protagonista, con una composición abstracta en lugar de una falsa fotografía del espacio.
-- Bienestar diferenciado: Tui Na, acupuntura y Reiki, sin promesas médicas, con imagen conceptual de toallas, cerámica y piedras.
-- Consultas diferenciadas por experiencia. Instagram es el canal oficial confirmado. Se conserva el número personal de Nicolas autorizado para pruebas, identificado como tal en burbuja y formulario; no representa un WhatsApp oficial.
-- Dirección privada, comunicada manualmente al confirmar por WhatsApp; el formulario prepara una solicitud y no confirma reservas.
-- Pocos pétalos, una ramita ilustrada discreta, reproducción automática continua sin botón de pausa y respeto por movimiento reducido.
-- Video del cliente incorporado como pieza promocional en Cenas, por indicación expresa del usuario. La miniatura está siempre visible con un botón de reproducción. Al pulsarlo comienza la reproducción voluntaria con controles nativos y audio silenciado inicialmente. No se atribuyen frases ni se presenta como registro del local o retrato del propietario. El audio no está transcrito.
-
-La historia del nombre sigue desactivada hasta contar con texto verificado. No se anuncia fecha de apertura ni horarios actuales. La agenda ficticia de la revisión anterior fue retirada conforme al nuevo pedido; `public/events.json` está vacío.
-
-## Estructura y actualización de contenido
-
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/media.ts` | Recursos centrales: portada, cafetería, pastelería, cenas, tatami, bienestar, propietario, logo y video; procedencia y naturaleza de las imágenes. |
-| `src/content.ts` | Identidad, propuesta, productos aportados, datos del negocio, especialidades e historia opcional. |
-| `src/main.tsx` | Cabecera, portada, carta reutilizable, rutas y composición de la página. |
-| `src/ExperienceSections.tsx` | Esencia, cafetería, galería, cenas, tatami, bienestar y consultas. |
-| `src/OwnerHistory.tsx`, `src/BeveragePolicy.tsx` | Relato y política del propietario, con textos centrales en `src/content.ts`. |
-| `src/ProductMedia.tsx` | Ampliación de imágenes originales, cierre por botón/Escape y retorno del foco. |
-| `src/ConsultLink.tsx` | Consultas por tema: Instagram mientras no se configure un WhatsApp oficial. |
-| `src/Reservations.tsx` | Solicitudes por WhatsApp, privacidad de la dirección y mascotas. |
-| `src/Ambient.tsx`, `src/motion.ts` | Decoración y movimiento accesible. |
-| `resources/inventory.json`, `resources/originals/` | Inventario con equivalencias por contenido, estado, sección y SHA-256; los doce JPEG y el MP4 originales, sin modificar. |
-| `public/media/musashi` | Imágenes optimizadas WebP, variantes pequeñas y video MP4. |
-| `integrations/google-calendar` | Conector opcional de agenda, preparado en revisiones anteriores; requiere conexión inicial del propietario. |
-
-Para reemplazar imágenes, editar sus referencias en `src/media.ts`, con dimensiones, texto alternativo y procedencia. `cenas`, `tatami` y `propietario` permanecen en `null` hasta recibir fotografías correspondientes. `bienestar` usa una imagen conceptual identificada; se puede reemplazar por una foto autorizada. Al incorporar una foto, indicar `kind: "confirmed"` y `format: "photo"`. Las gráficas de producto usan `format: "graphic"` y se muestran completas al ampliarlas. No usar un flyer como fotografía de una experiencia, ni una escena de ficción como retrato del propietario.
-
-Para un anuncio temporal de apertura, editar `copy.hero.stage` solo con texto confirmado. `site.business` mantiene dirección privada, pet friendly confirmado, horarios sin confirmar y contacto de prueba. La selección de carta es `suppliedProducts`; comprobar disponibilidad con el propietario antes de publicarla como vigente. Ver [guía de contenido](docs/CONTENIDO.md), [recursos](docs/RECURSOS.md) y [movimiento](docs/MOVIMIENTO.md).
-
-## Agenda y Netlify
-
-Se conserva `netlify.toml`, el dominio previsto `musashiweb.netlify.app`, la redirección SPA y el adaptador de agenda ya existente. No se agrega un servicio pago ni un backend nuevo. Sin conexión de Calendar, la agenda usa el archivo vacío. Al conectar la cuenta del propietario se mostrarán únicamente eventos publicados por él; [instrucciones](integrations/google-calendar/README.md).
-
-Publicación autorizada para pruebas: usar el **sitio existente**, compilar con `npm run build` y publicar `dist`. La rama remota conectada en revisiones anteriores es `desarrollo/boceto-musashi`; enviar cambios a esa rama dispara el despliegue automático. El envío actual a esa rama responde a la indicación expresa del usuario de desplegar para probar las funciones. No crear otro sitio ni hacer merge a `main`. Mantener noindex durante la revisión.
-
-## Verificación
-
-Última revisión local: compilación correcta y **32 pruebas aprobadas** en Chromium. Se verificó también la integridad de los trece originales mediante SHA-256.
-
-```bash
-npm run build
 npm run test:e2e
 ```
 
-Las pruebas de navegador usan Chromium mediante Playwright. En este entorno se puede usar `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium` y `PLAYWRIGHT_BROWSERS_PATH=/tmp/musashi-playwright`. La grabación requiere FFmpeg.
+En este entorno, Chromium está en `/usr/bin/chromium`; las pruebas admiten `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium` y `PLAYWRIGHT_BROWSERS_PATH=/tmp/musashi-playwright`. La grabación requiere FFmpeg.
 
-Se verifican escritorio/móvil, cinco anchos, acceso directo y recarga, atrás/adelante, filtros, ampliación de gráficas, foco, carga voluntaria y reproducción técnica del video sin sonido automático, estado de carga/error de la portada, contraste, reproducción automática y movimiento reducido. La revisión local no acredita un despliegue ni comportamiento en dispositivos físicos o una conexión real con Google Calendar.
+[Inicio escritorio](docs/capturas/escritorio.png) · [Inicio móvil](docs/capturas/movil.png) · [Carta escritorio](docs/capturas/carta-verano-escritorio.png) · [Carta móvil](docs/capturas/carta-verano-movil.png) · [Reservas](docs/capturas/reservas.png) · [Recorrido](docs/grabaciones/recorrido.webm).
 
-## Pendientes del cliente
+## Seleccionar una temporada
 
-Fotografías específicas de cenas, tatami y bienestar; retrato autorizado si se desea; nombres exactos de la pastelería sin rótulo; carta vigente, precios, ingredientes y alérgenos; horarios y estado de apertura; WhatsApp oficial; condiciones de reserva; próximos eventos confirmados; fuentes tipográficas originales y subtítulos/transcripción del video. La dirección debe seguir fuera del código y de los campos públicos de la agenda.
+Editar `src/menu/seasons.json`. `selectedSeasonId` determina manualmente la temporada mostrada. No se consulta el calendario para activarla. Cada registro conserva `id`, `name`, `year` opcional, `status`, categorías y asociaciones de productos.
 
-El relato del propietario menciona haber sido el primer Anime Café y la primera cafetería japonesa oculta de Mendoza. Esas primacías no se verificaron y se omitieron del sitio y sus metadatos. La historia del negocio está separada de la historia opcional de Miyamoto Musashi, que sigue desactivada.
+- `draft`: borrador interno, no se muestra como carta.
+- `demo`: muestra revisable, precios comerciales ocultos y consultas de productos deshabilitadas.
+- `published`: carta aprobada por el propietario.
+- `archived`: temporada anterior conservada internamente.
+
+Una selección inexistente, borrador o archivada no se publica accidentalmente: la página muestra que la carta está pendiente. Las temporadas anteriores pueden permanecer en el archivo. [Guía de edición completa](docs/CARTA_ESTACIONAL.md).
+
+## Sustituir la demo por la carta oficial
+
+1. Agregar los productos confirmados a `src/menu/catalog.ts`, o reutilizar los identificadores de creaciones documentadas de Musashi.
+2. Crear una temporada en `src/menu/seasons.json`, con descripciones, imágenes, categorías, precios y disponibilidad confirmados. Los cambios particulares van en las asociaciones de esa temporada, sin duplicar todo el producto.
+3. Después de la aprobación del propietario, usar `status: "published"`, `role: "official"` y la disponibilidad correspondiente. Seleccionar su identificador en `selectedSeasonId` y archivar la temporada anterior si corresponde.
+4. No publicar los identificadores `demo-*`: son ejemplos inventados. El modelo rechaza su publicación accidental y las asociaciones de prueba o inclusión pendiente dentro de una carta marcada publicada.
+5. Compilar, probar y revisar. La presentación usa los mismos componentes; no hace falta rehacer la web. El despliegue requiere una indicación posterior del usuario.
+
+Los precios se guardan como números ARS cuando se confirmen; mientras sean `null`, se muestra «Precio por confirmar». En modo demo se fuerzan precios pendientes, disponibilidad no confirmada y ausencia de acciones de pedido o reserva, incluso si alguien completa un precio en la muestra.
+
+## Contactos y reservas
+
+Editar únicamente los números oficiales en `src/reservation-config.ts`:
+
+```ts
+{
+  gastronomiaWhatsApp: null,
+  tatamiWhatsApp: null,
+  bienestarWhatsApp: null
+}
+```
+
+Formato internacional, solo dígitos y sin `+`. Cada campo se valida por separado; vacío o inválido usa Instagram con destino visible. Tatami y Mesa pueden compartir el mismo número solo si el propietario lo confirma y se completa expresamente en ambos campos. Bienestar no hereda el contacto gastronómico.
+
+El acceso flotante lleva a Reservas mientras falta el canal gastronómico. Si se confirma ese número, puede abrir WhatsApp para una consulta general de mesa. Los enlaces de Tatami y Bienestar siempre resuelven su propio campo. Se retiró el uso del teléfono personal de pruebas anterior para estos recorridos.
+
+Enviar una consulta no confirma una reserva. No hay calendario de disponibilidad, pagos, señas ni confirmaciones automáticas. La dirección permanece fuera del código y se comparte al confirmar por el canal acordado con el equipo. El combo del tatami sigue pendiente, sin inclusiones, tarifas, capacidad ni duración inventadas.
+
+## Archivos principales
+
+| Archivo | Uso |
+| --- | --- |
+| `src/menu/catalog.ts` | Identidad, imagen y descripción base de productos reutilizables. |
+| `src/menu/seasons.json` | Selección manual, estados y cambios por temporada. |
+| `src/menu/model.ts` | Validación y resolución del contenido; protección de la demo. |
+| `src/SeasonalMenu.tsx` | Carta compartida por demo y publicación, filtros, precios y detalle. |
+| `src/ProductMedia.tsx`, `src/Visual.tsx` | Visor completo y estados de carga/error con dimensiones reservadas. |
+| `src/reservation-config.ts`, `src/Reservations.tsx` | Contactos separados y tres recorridos de consulta. |
+| `src/content.ts`, `src/media.ts` | Identidad, historia, política de bebidas y material del cliente. |
+| `src/ExperienceSections.tsx` | Experiencia, oficio, cenas, tatami, bienestar y contacto. |
+| `resources/inventory.json`, `resources/originals/` | Los trece originales del cliente, sin modificar, con procedencia y SHA-256. |
+| `resources/generated/verano/inventory.json` | Cuatro imágenes conceptuales nuevas, originales y versiones web. |
+
+## Materiales e inventario de la muestra
+
+[Inventario de los seis productos e imágenes](docs/INVENTARIO_VERANO.md). Cuatro imágenes de bebidas frías se generaron con OpenAI imagegen específicamente para la demo; no son fotos de Musashi ni de otro negocio. Se conservan los originales y las variantes optimizadas WebP de 1000 y 540 px. Los otros dos productos usan afiches aportados por el cliente, sin cambiar sus recetas ni presentarlos como bebidas frías.
+
+El desplegable «Creaciones de la marca» conserva las once propuestas documentadas en revisiones anteriores, con transcripciones HTML y visor completo. No afirma inclusión estacional ni disponibilidad. Los hashes existentes como `/carta#samurai` abren esa referencia cuando no forma parte de la temporada seleccionada.
+
+Ver también [recursos](docs/RECURSOS.md), [contenido](docs/CONTENIDO.md) y [movimiento](docs/MOVIMIENTO.md).
+
+## Verificación y límites
+
+Compilación de producción completada y **35 pruebas automatizadas aprobadas**.
+
+Se comprueban acceso directo y recarga de `/carta`, enlaces desde Inicio, hashes de las creaciones, atrás/adelante, filtros, precio pendiente, ausencia de pedidos en demo, detalle con aviso, imágenes, originales, tres recorridos de reserva, números faltantes o inválidos, independencia de contactos, teclado, foco, movimiento reducido, cinco anchos y ausencia de desbordamientos. Hay pruebas del modelo para reutilización de productos y separación entre borrador, demo, publicación y archivo.
+
+La revisión es local con Chromium emulado; no acredita dispositivos físicos, un despliegue nuevo o una conexión real con el calendario opcional de eventos ya preparado en revisiones anteriores. No se agrega backend, panel de administración, base de datos ni servicio pago.
+
+## Netlify
+
+Se conservan `netlify.toml`, `musashiweb.netlify.app`, `/carta`, la redirección SPA y noindex. El build es `npm run build`, salida `dist`. No se crea otro sitio ni se hace merge a `main`. El envío a la rama remota `desarrollo/boceto-musashi` activa el despliegue del sitio existente; **esta entrega no se envía allí sin una indicación posterior**.
+
+## Pendientes del propietario
+
+Carta oficial de verano, año si corresponde, descripciones definitivas, precios, disponibilidad, imágenes aprobadas para cada producto, combo de tatami, condiciones de reserva, los tres WhatsApp oficiales, dirección y horarios actuales. También siguen pendientes fotografías documentales de los espacios y transcripción/subtítulos del video si se desean.
 
 ---
 

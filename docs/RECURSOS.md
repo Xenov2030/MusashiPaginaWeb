@@ -55,3 +55,7 @@ Se normalizaron mayúsculas, listas y puntuación. Solo se transcribió lo legib
 ## Ajuste de presencia de marca
 
 `logo-completo.webp` es una copia de 1100 × 1100 del JPEG original completo, sin recorte ni recoloración, para el hero. El nombre MUSASHI acompaña al símbolo de la cabecera. El círculo conceptual del tatami muestra la imagen del logo, conservando sus proporciones. La fotografía rectangular de pastelería permanece en la carta.
+
+## Carta de verano de prueba
+
+Cuatro imágenes nuevas de bebidas frías se generaron con OpenAI imagegen exclusivamente para esta demostración. Están identificadas como conceptuales y no se atribuyen a Musashi. Se conservaron sus PNG originales y variantes optimizadas, con registro en `resources/generated/verano/inventory.json`. [Inventario de los seis productos](INVENTARIO_VERANO.md). No se usaron fotos de otros negocios ni se cambiaron las recetas de los afiches del cliente para presentarlas como frías.

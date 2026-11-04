@@ -1,22 +1,24 @@
 import { test, expect } from "@playwright/test";
-test("la carta separa propuestas aportadas y especialidades del propietario", async ({
+test("la muestra de verano tiene filtros y precio pendiente sin acciones de pedido", async ({
   page,
 }) => {
   await page.goto("/carta");
-  for (const name of [
-    "Café y creaciones de autor",
-    "Pastelería",
-    "Té y blends",
-    "Coctelería",
-  ])
-    await expect(page.getByRole("button", { name, exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Té y blends", exact: true }).click();
-  await expect(page.locator(".product")).toHaveCount(0);
-  await expect(page.locator(".discipline-sheet")).toContainText("tea blender");
-  await page.getByRole("button", { name: "Coctelería", exact: true }).click();
-  await expect(page.locator(".product")).toHaveCount(0);
-  await expect(page.locator(".discipline-sheet")).toContainText("bartender");
-  await expect(page.locator(".filters")).not.toContainText("Reiki");
+  for (const [name, count] of [
+    ["Café frío", 2],
+    ["Té e infusiones frías", 2],
+    ["Creaciones de autor", 1],
+    ["Pastelería", 1],
+  ] as const) {
+    await page.getByRole("button", { name, exact: true }).click();
+    await expect(page.locator(".season-grid>.product")).toHaveCount(count);
+    await expect(page.locator(".season-grid")).not.toContainText(
+      /Reiki|Acupuntura/,
+    );
+    await expect(page.locator(".season-grid a")).toHaveCount(0);
+  }
+  await page.getByRole("button", { name: "Todo", exact: true }).click();
+  await expect(page.locator(".season-price")).toHaveCount(6);
+  await expect(page.locator(".season-grid")).not.toContainText(/\$\d/);
 });
 test("pétalos automáticos sin botón ni interrupción al salir de la portada", async ({
   page,

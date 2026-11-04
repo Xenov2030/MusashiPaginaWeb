@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-const title = "Cada creación, tal como fue concebida";
+const title = "Cada bebida, tal como fue elaborada";
 const policy =
   "Nuestras bebidas se sirven según su receta de autor. No ofrecemos azúcar ni edulcorantes adicionales para agregarles.";
 test("el concepto confirmado aparece en portada, metadatos y cierre de marca", async ({
@@ -73,7 +73,7 @@ test("la receta de autor se explica antes de las consultas sin implicar ausencia
     ),
   ).toBe(true);
   await page
-    .getByRole("button", { name: "Café y creaciones de autor", exact: true })
+    .getByRole("button", { name: "Creaciones de autor", exact: true })
     .click();
   await expect(note).toBeVisible();
 });

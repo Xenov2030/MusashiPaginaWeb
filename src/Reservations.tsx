@@ -1,12 +1,11 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { hospitality, site } from "./content";
+import { useEffect, useState } from "react";
+import { site } from "./content";
+import { type OfficialEvent, isEventPast } from "./events";
 import {
-  buildReservationUrl,
-  todayInMendoza,
-  whatsappContactUrl,
-} from "./reservations";
-import { isEventPast, type OfficialEvent } from "./events";
-
+  reservationContact,
+  reservationRoutes,
+  type ReservationRoute,
+} from "./reservation-config";
 export function PetFriendly({ compact = false }: { compact?: boolean }) {
   if (!site.business.petFriendly) return null;
   return (
@@ -43,222 +42,110 @@ export function PetFriendly({ compact = false }: { compact?: boolean }) {
   );
 }
 export function Reservations({ events }: { events: OfficialEvent[] }) {
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [people, setPeople] = useState("2");
-  const [pet, setPet] = useState(false);
-  const [notes, setNotes] = useState("");
-  const [eventId, setEventId] = useState("");
-  const [error, setError] = useState("");
-  const [opened, setOpened] = useState(false);
-  const availableEvents = events.filter(
-    (event) => event.status === "upcoming" && !isEventPast(event),
-  );
-  const contact = whatsappContactUrl(site.business.whatsapp);
-  const chooseEvent = (id: string) => {
-    setEventId(id);
-    setOpened(false);
-    const event = availableEvents.find((event) => event.id === id);
-    setDate(event?.date ?? "");
-    setTime(event?.time ?? "");
-  };
+  const [route, setRoute] = useState<ReservationRoute>(() => {
+    const value = new URLSearchParams(location.search).get("reserva");
+    return value === "tatami" || value === "bienestar" ? value : "mesa";
+  });
+  const [event, setEvent] = useState<OfficialEvent | null>(null);
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("evento");
-    if (id && events.length) {
-      const event = events.find((e) => e.id === id);
-      if (event && event.status === "upcoming" && !isEventPast(event))
-        chooseEvent(id);
-      else
-        setError(
-          "Este encuentro no admite nuevas solicitudes. Podés hacer una consulta general.",
-        );
-    }
-  }, [events]);
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-    setOpened(false);
-    const event = availableEvents.find((event) => event.id === eventId);
-    if (eventId && !event) {
-      setError(
-        "Ese encuentro no admite nuevas solicitudes. Elegí otra opción.",
+    const id = new URLSearchParams(location.search).get("evento");
+    if (id)
+      setEvent(
+        events.find(
+          (e) =>
+            e.id === id &&
+            e.status === "upcoming" &&
+            !e.demo &&
+            !isEventPast(e),
+        ) ?? null,
       );
-      return;
-    }
-    if (date < todayInMendoza()) {
-      setError("Elegí una fecha actual o futura.");
-      return;
-    }
-    const url = buildReservationUrl(site.business.whatsapp, {
-      date,
-      time,
-      people: Number(people),
-      pet,
-      notes,
-      test: site.business.whatsappTest,
-      event: event ? `${event.demo ? "[DEMO] " : ""}${event.title}` : undefined,
-    });
-    if (!url) {
-      setError("Revisá la fecha, el horario y la cantidad de personas.");
-      return;
-    }
-    window.open(url, "_blank", "noopener,noreferrer");
-    setOpened(true);
-  };
+  }, [events]);
+  const item = reservationRoutes[route];
+  const contact = reservationContact(route);
   return (
     <section id="reservas" className="reservations section">
       <div className="reservation-intro" data-reveal="rise">
-        <p className="eyebrow">RESERVAS / LA MESA DE MUSASHI</p>
-        <h2>{hospitality.reservations.title}</h2>
-        <p>{hospitality.reservations.intro}</p>
+        <p className="eyebrow">RESERVAS / ELEGÍ TU EXPERIENCIA</p>
+        <h2>¿Cómo querés disfrutar Musashi?</h2>
+        <p>
+          Tres recorridos para consultar con el equipo correspondiente. Enviar
+          una consulta no equivale a reservar.
+        </p>
         <div className="private-address">
           <span className="eyebrow">LA DIRECCIÓN, ENTRE NOSOTROS</span>
-          <p>{hospitality.reservations.privateAddress}</p>
+          <p>
+            La dirección se comparte al confirmar la reserva por el canal
+            acordado con el equipo.
+          </p>
         </div>
         <PetFriendly />
       </div>
-      <form
-        className="reservation-form"
-        onSubmit={submit}
-        aria-label="Solicitar reserva por WhatsApp"
-      >
-        {site.business.whatsappTest && (
-          <p className="test-notice">
-            WhatsApp de prueba: las solicitudes llegan a Nicolas, no al local.
-            No confirma reservas reales.
-          </p>
-        )}
-        <div className="reservation-fields">
-          {availableEvents.length > 0 && (
-            <label className="field-wide">
-              ¿Venís a un encuentro?
-              <select
-                value={eventId}
-                onChange={(e) => chooseEvent(e.target.value)}
-              >
-                <option value="">Consulta general</option>
-                {availableEvents.map((event) => (
-                  <option value={event.id} key={event.id}>
-                    {event.demo ? "Demo · " : ""}
-                    {event.title} · {event.date}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-          <label>
-            Fecha deseada
-            <input
-              type="date"
-              required
-              min={todayInMendoza()}
-              value={date}
-              readOnly={Boolean(eventId)}
-              onChange={(e) => {
-                setDate(e.target.value);
-                setOpened(false);
-              }}
-            />
-          </label>
-          <label>
-            Horario deseado
-            <input
-              type="time"
-              required
-              value={time}
-              readOnly={Boolean(eventId)}
-              onChange={(e) => {
-                setTime(e.target.value);
-                setOpened(false);
-              }}
-            />
-          </label>
-          <label className="field-wide">
-            Cantidad de personas
-            <input
-              type="number"
-              min="1"
-              step="1"
-              required
-              value={people}
-              onChange={(e) => {
-                setPeople(e.target.value);
-                setOpened(false);
-              }}
-            />
-          </label>
-          <label className="field-wide">
-            ¿Querés contarnos algo? <span className="optional">Opcional</span>
-            <textarea
-              value={notes}
-              maxLength={300}
-              rows={3}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </label>
-          {site.business.petFriendly && (
-            <label className="pet-checkbox field-wide">
-              <input
-                type="checkbox"
-                checked={pet}
-                onChange={(e) => setPet(e.target.checked)}
-              />
-              Voy con mi mascota
-            </label>
-          )}
-        </div>
-        <p className="reservation-clarification">
-          {hospitality.reservations.confirmation}
-        </p>
-        {error && (
-          <p className="form-error" role="alert">
-            {error}
-          </p>
-        )}
-        <button className="button" type="submit" disabled={!contact}>
-          Solicitar por WhatsApp<span aria-hidden="true"> →</span>
-        </button>
-        {!contact && (
-          <p className="contact-pending">
-            Mientras habilitamos este canal,{" "}
-            <a href={site.instagram} target="_blank" rel="noopener noreferrer">
-              consultá por Instagram
-            </a>
-            .
-          </p>
-        )}
-        {opened && (
-          <p className="reservation-feedback" role="status">
-            Continuá la conversación en WhatsApp. La solicitud aún no está
-            confirmada.
-          </p>
-        )}
-      </form>
-    </section>
-  );
-}
-export function HolisticSpace() {
-  const contact = whatsappContactUrl(site.business.whatsapp);
-  return (
-    <aside className="holistic-space">
-      <div>
-        <p className="eyebrow">TAMBIÉN EN MUSASHI</p>
-        <h2>{hospitality.holistic.title}</h2>
-      </div>
-      <div>
-        <p>{hospitality.holistic.description}</p>
-        <a
-          className="text-link"
-          href={contact ?? site.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
+      <div className="reservation-selector">
+        <div
+          className="reservation-options"
+          role="group"
+          aria-label="Tipo de reserva"
         >
-          {site.business.whatsappTest
-            ? "Consultar propuestas · WhatsApp de prueba"
-            : "Consultar propuestas"}
-          <span aria-hidden="true"> →</span>
-        </a>
+          {Object.entries(reservationRoutes).map(([key, value]) => (
+            <button
+              key={key}
+              type="button"
+              aria-pressed={route === key}
+              onClick={() => setRoute(key as ReservationRoute)}
+            >
+              {value.title}
+            </button>
+          ))}
+        </div>
+        <div className="reservation-route" aria-live="polite">
+          <p className="eyebrow">
+            CONSULTA /{" "}
+            {route === "bienestar"
+              ? "EQUIPO DE BIENESTAR"
+              : route === "tatami"
+                ? "TATAMI PRIVADO"
+                : "CAFETERÍA"}
+          </p>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+          {event && route === "mesa" && (
+            <p className="reservation-event">
+              Encuentro: {event.title} · {event.date} · {event.time} h
+            </p>
+          )}
+          {contact.channel === "instagram" && (
+            <p className="contact-pending">
+              El WhatsApp de este recorrido está pendiente de confirmación. La
+              consulta provisional se hace por Instagram oficial.
+            </p>
+          )}
+          <a
+            className="button"
+            href={contact.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {contact.channel === "instagram"
+              ? "Consultar por Instagram"
+              : "Consultar por WhatsApp"}
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              aria-hidden="true"
+            >
+              <path d="M4 16 16 4M4 4h12v12" />
+            </svg>
+          </a>
+          <p className="reservation-clarification">
+            La disponibilidad y las condiciones se confirman en la conversación.
+            Esta consulta no confirma una reserva.
+          </p>
+        </div>
       </div>
-    </aside>
+    </section>
   );
 }

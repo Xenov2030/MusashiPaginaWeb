@@ -30,24 +30,23 @@ test("las creaciones tienen texto HTML y solo se marca alcohol indicado por los 
   page,
 }) => {
   await page.goto("/carta");
+  await page.locator(".brand-archive summary").click();
   for (const [id, ingredient] of [
     ["samurai", "licor de chocolate con menta"],
-    ["vagabond", "licor de dulce de leche"],
+    ["marca-vagabond", "licor de dulce de leche"],
     ["red-dragon", "licor de chocolate blanco"],
     ["midori-kensei", "licor de pistacho"],
   ]) {
     const product = page.locator("#" + id);
-    await expect(product.locator(".product-copy")).toContainText(ingredient);
+    await expect(product).toContainText(ingredient);
     await expect(product.locator(".alcohol-note")).toHaveText(
       "Contiene alcohol · indicado en el afiche",
     );
   }
   for (const id of ["praline-negro", "bubble-yakuza"])
     await expect(page.locator("#" + id + " .alcohol-note")).toHaveCount(0);
-  await expect(page.locator("#praline-negro .product-copy")).toContainText(
-    "praliné de maní",
-  );
-  await expect(page.locator("#bubble-yakuza .product-copy")).toContainText(
+  await expect(page.locator("#praline-negro")).toContainText("praliné de maní");
+  await expect(page.locator("#bubble-yakuza")).toContainText(
     "tapioca caramelizadas",
   );
   const image = page.locator("#samurai .visual-image");
@@ -66,6 +65,7 @@ test("navegación del brief y pastelería con nombres descriptivos", async ({
   ).toHaveText([
     "La experiencia",
     "Carta",
+    "Reservas",
     "Tatami",
     "Cenas",
     "Bienestar",
@@ -83,7 +83,8 @@ test("navegación del brief y pastelería con nombres descriptivos", async ({
     .click();
   await expect(page.locator("#historia")).toBeInViewport();
   await page.goto("/carta");
-  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  await page.locator(".brand-archive summary").click();
+
   for (const name of [
     "Porción rectangular de pastelería",
     "Taiyaki Red Velvet",
@@ -92,7 +93,9 @@ test("navegación del brief y pastelería con nombres descriptivos", async ({
     "Pieza con forma de gato",
   ])
     await expect(
-      page.locator(".product-copy").getByRole("heading", { name, exact: true }),
+      page
+        .locator(".brand-catalog-item")
+        .getByRole("heading", { name, exact: true }),
     ).toBeVisible();
   await expect(page.locator("#carta")).not.toContainText(
     /relleno de|precio:|\$\d/,
