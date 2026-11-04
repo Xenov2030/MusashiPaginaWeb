@@ -83,12 +83,7 @@ test("revelado único, filtros con foco y recorrido grabado", async ({
     );
     // Pausas deliberadas para que la grabación muestre entradas y transiciones completas.
     await page.waitForTimeout(1100);
-    await page
-      .getByRole("button", { name: "Pausar ambiente", exact: true })
-      .click();
-    await page
-      .getByRole("button", { name: "Reanudar ambiente", exact: true })
-      .click();
+    await expect(page.locator(".ambient-pause-icon")).toHaveCount(0);
     await page.waitForTimeout(350);
 
     await page.waitForTimeout(450);

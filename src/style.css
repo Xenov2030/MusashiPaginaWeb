@@ -2297,26 +2297,6 @@ dialog.is-closing::backdrop {
 .hero-intro {
   max-width: 370px;
 }
-.ambient-pause-icon {
-  position: absolute;
-  right: var(--space);
-  top: 8px;
-  z-index: 3;
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  background: none;
-  color: #eee;
-  font-size: 17px;
-  opacity: 0.8;
-  border: 1px solid #777;
-  border-radius: 50%;
-}
-.ambient-pause-icon:hover {
-  opacity: 1;
-  background: #333;
-}
 .cherry-sprig {
   position: absolute;
   top: 5px;
@@ -2922,13 +2902,6 @@ summary:focus-visible {
   .hero .hero-actions .text-link {
     font-size: 11px;
   }
-  .ambient-pause-icon {
-    top: 1px;
-    right: var(--space);
-    width: 28px;
-    height: 28px;
-    font-size: 13px;
-  }
   .cherry-sprig {
     width: 135px;
     top: 5px;
@@ -3130,9 +3103,6 @@ summary:focus-visible {
   }
   .brush-word:after {
     animation: none;
-  }
-  .ambient-pause-icon {
-    display: none;
   }
 }
 .wellbeing-photo img {

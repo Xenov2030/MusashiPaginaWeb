@@ -18,7 +18,7 @@ test("la carta separa propuestas aportadas y especialidades del propietario", as
   await expect(page.locator(".discipline-sheet")).toContainText("bartender");
   await expect(page.locator(".filters")).not.toContainText("Reiki");
 });
-test("ambiente discreto: pausa, fuera de pantalla y pestaña oculta", async ({
+test("pétalos automáticos sin botón ni interrupción al salir de la portada", async ({
   page,
 }) => {
   await page.goto("/");
@@ -26,20 +26,15 @@ test("ambiente discreto: pausa, fuera de pantalla y pestaña oculta", async ({
   await expect(page.locator(".ambient")).toHaveAttribute("aria-hidden", "true");
   await expect(page.locator(".ambient")).toHaveCSS("pointer-events", "none");
   await expect(page.locator(".cherry-tree")).toHaveCount(0);
-  await page
-    .getByRole("button", { name: "Pausar ambiente", exact: true })
-    .click();
+  await expect(page.locator(".ambient-pause-icon")).toHaveCount(0);
   await expect(page.locator(".petal").first()).toHaveCSS(
-    "animation-play-state",
-    "paused",
+    "animation-iteration-count",
+    "infinite",
   );
-  await page
-    .getByRole("button", { name: "Reanudar ambiente", exact: true })
-    .click();
   await page.locator("#cafeteria").scrollIntoViewIfNeeded();
   await expect(page.locator(".ambient")).toHaveAttribute(
     "data-ambient-state",
-    "paused",
+    "running",
   );
   await page.locator("#inicio").scrollIntoViewIfNeeded();
   await expect(page.locator(".ambient")).toHaveAttribute(
@@ -55,7 +50,7 @@ test("ambiente discreto: pausa, fuera de pantalla y pestaña oculta", async ({
   });
   await expect(page.locator(".ambient")).toHaveAttribute(
     "data-ambient-state",
-    "paused",
+    "running",
   );
 });
 test("movimiento reducido y móvil: decoración estática y sin control innecesario", async ({
