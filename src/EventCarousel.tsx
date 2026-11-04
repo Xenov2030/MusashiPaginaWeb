@@ -36,7 +36,6 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
     : illustrations;
   const demoGallery = events.length > 0 && events.every((e) => e.demo);
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [interacting, setInteracting] = useState(false);
   const [visible, setVisible] = useState(
     document.visibilityState === "visible",
@@ -64,14 +63,7 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
     };
   }, []);
   useEffect(() => {
-    if (
-      paused ||
-      interacting ||
-      reduced ||
-      !visible ||
-      !inView ||
-      slides.length < 2
-    )
+    if (interacting || reduced || !visible || !inView || slides.length < 2)
       return;
     const interval = window.setInterval(() => {
       if (
@@ -81,9 +73,8 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
         setIndex((i) => (i + 1) % slides.length);
     }, 6000);
     return () => clearInterval(interval);
-  }, [paused, interacting, reduced, visible, inView, slides.length]);
+  }, [interacting, reduced, visible, inView, slides.length]);
   const move = (offset: number) => {
-    setPaused(true);
     setIndex((current + offset + slides.length) % slides.length);
   };
   return (
@@ -93,7 +84,7 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
       data-carousel-state={
         reduced
           ? "reduced"
-          : paused || interacting || !visible || !inView || slides.length < 2
+          : interacting || !visible || !inView || slides.length < 2
             ? "paused"
             : "running"
       }
@@ -181,16 +172,6 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
           >
             →
           </button>
-          {!reduced && (
-            <button
-              type="button"
-              className="carousel-pause"
-              aria-pressed={paused}
-              onClick={() => setPaused((p) => !p)}
-            >
-              {paused ? "Reanudar carrusel" : "Pausar carrusel"}
-            </button>
-          )}
         </div>
       )}
     </section>

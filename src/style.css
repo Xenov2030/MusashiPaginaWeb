@@ -2169,9 +2169,6 @@ dialog.is-closing::backdrop {
   border-color: var(--red);
   color: var(--red);
 }
-.carousel-controls .carousel-pause {
-  font-size: 0.75rem;
-}
 .event-archive:focus-within {
   scroll-margin-bottom: 110px;
 }

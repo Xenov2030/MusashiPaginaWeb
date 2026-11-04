@@ -84,9 +84,7 @@ test("el próximo evento usa su imagen y los anteriores forman un carrusel", asy
     carousel.getByRole("heading", { name: "Primer encuentro anterior" }),
   ).toBeVisible();
   await expect(carousel.getByRole("link")).toHaveCount(0);
-  await expect(
-    carousel.getByRole("button", { name: "Reanudar carrusel" }),
-  ).toHaveAttribute("aria-pressed", "true");
+  await expect(carousel.getByRole("button")).toHaveCount(2);
 });
 test("una imagen válida del propietario se muestra en la promoción", async ({
   page,
@@ -162,12 +160,28 @@ test("el carrusel avanza automáticamente y respeta movimiento reducido", async 
     "aria-label",
     "2 de 3",
   );
+  await carousel.getByRole("button", { name: "Imagen siguiente" }).click();
+  await expect(carousel.locator(".archive-slide:visible")).toHaveAttribute(
+    "aria-label",
+    "3 de 3",
+  );
+  await page.evaluate(() => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement.blur();
+  });
+  await page.mouse.move(0, 0);
+  await expect(carousel).toHaveAttribute("data-carousel-state", "running");
+  await page.clock.runFor(6500);
+  await expect(carousel.locator(".archive-slide:visible")).toHaveAttribute(
+    "aria-label",
+    "1 de 3",
+  );
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(carousel).toHaveAttribute("data-carousel-state", "reduced");
   await page.clock.runFor(13000);
   await expect(carousel.locator(".archive-slide:visible")).toHaveAttribute(
     "aria-label",
-    "2 de 3",
+    "1 de 3",
   );
   await expect(
     carousel.getByRole("button", { name: "Pausar carrusel" }),
