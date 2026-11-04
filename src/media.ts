@@ -111,7 +111,7 @@ export const media = {
   video: {
     src: "/media/musashi/pieza-promocional.mp4",
     poster: "/media/musashi/film-poster.webp",
-    enabled: false,
+    enabled: true,
   },
 };
 export const pastryGallery = [

@@ -47,7 +47,7 @@ La ruta `/carta` admite acceso directo y recarga. Los enlaces desde la carta vue
 - Consultas diferenciadas por experiencia. Instagram es el canal oficial confirmado. Se conserva el número personal de Nicolas autorizado para pruebas, identificado como tal en burbuja y formulario; no representa un WhatsApp oficial.
 - Dirección privada, comunicada manualmente al confirmar por WhatsApp; el formulario prepara una solicitud y no confirma reservas.
 - Pocos pétalos, una ramita ilustrada discreta, control de ambiente solo con icono, pausa fuera de pantalla/pestaña y movimiento reducido.
-- Video conservado y optimizado, pero fuera de la versión visible: muestra un personaje de época con una taza y pastelería, sin documentar el local, la preparación o al propietario. Su audio no fue verificado ni transcrito. La pieza no aporta al foco gastronómico/documental actual. El componente opcional de reproducción voluntaria queda preparado, desactivado en `src/media.ts`.
+- Video del cliente incorporado como pieza promocional en Cenas, por indicación expresa del usuario. Se abre voluntariamente desde «Ver video», con portada, controles nativos, sin reproducción automática y silenciado inicialmente. No se atribuyen frases ni se presenta como registro del local o retrato del propietario. El audio no está transcrito.
 
 La historia del nombre sigue desactivada hasta contar con texto verificado. No se anuncia fecha de apertura ni horarios actuales. La agenda ficticia de la revisión anterior fue retirada conforme al nuevo pedido; `public/events.json` está vacío.
 
@@ -89,7 +89,7 @@ npm run test:e2e
 
 Las pruebas de navegador usan Chromium mediante Playwright. En este entorno se puede usar `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium` y `PLAYWRIGHT_BROWSERS_PATH=/tmp/musashi-playwright`. La grabación requiere FFmpeg.
 
-Se verifican escritorio/móvil, cinco anchos, acceso directo y recarga, atrás/adelante, filtros, ampliación de gráficas, foco, ausencia de descarga del video archivado, estado de carga/error de la portada, contraste, pausa y movimiento reducido. La revisión local no acredita un despliegue ni comportamiento en dispositivos físicos o una conexión real con Google Calendar.
+Se verifican escritorio/móvil, cinco anchos, acceso directo y recarga, atrás/adelante, filtros, ampliación de gráficas, foco, carga voluntaria y reproducción técnica del video sin sonido automático, estado de carga/error de la portada, contraste, pausa y movimiento reducido. La revisión local no acredita un despliegue ni comportamiento en dispositivos físicos o una conexión real con Google Calendar.
 
 ## Pendientes del cliente
 

@@ -8,7 +8,7 @@ La carta cambia mediante filtros con foco conservado y una transición breve de 
 
 `motion.ts` revela secciones una sola vez y conserva limpieza de observadores/animaciones. `prefers-reduced-motion` evita transiciones decorativas. La navegación interna soporta hash directo, recarga, atrás/adelante y enlaces desde `/carta`.
 
-El carrusel de la agenda se conserva para eventos anteriores realmente publicados: cada seis segundos, con pausa al recibir foco, puntero, pestaña oculta, salida de pantalla o control manual. No se renderiza si faltan eventos anteriores. No se inventa una galería histórica. El reproductor opcional se conserva con carga voluntaria, pero el video de marca queda fuera de la versión visible hasta revisar su pertinencia y audio.
+El carrusel de la agenda se conserva para eventos anteriores realmente publicados: cada seis segundos, con pausa al recibir foco, puntero, pestaña oculta, salida de pantalla o control manual. No se renderiza si faltan eventos anteriores. No se inventa una galería histórica. El video de marca se incorpora por indicación del usuario. Solo se monta al abrir «Ver video», con controles nativos, portada, `preload="none"` y silenciado inicialmente. Al cerrar el desplegable se desmonta y deja de reproducirse.
 
 Las pruebas comprueban carga lenta/error, navegación, filtros, zoom, foco, cinco anchos, contraste, pausa y movimiento reducido. Las capturas y `docs/grabaciones/recorrido.webm` se generan con Chromium local. No sustituyen pruebas en dispositivos físicos ni acreditan publicación o conexión real a Google Calendar.
 

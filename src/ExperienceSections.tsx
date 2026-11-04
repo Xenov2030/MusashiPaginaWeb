@@ -156,14 +156,13 @@ function BrandFilm() {
             poster={media.video.poster}
             width="566"
             height="850"
+            aria-label="Video promocional de Musashi: personaje de época junto a una taza y pastelería"
             aria-describedby="film-description"
           >
             <source src={media.video.src} type="video/mp4" />
           </video>
           <figcaption id="film-description">
-            Pieza promocional aportada por Musashi. Escena de ficción de
-            inspiración japonesa; no retrata al propietario ni documenta el
-            local.
+            Pieza promocional de Musashi · material aportado por el cliente.
           </figcaption>
         </figure>
       )}

@@ -168,16 +168,52 @@ test("consultas diferenciadas, sin agenda ficticia ni dirección pública", asyn
     "Pet friendly",
   );
 });
-test("el video no inspeccionado en audio permanece archivado y sin descarga", async ({
+test("el video del cliente se abre voluntariamente con controles y sin sonido automático", async ({
   page,
 }) => {
-  const videos: string[] = [];
+  const requests: string[] = [];
   page.on("request", (r) => {
-    if (r.url().includes(".mp4")) videos.push(r.url());
+    if (r.url().includes(".mp4")) requests.push(r.url());
   });
   await page.goto("/");
-  await expect(page.locator(".brand-film,video")).toHaveCount(0);
-  expect(videos).toEqual([]);
+  await expect(page.locator(".brand-film summary")).toContainText("Ver video");
+  await expect(page.locator("video")).toHaveCount(0);
+  expect(requests).toEqual([]);
+  await page.locator(".brand-film summary").click();
+  const video = page.locator(".brand-film video");
+  await expect(video).toBeVisible();
+  await expect(video).toHaveAttribute(
+    "poster",
+    "/media/musashi/film-poster.webp",
+  );
+  await expect(video).toHaveAttribute("preload", "none");
+  expect(
+    await video.evaluate(
+      (v: HTMLVideoElement) => v.controls && v.muted && v.paused && !v.autoplay,
+    ),
+  ).toBe(true);
+  const duration = await video.evaluate(
+    (v: HTMLVideoElement) =>
+      new Promise<number>((resolve, reject) => {
+        v.addEventListener("loadedmetadata", () => resolve(v.duration), {
+          once: true,
+        });
+        v.addEventListener(
+          "error",
+          () => reject(new Error("Video no disponible")),
+          { once: true },
+        );
+        v.preload = "metadata";
+        v.load();
+      }),
+  );
+  expect(duration).toBeGreaterThan(15);
+  expect(duration).toBeLessThan(17);
+  await expect(page.locator("#film-description")).toContainText(
+    "material aportado por el cliente",
+  );
+  await page.locator(".brand-film summary").click();
+  await expect(video).toHaveCount(0);
 });
 test("contraste de lectura, controles y espacios diferenciados", async ({
   page,
