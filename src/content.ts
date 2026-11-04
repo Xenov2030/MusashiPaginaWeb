@@ -1,3 +1,4 @@
+import { media, suppliedVisuals } from "./media";
 export interface VisualResource {
   src: string;
   alt: string;
@@ -9,6 +10,7 @@ export interface VisualResource {
   srcSet?: string;
   sizes?: string;
   source: string;
+  format?: "photo" | "graphic";
 }
 export const conceptualVisuals: Record<
   | "hero"
@@ -93,16 +95,18 @@ export const conceptualVisuals: Record<
 };
 export const copy = {
   hero: {
-    headline: ["Hay un lugar", "para vos en"],
+    title: "Japón detrás de una puerta",
+    headline: ["Japón detrás", "de una puerta"],
     intro:
-      "Café de especialidad, té y coctelería con inspiración japonesa. Tomate un ratito.",
-    stage: "Musashi prepara un nuevo espacio. Las novedades, en Instagram.",
+      "Una cafetería oculta en Mendoza. Café de especialidad, pastelería japonesa y experiencias para disfrutar sin apuro.",
+    stage: "",
   },
   menu: {
-    title: "Elegí algo rico.",
-    subtitle: "Café, té, coctelería y sabores de Japón.",
+    title: "Creaciones de Musashi",
+    subtitle: "Café de autor y pastelería japonesa.",
   },
-  draftNote: "Boceto · Imágenes conceptuales y contenido sujeto a confirmación",
+  draftNote:
+    "Creaciones documentadas por Musashi. Consultá disponibilidad actual, ingredientes y precios.",
 };
 export interface Product {
   id: string;
@@ -115,6 +119,8 @@ export interface Product {
   image?: VisualResource;
   availability: "pending" | "available" | "unavailable";
   confirmedFeatures: string[];
+  alcohol?: "indicated" | "not-stated";
+  transcription?: "legible" | "not-provided";
 }
 export interface CafeEvent {
   title: string;
@@ -129,7 +135,7 @@ export interface CafeEvent {
 export const site = {
   brand: "MUSASHI",
   draft: true,
-  stage: "coming-soon" as "coming-soon" | "open",
+  stage: "unconfirmed" as "coming-soon" | "open" | "unconfirmed",
   instagram: "https://www.instagram.com/musashi.animecafe/",
   author: { name: "NICOLAS AGUIRRES", url: "https://nicolasaguirrescode.com/" },
   owner: {
@@ -138,8 +144,8 @@ export const site = {
   },
   visuals: {
     provisional: true,
-    logo: null as string | null,
-    heroScene: null as VisualResource | null,
+    logo: media.logo as string | null,
+    heroScene: media.portada as VisualResource | null,
     heroDetail: null as VisualResource | null,
     experienceSpace: null as VisualResource | null,
     experienceDetail: null as VisualResource | null,
@@ -154,62 +160,122 @@ export const site = {
     whatsappTest: true,
   },
 };
-export const demoProducts: Product[] = [
-  {
-    id: "cafe",
-    detail:
-      "El café de especialidad pone atención en la calidad y el recorrido del grano. Acercarse a él es descubrir diferencias de aroma, cuerpo y sabor en cada taza.",
-    texture: "Aroma, cuerpo y sabor: tres maneras de empezar a conocerlo.",
-    image: conceptualVisuals.cafe,
-    name: "Café de especialidad",
-    category: "Café",
-    description: "Café de especialidad, el comienzo de una buena merienda.",
-    priceARS: null,
-    availability: "pending",
-    confirmedFeatures: [],
-  },
-  {
-    id: "mochi",
-    detail:
-      "El mochi es una preparación japonesa que se reconoce por su textura elástica. En su versión dulce puede acompañarse de diferentes rellenos; su particularidad está en cómo se siente cada bocado.",
-    texture: "Su particularidad está en la textura suave y elástica.",
-    image: conceptualVisuals.mochi,
-    name: "Mochi",
-    category: "Cocina y pastelería japonesa",
-    description: "Un dulce japonés pequeño, suave y de textura elástica.",
-    priceARS: null,
-    availability: "pending",
-    confirmedFeatures: [],
-  },
-  {
-    id: "dorayaki",
-    detail:
-      "El dorayaki reúne dos discos de masa parecidos a pequeños panqueques con un relleno dulce. Es un clásico de la pastelería japonesa: una forma sencilla de acercarse a otros sabores.",
-    texture: "Una masa esponjosa que se disfruta bocado a bocado.",
-    image: conceptualVisuals.dorayaki,
-    name: "Dorayaki",
-    category: "Cocina y pastelería japonesa",
-    description: "Dos discos de masa esponjosa con un corazón dulce.",
-    priceARS: null,
-    availability: "pending",
-    confirmedFeatures: [],
-  },
-  {
-    id: "cheesecake",
-    detail:
-      "El cheesecake japonés es una interpretación ligera y aireada de la torta de queso. Su miga suave lo distingue de otras versiones más densas y lo convierte en otra manera de explorar esta preparación.",
-    texture: "Ligero, delicado y de miga aireada.",
-    image: conceptualVisuals.cheesecake,
-    name: "Cheesecake japonés",
-    category: "Cocina y pastelería japonesa",
-    description: "La versión japonesa de la torta de queso: suave y aireada.",
-    priceARS: null,
-    availability: "pending",
-    confirmedFeatures: [],
-  },
+const suppliedProduct = (
+  id: string,
+  name: string,
+  category: Category,
+  image: VisualResource,
+  description: string,
+  alcohol: Product["alcohol"] = "not-stated",
+  transcription: Product["transcription"] = "not-provided",
+): Product => ({
+  id,
+  name,
+  category,
+  image,
+  description,
+  alcohol,
+  transcription,
+  detail:
+    "Creación documentada en el material de Musashi. Consultá disponibilidad y precios.",
+  texture: "Consultá ingredientes y alérgenos antes de pedir.",
+  priceARS: null,
+  availability: "pending",
+  confirmedFeatures: [],
+});
+export const suppliedProducts: Product[] = [
+  suppliedProduct(
+    "pasteleria",
+    "Porción rectangular de pastelería",
+    "Pastelería",
+    suppliedVisuals.pastry,
+    "Nombre comercial y elaboración por confirmar con Musashi.",
+  ),
+  suppliedProduct(
+    "vagabond",
+    "Vagabond",
+    "Café y creaciones de autor",
+    suppliedVisuals.vagabond,
+    "Doble espresso, leche, crema de leche, chocolate blanco y touch de licor de dulce de leche.",
+    "indicated",
+    "legible",
+  ),
+  suppliedProduct(
+    "taiyaki",
+    "Taiyaki Red Velvet",
+    "Pastelería",
+    suppliedVisuals.taiyaki,
+    "Taiyaki Red Velvet, una creación de Musashi. Consultá su elaboración y disponibilidad.",
+  ),
+  suppliedProduct(
+    "samurai",
+    "Samurai Coffee",
+    "Café y creaciones de autor",
+    suppliedVisuals.samurai,
+    "Doble espresso, leche, crema de leche y un touch de licor de chocolate con menta.",
+    "indicated",
+    "legible",
+  ),
+  suppliedProduct(
+    "red-dragon",
+    "Red Dragon",
+    "Café y creaciones de autor",
+    suppliedVisuals.redDragon,
+    "Espresso, red velvet, frambuesa, licor de chocolate blanco y leche texturizada.",
+    "indicated",
+    "legible",
+  ),
+  suppliedProduct(
+    "bubble-yakuza",
+    "Bubble Yakuza",
+    "Café y creaciones de autor",
+    suppliedVisuals.bubble,
+    "Latte de vainilla cremosa con perlas de tapioca caramelizadas.",
+    "not-stated",
+    "legible",
+  ),
+  suppliedProduct(
+    "praline-negro",
+    "Praliné Negro",
+    "Café y creaciones de autor",
+    suppliedVisuals.praline,
+    "Leche texturizada, sésamo negro, praliné de maní, caramelo, miel y vainilla.",
+    "not-stated",
+    "legible",
+  ),
+  suppliedProduct(
+    "midori-kensei",
+    "Midori Kensei",
+    "Café y creaciones de autor",
+    suppliedVisuals.midori,
+    "Latte con chocolate blanco & touch de licor de pistacho.",
+    "indicated",
+    "legible",
+  ),
+  suppliedProduct(
+    "panda",
+    "Pieza con forma de panda",
+    "Pastelería",
+    suppliedVisuals.panda,
+    "Título descriptivo provisional. Consultá el nombre y la elaboración con el equipo.",
+  ),
+  suppliedProduct(
+    "totoro",
+    "Piezas inspiradas en Totoro",
+    "Pastelería",
+    suppliedVisuals.characters,
+    "Una elaboración de la marca, presentada entera y cortada. Nombre comercial e ingredientes por confirmar.",
+  ),
+  suppliedProduct(
+    "gato",
+    "Pieza con forma de gato",
+    "Pastelería",
+    suppliedVisuals.cat,
+    "Título descriptivo provisional. Consultá el nombre y la elaboración con el equipo.",
+  ),
 ];
-// Cargar solo productos aprobados por el propietario. No copiar automáticamente los de demostración.
-export const confirmedProducts: Product[] = [];
+export const confirmedProducts = suppliedProducts;
+export const demoProducts: Product[] = [];
 export const demoEvent: CafeEvent = {
   title: "Noche de Ramen",
   description:
@@ -221,12 +287,12 @@ export const demoEvent: CafeEvent = {
   status: "illustrative",
 };
 export type Category =
-  "Café" | "Té y blends" | "Coctelería" | "Cocina y pastelería japonesa";
+  "Café y creaciones de autor" | "Té y blends" | "Coctelería" | "Pastelería";
 export const categories: Category[] = [
-  "Café",
+  "Café y creaciones de autor",
   "Té y blends",
   "Coctelería",
-  "Cocina y pastelería japonesa",
+  "Pastelería",
 ];
 export const disciplines = {
   "Té y blends": {
@@ -308,4 +374,28 @@ export const hospitality = {
     description:
       "Musashi también cuenta con un espacio holístico acompañado por sus colaboradoras. Consultá las propuestas y los encuentros por nuestro canal de contacto.",
   },
+};
+
+// Relato y política suministrados por el propietario. No implican afirmaciones dietéticas.
+export const beveragePolicy = {
+  title: "Cada creación, tal como fue concebida",
+  text: "Nuestras bebidas se sirven según su receta de autor. No ofrecemos azúcar ni edulcorantes adicionales para agregarles",
+};
+export const ownerStory = {
+  title: "Una historia diferente. Una esencia que evoluciona",
+  moments: [
+    {
+      title: "El origen",
+      text: "Musashi nació con una idea: crear algo diferente. Sus primeros pasos como Anime Café abrieron un espacio para compartir la pasión por la cultura japonesa.",
+    },
+    {
+      title: "La exploración",
+      text: "El camino continuó con la exploración de nuevas propuestas y experiencias.",
+    },
+    {
+      title: "Una nueva etapa",
+      text: "Hoy esa historia continúa como cafetería japonesa oculta, con una propuesta que reúne cafetería de autor, pastelería japonesa, cenas, un tatami privado y experiencias de bienestar.",
+    },
+  ],
+  closing: "El camino cambia, la esencia permanece",
 };

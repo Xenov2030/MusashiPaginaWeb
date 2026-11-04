@@ -1,44 +1,42 @@
 import { test, expect } from "@playwright/test";
-test("cuatro categorías claras sin productos ni precios inventados", async ({
+test("la carta separa propuestas aportadas y especialidades del propietario", async ({
   page,
 }) => {
   await page.goto("/carta");
-  for (const category of [
-    "Café",
+  for (const name of [
+    "Café y creaciones de autor",
+    "Pastelería",
     "Té y blends",
     "Coctelería",
-    "Cocina y pastelería japonesa",
   ])
-    await expect(
-      page.getByRole("button", { name: category, exact: true }),
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name, exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Té y blends", exact: true }).click();
   await expect(page.locator(".product")).toHaveCount(0);
   await expect(page.locator(".discipline-sheet")).toContainText("tea blender");
-  await expect(page.getByRole("status")).toContainText("0 propuestas");
   await page.getByRole("button", { name: "Coctelería", exact: true }).click();
   await expect(page.locator(".product")).toHaveCount(0);
   await expect(page.locator(".discipline-sheet")).toContainText("bartender");
-  await expect(page.locator(".price")).toHaveCount(0);
-  await page
-    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
-    .click();
-  await expect(page.locator(".product")).toHaveCount(3);
+  await expect(page.locator(".filters")).not.toContainText("Reiki");
 });
-test("pétalos sin control visible y pausa fuera de pantalla", async ({
+test("ambiente discreto: pausa, fuera de pantalla y pestaña oculta", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(page.locator(".petal")).toHaveCount(6);
-  await expect(page.locator(".cherry-tree, .cherry-branch")).toHaveCount(0);
   await expect(page.locator(".ambient")).toHaveAttribute("aria-hidden", "true");
   await expect(page.locator(".ambient")).toHaveCSS("pointer-events", "none");
-  await expect(page.locator(".ambient")).toHaveAttribute(
-    "data-ambient-state",
-    "running",
+  await expect(page.locator(".cherry-tree")).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "Pausar ambiente", exact: true })
+    .click();
+  await expect(page.locator(".petal").first()).toHaveCSS(
+    "animation-play-state",
+    "paused",
   );
-  await expect(page.locator(".ambient-control")).toHaveCount(0);
-  await page.locator("#experiencia").scrollIntoViewIfNeeded();
+  await page
+    .getByRole("button", { name: "Reanudar ambiente", exact: true })
+    .click();
+  await page.locator("#cafeteria").scrollIntoViewIfNeeded();
   await expect(page.locator(".ambient")).toHaveAttribute(
     "data-ambient-state",
     "paused",
@@ -60,7 +58,7 @@ test("pétalos sin control visible y pausa fuera de pantalla", async ({
     "paused",
   );
 });
-test("móvil y movimiento reducido: composición estática, sin lluvia de pétalos", async ({
+test("movimiento reducido y móvil: decoración estática y sin control innecesario", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -71,7 +69,7 @@ test("móvil y movimiento reducido: composición estática, sin lluvia de pétal
     "reduced",
   );
   await expect(
-    page.getByRole("button", { name: "Pausar pétalos" }),
+    page.getByRole("button", { name: "Pausar ambiente" }),
   ).toHaveCount(0);
   await expect(page.locator(".petal").first()).toHaveCSS(
     "animation-name",
@@ -82,32 +80,23 @@ test("móvil y movimiento reducido: composición estática, sin lluvia de pétal
     page.getByRole("heading", { name: "El nombre y su historia" }),
   ).toHaveCount(0);
 });
-test("oficios y encuentros: cada antecedente abre su contexto y devuelve el foco", async ({
+test("tatami privado y bienestar respetan el modelo sin inventar condiciones", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(
-    page.getByRole("heading", { name: "Barista", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Tea blender", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Bartender", exact: true }),
-  ).toBeVisible();
-  for (const label of [
-    "Conocer onigiris",
-    "Conocer tatamis",
-    "Conocer la propuesta",
-  ]) {
-    const opener = page.getByRole("button", { name: label, exact: true });
-    await opener.click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("dialog")).toContainText(
-      "No hay fecha, precio, cupos ni reservas",
-    );
-    await page.keyboard.press("Escape");
-    await expect(page.getByRole("dialog")).not.toBeVisible();
-    await expect(opener).toBeFocused();
-  }
+  await expect(page.locator("#tatami")).toContainText("espacio privado");
+  await expect(page.locator("#tatami")).toContainText("ambiente íntimo");
+  await expect(page.locator("#tatami")).toContainText("Composición conceptual");
+  await expect(page.locator("#tatami")).not.toContainText(
+    /capacidad|tarifa|personas|por hora/i,
+  );
+  for (const name of ["Masajes Tui Na", "Acupuntura", "Reiki"])
+    await expect(page.locator("#bienestar")).toContainText(name);
+  await expect(page.locator("#bienestar")).not.toContainText(
+    /curación|cura|garantiz|certificad/i,
+  );
+  for (const name of ["Barista", "Tea blender", "Bartender"])
+    await expect(
+      page.getByRole("heading", { name, exact: true }),
+    ).toBeVisible();
 });

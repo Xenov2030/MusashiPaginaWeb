@@ -30,7 +30,7 @@ Para cerrar reservas añadir `[COMPLETO]` al título. Para retirar una publicaci
 
 ## Estado de esta entrega
 
-El conector está preparado; falta que el propietario realice la conexión de su cuenta. Sin URL configurada, la agenda usa `public/events.json` (eventos ficticios autorizados para esta página de muestra). El WhatsApp configurado es el número personal de Nicolas, autorizado solo para pruebas; `src/content.ts` mantiene `whatsappTest: true`. Al recibir el número oficial, cambiarlo y desactivar ese indicador. No prometer reservas reales mientras siga en prueba.
+El conector está preparado; falta que el propietario realice la conexión de su cuenta. Sin URL configurada, la agenda usa `public/events.json` (actualmente vacío). El WhatsApp configurado es el número personal de Nicolas, autorizado solo para pruebas; `src/content.ts` mantiene `whatsappTest: true`. Al recibir el número oficial, cambiarlo y desactivar ese indicador. No prometer reservas reales mientras siga en prueba.
 
 ## Imagen promocional y galería de eventos anteriores
 
@@ -46,4 +46,4 @@ El evento futuro más cercano se destaca con su imagen, fecha y solicitud de res
 
 Si no hay fotos cargadas, se usan imágenes conceptuales identificadas; nunca se presentan como registros reales. Si falla una imagen, se muestra la alternativa conceptual. Sin eventos futuros se mantiene un bloque promocional sin inventar una fecha. Para habilitar estas novedades en un script ya desplegado, copiar la versión actual de `Code.gs` y publicar una nueva versión de la implementación conservando su URL.
 
-Los eventos de demostración de `public/events.json` están marcados con `demo: true`. Son datos inventados a pedido del usuario para mostrar la presentación y no se mezclan con Google Calendar: al conectar el calendario, su agenda reemplaza los ejemplos. Antes de la versión oficial, retirar estos ejemplos y configurar el WhatsApp oficial.
+La nueva dirección del negocio retiró los eventos ficticios de la muestra anterior. El archivo público permanece vacío hasta recibir próximos eventos confirmados; no volver a publicar las fechas de demostración.

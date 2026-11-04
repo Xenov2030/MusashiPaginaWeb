@@ -87,7 +87,7 @@ export function OfficialAgenda({
           ? "ENCUENTROS / AGENDA DE MUESTRA"
           : "ENCUENTROS / AGENDA OFICIAL"}
       </p>
-      <h2>Tu próxima cita con Musashi.</h2>
+      <h2>Los próximos encuentros.</h2>
       {events.some((event) => event.demo) && (
         <p className="demo-agenda-note">
           Agenda de muestra · Eventos y fechas ficticios para visualizar la
@@ -118,20 +118,9 @@ export function OfficialAgenda({
           <EventDetails event={next} />
         </article>
       ) : (
-        <div className="featured-event event-awaiting">
-          <EventImage title="Próximos encuentros de Musashi" />
-          <div className="event-details">
-            <p className="eyebrow">UNA NUEVA OCASIÓN PARA ENCONTRARNOS</p>
-            <h3>La próxima mesa, por descubrir.</h3>
-            <p>
-              Estamos preparando nuevos encuentros. Acá vas a encontrar la
-              imagen, la fecha y la propuesta de cada evento cuando se publique.
-            </p>
-            <a className="button" href="#reservas">
-              Consultar próximos encuentros →
-            </a>
-          </div>
-        </div>
+        <a className="text-link" href="#reservas">
+          Consultar próximas experiencias →
+        </a>
       )}
       {upcoming.length > 1 && (
         <div className="agenda-grid">
@@ -147,7 +136,7 @@ export function OfficialAgenda({
           ))}
         </div>
       )}
-      <EventCarousel events={previous} />
+      {previous.length > 0 && <EventCarousel events={previous} />}
     </section>
   );
 }

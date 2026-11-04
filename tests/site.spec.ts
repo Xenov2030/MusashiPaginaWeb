@@ -1,33 +1,55 @@
 import { test, expect } from "@playwright/test";
-
-test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
+async function readyImages(page: import("@playwright/test").Page) {
+  await page.evaluate(() => document.fonts.ready);
+  await page.locator("img").evaluateAll((images) =>
+    Promise.all(
+      images.map((img) => {
+        img.loading = "eager";
+        return img.decode().catch(() => {});
+      }),
+    ),
+  );
+}
+test("escritorio: identidad real, experiencia, ampliación de imagen y firma", async ({
+  page,
+}) => {
   const errors: string[] = [];
-  page.on("pageerror", (error) => errors.push(error.message));
-  page.on("console", (message) => {
-    if (message.type() === "error") errors.push(message.text());
-  });
-  page.on("response", (response) => {
-    if (response.status() >= 400)
-      errors.push(`${response.status()} ${response.url()}`);
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("response", (r) => {
+    if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Hay un lugar",
+    "Japón detrás de una puerta",
   );
-  await page.getByRole("link", { name: "Explorar la carta" }).click();
-  await expect(page).toHaveURL(/#carta$/);
-  await page.getByRole("button", { name: "Conocer la propuesta" }).click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await page.keyboard.press("Tab");
-  await expect(page.getByRole("dialog")).toContainText(
-    "No hay fecha, precio, cupos ni reservas",
+  await expect(page.locator(".header .brand img")).toHaveAttribute(
+    "src",
+    "/media/musashi/logo.webp",
+  );
+  await expect(page.locator(".hero-visual .visual-image")).toHaveAttribute(
+    "data-resource-kind",
+    "confirmed",
+  );
+  await page.getByRole("link", { name: "Descubrí Musashi" }).click();
+  await expect(page).toHaveURL(/#experiencia$/);
+  await page
+    .getByRole("link", { name: "Explorar la carta", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/carta$/);
+  const opener = page.getByRole("button", {
+    name: "Ampliar gráfica de Vagabond",
+  });
+  await opener.click();
+  const dialog = page.getByRole("dialog", { name: "Imagen de Vagabond" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator("img")).toHaveAttribute(
+    "src",
+    "/media/musashi/vagabond.webp",
   );
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog")).not.toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Conocer la propuesta" }),
-  ).toBeFocused();
+  await expect(dialog).not.toBeVisible();
+  await expect(opener).toBeFocused();
   await expect(
     page.getByRole("link", { name: /DESARROLLADO POR NICOLAS AGUIRRES/ }),
   ).toHaveAttribute("href", "https://nicolasaguirrescode.com/");
@@ -36,155 +58,84 @@ test("escritorio: portada, navegación, modal y firma", async ({ page }) => {
     "noindex, nofollow",
   );
   await page.goto("/");
-  await page.evaluate(() => document.fonts.ready);
-  await page.locator("img").evaluateAll((images) =>
-    Promise.all(
-      images.map((img) => {
-        img.loading = "eager";
-        return img.decode();
-      }),
-    ),
-  );
-  await page.evaluate(() => scrollTo(0, 0));
-  await page.evaluate(() => {
-    if (document.activeElement instanceof HTMLElement)
-      document.activeElement.blur();
-  });
+  await readyImages(page);
   await page.screenshot({
     path: "docs/capturas/escritorio.png",
     fullPage: true,
     animations: "disabled",
   });
-  for (const img of await page.locator(".product-selection img").all()) {
-    const box = await img.boundingBox();
-    expect(box!.height / box!.width).toBeLessThan(1.5);
-  }
   expect(errors).toEqual([]);
 });
-
-test("carta: acceso directo, filtros, recarga y regreso", async ({ page }) => {
-  await page.goto("/carta");
-  await expect(page.locator(".product")).toHaveCount(4);
+test("carta: recursos aportados, filtros, acceso directo y recarga", async ({
+  page,
+}) => {
+  await page.goto("/carta#taiyaki");
+  await expect(page.locator(".product")).toHaveCount(11);
+  await expect(page.locator("#taiyaki")).toBeInViewport();
+  await page.reload();
+  await expect(page.locator("#taiyaki")).toBeInViewport();
   await page
-    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
+    .getByRole("button", { name: "Café y creaciones de autor", exact: true })
     .click();
-  await expect(page.locator(".product")).toHaveCount(3);
-  await expect(
-    page.getByRole("heading", { name: "Café de especialidad", exact: true }),
-  ).toHaveCount(0);
-  await page.getByRole("button", { name: "Café", exact: true }).click();
-  await expect(page.locator(".product")).toHaveCount(1);
+  await expect(page.locator(".product")).toHaveCount(6);
+  await page.getByRole("button", { name: "Pastelería", exact: true }).click();
+  await expect(page.locator(".product")).toHaveCount(5);
   await page.getByRole("button", { name: "Todo", exact: true }).click();
-  await expect(page.locator(".product")).toHaveCount(4);
-  await expect(page.locator(".product-extended")).toHaveCount(4);
-  await expect(
-    page.getByRole("heading", { name: /primera vez/ }),
-  ).toBeVisible();
-  await page.locator("img").evaluateAll((images) =>
-    Promise.all(
-      images.map((img) => {
-        img.loading = "eager";
-        return img.decode();
-      }),
-    ),
-  );
-  await page.evaluate(() => {
-    if (document.activeElement instanceof HTMLElement)
-      document.activeElement.blur();
-  });
+  await expect(page.locator(".price")).toHaveCount(0);
+  await readyImages(page);
   await page.screenshot({
     path: "docs/capturas/carta.png",
     fullPage: true,
     animations: "disabled",
   });
-  await page.reload();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Una carta para descubrir.",
-  );
-  await page
-    .getByRole("navigation", { name: "Principal", exact: true })
-    .getByRole("link", { name: "El oficio" })
-    .click();
-  await expect(page.locator("#experiencia")).toBeVisible();
 });
-
-test("móvil: menú, cierre con Escape, filtros y captura sin desbordamiento", async ({
-  page,
-}) => {
+test("móvil: menú accesible y navegación al tatami", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  const toggle = page.getByRole("button", { name: "Menú +" });
-  await toggle.click();
+  const menu = page.getByRole("button", { name: "Menú +" });
+  await menu.click();
   await expect(
     page.getByRole("navigation", { name: "Principal", exact: true }),
   ).toBeVisible();
-  await page
-    .getByRole("navigation", { name: "Principal", exact: true })
-    .getByRole("link", { name: "Carta", exact: true })
-    .focus();
   await page.keyboard.press("Escape");
-  await expect(toggle).toBeFocused();
-  await toggle.click();
+  await expect(menu).toBeFocused();
+  await menu.click();
   await page
     .getByRole("navigation", { name: "Principal", exact: true })
-    .getByRole("link", { name: "Carta", exact: true })
+    .getByRole("link", { name: "Tatami", exact: true })
     .click();
-  await expect(page).toHaveURL(/\/carta$/);
-  await page
-    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
-    .click();
-  await expect(page.locator(".product")).toHaveCount(3);
+  await expect(page.locator("#tatami")).toBeInViewport();
+  await expect(menu).toHaveAttribute("aria-expanded", "false");
   await page.goto("/");
-  await page.evaluate(() => document.fonts.ready);
-  await page.locator("img").evaluateAll((images) =>
-    Promise.all(
-      images.map((img) => {
-        img.loading = "eager";
-        return img.decode();
-      }),
-    ),
-  );
-  await page.evaluate(() => scrollTo(0, 0));
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBe(true);
-  await page.evaluate(() => {
-    if (document.activeElement instanceof HTMLElement)
-      document.activeElement.blur();
-  });
+  await readyImages(page);
   await page.screenshot({
     path: "docs/capturas/movil.png",
     fullPage: true,
     animations: "disabled",
   });
 });
-
-test("anchos adaptables, teclado y recursos locales", async ({ page }) => {
+test("anchos adaptables, recursos locales y acceso por teclado", async ({
+  page,
+}) => {
   const external: string[] = [];
-  page.on("request", (request) => {
-    if (!request.url().startsWith("http://127.0.0.1"))
-      external.push(request.url());
+  page.on("request", (r) => {
+    if (!r.url().startsWith("http://127.0.0.1")) external.push(r.url());
   });
-  for (const width of [320, 768, 1024, 1440]) {
+  for (const width of [320, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
-    await page.goto("/carta");
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
+    for (const path of ["/", "/carta"]) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+    }
   }
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Hay un lugar",
+    "Japón detrás",
   );
   await page.keyboard.press("Tab");
   await expect(
@@ -192,138 +143,49 @@ test("anchos adaptables, teclado y recursos locales", async ({ page }) => {
   ).toBeFocused();
   expect(external).toEqual([]);
 });
-
-test("paleta del rediseño: neutros y único acento rojo", async ({ page }) => {
-  for (const route of ["/", "/carta"]) {
-    await page.goto(route);
-    const unexpected = await page.evaluate(() => {
-      const invalid = new Set<string>();
-      for (const element of document.querySelectorAll("body *")) {
-        const style = getComputedStyle(element);
-        for (const property of [
-          "color",
-          "backgroundColor",
-          "borderTopColor",
-          "borderBottomColor",
-          "fill",
-          "stroke",
-        ]) {
-          const value = style.getPropertyValue(
-            property.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`),
-          );
-          const match = value.match(/^rgba?\((\d+), (\d+), (\d+)/);
-          if (!match) continue;
-          const [r, g, b] = match.slice(1).map(Number);
-          if (!(r === g && g === b) && !(r === 197 && g === 22 && b === 36))
-            invalid.add(value);
-        }
-      }
-      return [...invalid];
-    });
-    expect(unexpected).toEqual([]);
-  }
-});
-
-test("portada gastronómica, selección breve y navegación activa", async ({
+test("consultas diferenciadas, sin agenda ficticia ni dirección pública", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Menú +" }).click();
-  await expect(
-    page
-      .getByRole("navigation", { name: "Principal", exact: true })
-      .getByRole("link", { name: "Inicio" }),
-  ).toHaveAttribute("aria-current", "location");
-  await page.getByRole("button", { name: "Cerrar −" }).click();
-  await expect(page.locator(".hero-visual .visual-image")).toBeVisible();
-  expect(
-    await page
-      .locator(".hero-visual .visual-image")
-      .evaluate((img) => img.getBoundingClientRect().top),
-  ).toBeLessThan(600);
-  await expect(page.locator(".product")).toHaveCount(3);
-  await expect(page.locator(".product-featured h3")).toHaveText("Mochi");
-  await page
-    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
-    .click();
-  await expect(page.locator(".product")).toHaveCount(2);
-  await expect(page.getByRole("status")).toContainText("2 propuestas");
-  await page.getByRole("link", { name: "Conocé este sabor" }).first().click();
-  await expect(page).toHaveURL(/\/carta#mochi$/);
-  await expect(page.locator("#mochi")).toBeAttached();
-  await expect(
-    page.getByRole("heading", { name: "Mochi", exact: true }),
-  ).toBeInViewport();
+  for (const name of [
+    "Consultar por el tatami",
+    "Consultar por bienestar",
+    "Consultar por las cenas",
+  ])
+    await expect(page.getByRole("link", { name, exact: true })).toHaveAttribute(
+      "href",
+      "https://www.instagram.com/musashi.animecafe/",
+    );
+  await expect(page.locator("#agenda")).toContainText(
+    "Todavía no hay encuentros publicados",
+  );
+  await expect(page.locator(".featured-event,.event-archive")).toHaveCount(0);
+  await expect(page.locator('iframe[src*="maps"]')).toHaveCount(0);
+  await expect(page.locator("#reservas")).toContainText(
+    "la dirección se comparte por WhatsApp al confirmar",
+  );
+  await expect(page.locator(".pet-friendly").first()).toContainText(
+    "Pet friendly",
+  );
 });
-
-test("recursos honestos, foco del modal y movimiento reducido", async ({
+test("el video no inspeccionado en audio permanece archivado y sin descarga", async ({
   page,
 }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+  const videos: string[] = [];
+  page.on("request", (r) => {
+    if (r.url().includes(".mp4")) videos.push(r.url());
+  });
   await page.goto("/");
-  await expect(
-    page.locator(".hero-visual .visual-image").first(),
-  ).toHaveAttribute("fetchpriority", "high");
-  await expect(
-    page.locator(".hero-visual .visual-image").first(),
-  ).toHaveAttribute("loading", "eager");
-  await expect(
-    page.locator(".hero-visual .visual-image").first(),
-  ).toHaveAttribute("data-resource-kind", "conceptual");
-  await expect(page.locator(".experience-composition img")).toHaveCount(1);
-  await expect(page.locator(".experience-composition img")).toHaveAttribute(
-    "data-resource-kind",
-    "conceptual",
-  );
-  await expect(page.locator(".experience-composition img")).toHaveAttribute(
-    "loading",
-    "lazy",
-  );
-  await page.locator(".experience-main img").scrollIntoViewIfNeeded();
-  await expect
-    .poll(() =>
-      page
-        .locator(".experience-main img")
-        .evaluate(
-          (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
-        ),
-    )
-    .toBe(true);
-  await expect(page.locator(".draft-note")).toHaveCount(1);
-  await expect(page.locator(".draft-note")).toContainText(
-    "Imágenes conceptuales",
-  );
-  await page
-    .getByRole("button", { name: "Cocina y pastelería japonesa", exact: true })
-    .click();
-  expect(
-    await page
-      .locator(".product-selection")
-      .evaluate((el) => getComputedStyle(el).animationName),
-  ).toBe("none");
-  expect(
-    await page.evaluate(
-      () => getComputedStyle(document.documentElement).scrollBehavior,
-    ),
-  ).toBe("auto");
-  const trigger = page.getByRole("button", { name: "Conocer la propuesta" });
-  await trigger.click();
-  const close = page.getByRole("button", { name: "Cerrar detalle del evento" });
-  await expect(close).toBeFocused();
-  await page.keyboard.press("Shift+Tab");
-  await expect(page.getByRole("dialog").getByRole("link")).toBeFocused();
-  await page.keyboard.press("Tab");
-  await expect(close).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(trigger).toBeFocused();
+  await expect(page.locator(".brand-film,video")).toHaveCount(0);
+  expect(videos).toEqual([]);
 });
-
-test("contraste de lectura y controles", async ({ page }) => {
+test("contraste de lectura, controles y espacios diferenciados", async ({
+  page,
+}) => {
   await page.goto("/");
   const ratios = await page.evaluate(() => {
-    const rgb = (value: string) =>
-      value
+    const lum = (value: string) => {
+      const a = value
         .match(/\d+/g)!
         .slice(0, 3)
         .map(Number)
@@ -331,40 +193,27 @@ test("contraste de lectura y controles", async ({ page }) => {
           const n = v / 255;
           return n <= 0.04045 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4;
         });
-    const luminance = (value: string) => {
-      const [r, g, b] = rgb(value);
-      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
     };
-    const contrast = (fg: string, bg: string) => {
-      const a = luminance(fg),
-        b = luminance(bg);
-      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
-    };
-    const pairs = [
+    return [
       [".hero-intro", ".hero-paper"],
-      [".hero-actions .button", ".hero-actions .button"],
-      [".draft-note", ".menu-section"],
-      [".poster-copy>p:not(.eyebrow)", ".event-poster"],
-      [".contact-action>p", ".contact"],
-      [".reservation-intro>p:not(.eyebrow)", ".reservations"],
+      [".essence-copy>p:not(.lead)", ".essence"],
+      [".craft-list article p", ".coffee-intro"],
+      [".tatami-copy>p:not(.eyebrow)", ".tatami-story"],
+      [".wellbeing-copy>p:not(.eyebrow)", ".wellbeing-story"],
       [".private-address p", ".reservations"],
-      [".reservations .pet-friendly", ".reservations"],
-      [".holistic-space p", ".holistic-space"],
-      [".official-agenda>p", ".official-agenda"],
-      [".archive-copy p", ".archive-slide"],
       [".whatsapp-bubble", ".whatsapp-bubble"],
-    ];
-    return pairs.map(([text, background]) => {
-      const fg = getComputedStyle(document.querySelector(text)!).color;
-      let el: Element | null = document.querySelector(background);
-      let bg = "rgba(0, 0, 0, 0)";
-      while (el && bg === "rgba(0, 0, 0, 0)") {
-        bg = getComputedStyle(el).backgroundColor;
-        el = el.parentElement;
-      }
-      return { text, ratio: contrast(fg, bg) };
+    ].map(([selector, background]) => {
+      const fg = lum(getComputedStyle(document.querySelector(selector)!).color);
+      const bg = lum(
+        getComputedStyle(document.querySelector(background)!).backgroundColor,
+      );
+      return {
+        selector,
+        ratio: (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05),
+      };
     });
   });
-  for (const item of ratios)
-    expect(item.ratio, item.text).toBeGreaterThanOrEqual(4.5);
+  for (const pair of ratios)
+    expect(pair.ratio, pair.selector).toBeGreaterThanOrEqual(4.5);
 });

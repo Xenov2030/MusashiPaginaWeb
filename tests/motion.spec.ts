@@ -7,8 +7,8 @@ test("portada lenta: contenido y navegación disponibles, revelado al cargar", a
   const gate = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("**/images/mesa*.webp", async (route) => {
-    if (!route.request().url().includes("mesa-preview")) await gate;
+  await page.route("**/media/musashi/pasteleria*.webp", async (route) => {
+    if (!route.request().url().includes("pasteleria-preview")) await gate;
     await route.continue();
   });
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -20,12 +20,12 @@ test("portada lenta: contenido y navegación disponibles, revelado al cargar", a
   await expect
     .poll(() =>
       page
-        .locator(".visual-preview")
+        .locator(".hero-visual .visual-preview")
         .evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0),
     )
     .toBe(true);
-  await page.getByRole("link", { name: "Explorar la carta" }).click();
-  await expect(page.locator("#carta")).toBeInViewport();
+  await page.getByRole("link", { name: "Descubrí Musashi" }).click();
+  await expect(page.locator("#experiencia")).toBeInViewport();
   release();
   const image = page.locator(".hero-visual .visual-image").first();
   await expect(page.locator(".hero-visual .visual").first()).toHaveAttribute(
@@ -45,8 +45,8 @@ test("portada lenta: contenido y navegación disponibles, revelado al cargar", a
 test("fallo de imagen: alternativa visible y controles utilizables", async ({
   page,
 }) => {
-  await page.route("**/images/mesa*.webp", (route) =>
-    route.request().url().includes("mesa-preview")
+  await page.route("**/media/musashi/pasteleria*.webp", (route) =>
+    route.request().url().includes("pasteleria-preview")
       ? route.continue()
       : route.abort(),
   );
@@ -59,8 +59,8 @@ test("fallo de imagen: alternativa visible y controles utilizables", async ({
   await expect(page.locator(".hero-visual .visual-error")).toContainText(
     "Café, Japón y Musashi.",
   );
-  await page.getByRole("link", { name: "Explorar la carta" }).click();
-  await expect(page.locator("#carta")).toBeInViewport();
+  await page.getByRole("link", { name: "Descubrí Musashi" }).click();
+  await expect(page.locator("#experiencia")).toBeInViewport();
 });
 
 test("revelado único, filtros con foco y recorrido grabado", async ({
@@ -83,14 +83,19 @@ test("revelado único, filtros con foco y recorrido grabado", async ({
     );
     // Pausas deliberadas para que la grabación muestre entradas y transiciones completas.
     await page.waitForTimeout(1100);
-    await expect(page.locator(".ambient-control")).toHaveCount(0);
+    await page
+      .getByRole("button", { name: "Pausar ambiente", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Reanudar ambiente", exact: true })
+      .click();
     await page.waitForTimeout(350);
 
     await page.waitForTimeout(450);
-    await page.getByRole("link", { name: "Explorar la carta" }).click();
+    await page.locator("#carta").scrollIntoViewIfNeeded();
     await page.waitForTimeout(750);
     const filter = page.getByRole("button", {
-      name: "Cocina y pastelería japonesa",
+      name: "Pastelería",
       exact: true,
     });
     await filter.focus();
@@ -101,22 +106,19 @@ test("revelado único, filtros con foco y recorrido grabado", async ({
     await page.getByRole("button", { name: "Todo", exact: true }).click();
     await page.waitForTimeout(500);
     await page.locator("#experiencia").scrollIntoViewIfNeeded();
-    await expect(page.locator(".experience-composition")).toHaveAttribute(
+    await expect(page.locator(".essence-copy")).toHaveAttribute(
       "data-motion-visited",
       "true",
     );
     await page.waitForTimeout(800);
-    await page.locator("#eventos").scrollIntoViewIfNeeded();
+    await page.locator("#tatami").scrollIntoViewIfNeeded();
     await page.waitForTimeout(800);
-    await page.getByRole("button", { name: "Conocer la propuesta" }).click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await page.waitForTimeout(450);
-    await page.keyboard.press("Escape");
-    await expect(page.getByRole("dialog")).not.toBeVisible();
+    await page.locator("#bienestar").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
     await page.locator("#experiencia").scrollIntoViewIfNeeded();
     expect(
       await page
-        .locator(".experience-composition")
+        .locator(".essence-copy")
         .evaluate((el) => el.getAnimations().length),
     ).toBe(0);
     await page.waitForTimeout(500);
@@ -133,7 +135,7 @@ test("sin JavaScript: bienvenida y contacto de respaldo", async ({
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Hay un lugar para vos en Musashi.",
+    "Japón detrás de una puerta",
   );
   await expect(
     page.getByRole("link", { name: "Ir al Instagram oficial" }),

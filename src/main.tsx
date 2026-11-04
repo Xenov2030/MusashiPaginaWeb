@@ -3,23 +3,32 @@ import { createRoot } from "react-dom/client";
 import { preload } from "react-dom";
 import { useHashNavigation, useSectionMotion } from "./motion";
 import {
-  confirmedProducts,
-  demoEvent,
-  demoProducts,
+  suppliedProducts,
   site,
   conceptualVisuals,
   copy,
   type VisualResource,
   categories,
   disciplines,
-  craft,
-  encounters,
   historicalContext,
 } from "./content";
 import "./style.css";
-import { Reservations, PetFriendly, HolisticSpace } from "./Reservations";
+import { Reservations, PetFriendly } from "./Reservations";
 import { OfficialAgenda, useOfficialEvents } from "./OfficialAgenda";
 import { WhatsAppBubble } from "./WhatsAppBubble";
+import {
+  Essence,
+  CoffeeIntro,
+  PastryGallery,
+  Dinner,
+  Tatami,
+  Wellbeing,
+  ExperienceContact,
+} from "./ExperienceSections";
+import { ConsultLink } from "./ConsultLink";
+import { BeveragePolicy } from "./BeveragePolicy";
+import { OwnerHistory } from "./OwnerHistory";
+import { ProductMedia } from "./ProductMedia";
 import { Ambient } from "./Ambient";
 
 const Arrow = () => (
@@ -35,11 +44,12 @@ const Arrow = () => (
   </svg>
 );
 const nav = [
-  ["Inicio", "/#inicio"],
+  ["La experiencia", "/#experiencia"],
   ["Carta", "/carta"],
-  ["El oficio", "/#experiencia"],
-  ["Eventos", "/#agenda"],
-  ["Reservas", "/#reservas"],
+  ["Tatami", "/#tatami"],
+  ["Cenas", "/#cenas"],
+  ["Bienestar", "/#bienestar"],
+  ["Nuestra historia", "/#historia"],
   ["Contacto", "/#contacto"],
 ];
 function Instagram({
@@ -61,11 +71,17 @@ function Instagram({
     </a>
   );
 }
-function Brand() {
+function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <a className="brand" href="/" aria-label="Musashi, inicio">
+    <a
+      className={`brand ${compact ? "brand-compact" : ""}`}
+      href="/"
+      aria-label="Musashi, inicio"
+    >
       {site.visuals.logo ? (
-        <img src={site.visuals.logo} alt="Musashi" width="160" height="64" />
+        <span className="brand-image">
+          <img src={site.visuals.logo} alt="Musashi" width="80" height="80" />
+        </span>
       ) : (
         <>
           <strong>MUSASHI</strong>
@@ -79,7 +95,7 @@ function Header() {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   const isMenu = window.location.pathname.replace(/\/$/, "") === "/carta";
-  const [active, setActive] = useState(isMenu ? "Carta" : "Inicio");
+  const [active, setActive] = useState(isMenu ? "Carta" : "La experiencia");
   useEffect(() => {
     if (isMenu || typeof IntersectionObserver === "undefined") return;
     const observer = new IntersectionObserver(
@@ -103,9 +119,17 @@ function Header() {
     return () => observer.disconnect();
   }, [isMenu]);
   return (
-    <header className="header">
+    <header
+      className="header"
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && open) {
+          setOpen(false);
+          toggle.current?.focus();
+        }
+      }}
+    >
       <div className="header-inner">
-        <Brand />
+        <Brand compact />
         <button
           ref={toggle}
           className="menu-toggle"
@@ -176,8 +200,8 @@ function Visual({
       if (priority && !played && !reduced.matches && img?.animate) {
         played = true;
         animation.current = img.animate(
-          [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }],
-          { duration: 680, easing: "cubic-bezier(.2,.7,.25,1)" },
+          [{ clipPath: "inset(0 50% 0 50%)" }, { clipPath: "inset(0 0 0 0)" }],
+          { duration: 520, easing: "cubic-bezier(.2,.7,.25,1)" },
         );
       }
     };
@@ -205,7 +229,7 @@ function Visual({
   }, [resource.src, priority]);
   return (
     <span
-      className={`visual is-${status} ${className}`}
+      className={`visual is-${status} ${resource.format === "graphic" ? "visual-graphic" : ""} ${className}`}
       style={
         {
           "--visual-ratio": `${resource.width} / ${resource.height}`,
@@ -264,34 +288,37 @@ function Hero() {
       <figure className="hero-visual">
         <Visual resource={scene} priority />
         <figcaption>
-          LA MESA DE MUSASHI / UNA INTERPRETACIÓN CONCEPTUAL
+          {scene.kind === "confirmed"
+            ? "MUSASHI / PASTELERÍA JAPONESA"
+            : "MUSASHI / COMPOSICIÓN CONCEPTUAL"}
         </figcaption>
       </figure>
       <div className="hero-copy hero-paper">
-        <p className="eyebrow">MENDOZA · CULTURA JAPONESA</p>
+        <p className="eyebrow">MUSASHI · CAFETERÍA OCULTA · MENDOZA</p>
         <h1>
-          <span className="hero-line">{copy.hero.headline[0]}</span>
-          <span className="hero-line">{copy.hero.headline[1]}</span>
+          <span className="hero-line">{copy.hero.headline[0]}</span>{" "}
           <span className="hero-line">
-            <em className="brush-word">Musashi.</em>
+            <em className="brush-word">{copy.hero.headline[1]}</em>
           </span>
         </h1>
         <p className="hero-intro">{copy.hero.intro}</p>
         <PetFriendly compact />
         <div className="hero-actions">
-          <a className="button" href="#carta">
-            Explorar la carta
+          <a className="button" href="#experiencia">
+            Descubrí Musashi
             <Arrow />
           </a>
-          <a className="text-link" href="#reservas">
-            Reservar una mesa<span aria-hidden="true"> →</span>
+          <a className="text-link" href="/carta">
+            Explorá la carta
+            <Arrow />
           </a>
         </div>
-        <p className="stage-note">
-          {site.stage === "open"
-            ? "Conocé nuestra propuesta."
-            : copy.hero.stage}
-        </p>
+        <div className="hero-consult">
+          <ConsultLink topic="la experiencia de Musashi">
+            Consultanos
+          </ConsultLink>
+        </div>
+        {copy.hero.stage && <p className="stage-note">{copy.hero.stage}</p>}
       </div>
       <Ambient />
     </section>
@@ -328,13 +355,12 @@ function Menu({ full = false }: { full?: boolean }) {
     previousHeight.current = null;
     return () => heightAnimation.current?.cancel();
   }, [category]);
-  const products = site.draft ? demoProducts : confirmedProducts;
+  const products = suppliedProducts;
   const selection = full
     ? products
-    : [
-        ...products.filter((p) => p.id === "mochi"),
-        ...products.filter((p) => p.id !== "mochi"),
-      ].slice(0, 3);
+    : products.filter((p) =>
+        ["pasteleria", "vagabond", "taiyaki"].includes(p.id),
+      );
   const shown = selection.filter(
     (p) => category === "Todo" || category === p.category,
   );
@@ -348,21 +374,22 @@ function Menu({ full = false }: { full?: boolean }) {
         <div>
           <p className="eyebrow">LA MESA DE MUSASHI</p>
           <Title>
-            {full ? "Una carta para descubrir." : copy.menu.title}
+            {copy.menu.title}
             <br />
             <em className="menu-subtitle">{copy.menu.subtitle}</em>
           </Title>
         </div>
         <span className="menu-edition">Tomate un ratito.</span>
       </div>
-      {site.draft && <p className="draft-note">{copy.draftNote}</p>}
+      <p className="draft-note">{copy.draftNote}</p>
       <div className="menu-leaf">
         <div className="menu-leaf-top">
           <span>MUSASHI</span>
           <span>
-            {full ? "Carta de propuesta" : "Una selección ilustrativa"}
+            {full ? "Carta de Musashi" : "Una selección para descubrir"}
           </span>
         </div>
+        <BeveragePolicy />
         <div className="filters" role="group" aria-label="Filtrar carta">
           {["Todo", ...categories].map((c) => (
             <button
@@ -392,7 +419,9 @@ function Menu({ full = false }: { full?: boolean }) {
               >
                 <div className="product-visual">
                   {p.image ? (
-                    <Visual resource={p.image} />
+                    <ProductMedia resource={p.image} name={p.name}>
+                      <Visual resource={p.image} />
+                    </ProductMedia>
                   ) : (
                     <span className="image-fallback">{p.category}</span>
                   )}
@@ -401,10 +430,17 @@ function Menu({ full = false }: { full?: boolean }) {
                   <span className="eyebrow">{p.category}</span>
                   <h3>{p.name}</h3>
                   <p>{p.description}</p>
+                  {p.alcohol === "indicated" && (
+                    <span className="alcohol-note">
+                      Contiene alcohol · indicado en el afiche
+                    </span>
+                  )}
                   {full && (
                     <>
                       <p className="product-extended">{p.detail}</p>
-                      <p className="texture-note">{p.texture}</p>
+                      <ConsultLink topic={p.name}>
+                        Consultar esta propuesta
+                      </ConsultLink>
                     </>
                   )}
                   {p.priceARS !== null && (
@@ -465,27 +501,18 @@ function Menu({ full = false }: { full?: boolean }) {
         </div>
         {!full && (
           <a className="menu-link" href="/carta">
-            Más sobre café y pastelería japonesa
+            Ver la carta completa
             <Arrow />
           </a>
         )}
         {full && (
           <aside className="menu-guide">
-            <h2>
-              ¿Es tu primera vez con
-              <br />
-              la pastelería japonesa?
-            </h2>
+            <h2>Elegí tu pausa.</h2>
             <div>
               <p>
-                Podés empezar por las texturas: el mochi es elástico, el
-                dorayaki es esponjoso y el cheesecake japonés, aireado. Son
-                preparaciones distintas, no una lista de sabores confirmados.
-              </p>
-              <p>
-                Cuando esté disponible la carta oficial, podrás consultar
-                opciones, ingredientes y precios. Para información alimentaria,
-                esperá la confirmación del equipo.
+                Estas son propuestas compartidas por Musashi. Consultá al equipo
+                por las opciones actuales, ingredientes, alérgenos y precios
+                antes de pedir.
               </p>
               <Instagram className="text-link">
                 Consultar en Instagram
@@ -494,274 +521,6 @@ function Menu({ full = false }: { full?: boolean }) {
           </aside>
         )}
       </div>
-    </section>
-  );
-}
-function Experience() {
-  const resource =
-    site.owner.portrait ??
-    site.visuals.experienceSpace ??
-    conceptualVisuals.experience;
-  const details = [
-    site.visuals.experienceDetail,
-    site.visuals.experienceTable,
-  ].filter((x): x is VisualResource => x !== null);
-  return (
-    <section id="experiencia" className="experience craft-section section">
-      <div className="craft-heading" data-reveal="rise">
-        <p className="eyebrow">EL OFICIO DETRÁS DE MUSASHI</p>
-        <h2>
-          La curiosidad invita.
-          <br />
-          <em>El oficio cuida.</em>
-        </h2>
-        <p>
-          {site.owner.name
-            ? `${site.owner.name} es barista profesional, tea blender y bartender.`
-            : "Detrás de Musashi hay un barista profesional, tea blender y bartender."}{" "}
-          Tres miradas para descubrir una bebida, con atención a los detalles.
-        </p>
-      </div>
-      <div className="craft-story">
-        <figure className="experience-composition" data-reveal="image">
-          <div className="experience-main">
-            <Visual resource={resource} />
-          </div>
-          <figcaption>
-            {resource.kind === "conceptual"
-              ? "UNA INTERPRETACIÓN ILUSTRADA DEL OFICIO"
-              : "UNA MIRADA A MUSASHI"}
-          </figcaption>
-        </figure>
-        <div className="craft-notes">
-          {craft.map((item, i) => (
-            <article
-              key={item.title}
-              className={`craft-note craft-note-${i + 1}`}
-              data-reveal="rise"
-            >
-              <span className="craft-rule" aria-hidden="true" />
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-            </article>
-          ))}
-          <a className="text-link" href="#contacto">
-            Seguimos en contacto<span aria-hidden="true"> →</span>
-          </a>
-        </div>
-      </div>
-      {details.length > 0 && (
-        <div className="experience-details">
-          {details.map((resource) => (
-            <figure key={resource.src}>
-              <Visual resource={resource} />
-            </figure>
-          ))}
-        </div>
-      )}
-    </section>
-  );
-}
-function Events() {
-  const [selected, setSelected] = useState(2);
-  const dialog = useRef<HTMLDialogElement>(null);
-  const opener = useRef<HTMLButtonElement>(null);
-  const closing = useRef(false);
-  const modalAnimation = useRef<Animation | null>(null);
-  const closeModal = () => {
-    const el = dialog.current;
-    if (!el || closing.current || !el.open) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !el.animate) {
-      el.close();
-      return;
-    }
-    closing.current = true;
-    el.classList.add("is-closing");
-    modalAnimation.current?.cancel();
-    const motion = el.animate(
-      [
-        { opacity: 1, transform: "translateY(0) scale(1)" },
-        { opacity: 0, transform: "translateY(8px) scale(.99)" },
-      ],
-      { duration: 160, easing: "ease-in", fill: "forwards" },
-    );
-    modalAnimation.current = motion;
-    motion.finished
-      .then(() => {
-        el.close();
-        motion.cancel();
-        closing.current = false;
-      })
-      .catch(() => {
-        closing.current = false;
-      });
-  };
-  useEffect(() => () => modalAnimation.current?.cancel(), []);
-  const openModal = () => {
-    closing.current = false;
-    modalAnimation.current?.cancel();
-    dialog.current?.classList.remove("is-closing");
-    dialog.current?.showModal();
-    if (
-      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
-      dialog.current?.animate
-    )
-      modalAnimation.current =
-        dialog.current?.animate(
-          [
-            { opacity: 0.4, transform: "translateY(10px) scale(.99)" },
-            { opacity: 1, transform: "translateY(0) scale(1)" },
-          ],
-          { duration: 220, easing: "ease-out" },
-        ) ?? null;
-  };
-  if (!site.draft && demoEvent.status === "illustrative")
-    return (
-      <section id="eventos" className="section">
-        <p className="eyebrow">ENCUENTROS MUSASHI</p>
-        <h2>
-          Las novedades,
-          <br />
-          en nuestro Instagram.
-        </h2>
-        <Instagram className="text-link">Ver novedades</Instagram>
-      </section>
-    );
-  const choose = (index: number) => {
-    opener.current = document.activeElement as HTMLButtonElement;
-    setSelected(index);
-    openModal();
-  };
-  return (
-    <section id="eventos" className="events encounters-section section">
-      <div className="encounter-heading" data-reveal="rise">
-        <p className="eyebrow">ENCUENTROS MUSASHI</p>
-        <h2>
-          Alrededor
-          <br />
-          <em>de la mesa.</em>
-        </h2>
-        <p>
-          Onigiris, tatamis y ramen forman parte de los antecedentes de Musashi.
-          Estas notas recuerdan la propuesta; no anuncian próximos eventos.
-        </p>
-      </div>
-      <div className="encounter-table">
-        <article className="encounter-note onigiri-note" data-reveal="poster">
-          <span className="example-tag">Antecedente de encuentro</span>
-          <h3>
-            Noches de
-            <br />
-            onigiris.
-          </h3>
-          <p>{encounters[0].description}</p>
-          <button className="text-link" onClick={() => choose(0)}>
-            Conocer onigiris<span aria-hidden="true"> →</span>
-          </button>
-        </article>
-        <article
-          className="encounter-note tatami-note"
-          data-reveal="rise"
-          data-motion-delay="100"
-        >
-          <span className="eyebrow">OTRA FORMA DE REUNIRSE</span>
-          <h3>
-            Encuentros
-            <br />
-            en tatamis.
-          </h3>
-          <p>{encounters[1].description}</p>
-          <button className="text-link" onClick={() => choose(1)}>
-            Conocer tatamis<span aria-hidden="true"> →</span>
-          </button>
-        </article>
-        <article
-          className="event-poster ramen-note"
-          data-reveal="image"
-          data-motion-delay="140"
-        >
-          <figure className="poster-visual">
-            <Visual resource={conceptualVisuals.ramen} />
-            <figcaption>
-              IMAGEN CONCEPTUAL / NO ES UN REGISTRO DEL ENCUENTRO
-            </figcaption>
-          </figure>
-          <div className="poster-copy">
-            <span
-              className="poster-accent"
-              data-reveal="stroke"
-              aria-hidden="true"
-            />
-            <span className="example-tag">Ejemplo de presentación</span>
-            <h3>
-              Noche
-              <br />
-              de Ramen.
-            </h3>
-            <p>{encounters[2].description}</p>
-            <button
-              ref={opener}
-              className="text-link"
-              onClick={() => choose(2)}
-            >
-              Conocer la propuesta
-              <Arrow />
-            </button>
-          </div>
-        </article>
-      </div>
-      <dialog
-        ref={dialog}
-        aria-labelledby="event-title"
-        onKeyDown={(e) => {
-          if (e.key !== "Tab") return;
-          const controls = Array.from(
-            e.currentTarget.querySelectorAll<HTMLElement>(
-              'a[href], button:not([disabled]), [tabindex="0"]',
-            ),
-          );
-          const first = controls[0];
-          const last = controls[controls.length - 1];
-          if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last?.focus();
-          } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first?.focus();
-          }
-        }}
-        onCancel={(e) => {
-          e.preventDefault();
-          closeModal();
-        }}
-        onClose={() => {
-          closing.current = false;
-          dialog.current?.classList.remove("is-closing");
-          modalAnimation.current?.cancel();
-          opener.current?.focus();
-        }}
-        onClick={(e) => {
-          if (e.target === dialog.current) closeModal();
-        }}
-      >
-        <div className="dialog-content">
-          <button
-            className="dialog-close"
-            aria-label="Cerrar detalle del evento"
-            onClick={closeModal}
-          >
-            ×
-          </button>
-          <p className="eyebrow">EJEMPLO DE PRESENTACIÓN</p>
-          <h2 id="event-title">{encounters[selected].title}</h2>
-          <p>{encounters[selected].detail}</p>
-          <p>
-            No hay fecha, precio, cupos ni reservas habilitadas. Las novedades
-            confirmadas se compartirán por el canal oficial.
-          </p>
-          <Instagram className="button">Ver Instagram oficial</Instagram>
-        </div>
-      </dialog>
     </section>
   );
 }
@@ -792,47 +551,21 @@ function NameHistory() {
     </section>
   );
 }
-function Contact() {
-  return (
-    <section id="contacto" className="contact section">
-      <div>
-        <p className="eyebrow">MUSASHI / MENDOZA</p>
-        <h2>
-          ¿Charlamos?
-          <br />
-          <em>Encontranos en Instagram.</em>
-        </h2>
-      </div>
-      <div className="contact-action">
-        <p>Las novedades de Musashi y un canal para hacer tus consultas.</p>
-        <p>La dirección se comparte por WhatsApp al confirmar la reserva.</p>
-        {site.business.hours && <p>{site.business.hours}</p>}
-        {site.business.reservationConditions && (
-          <p>{site.business.reservationConditions}</p>
-        )}
-        <Instagram className="contact-instagram">@musashi.animecafe</Instagram>
-        {site.business.whatsapp && (
-          <a
-            className="text-link"
-            href={`https://wa.me/${site.business.whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {site.business.whatsappTest
-              ? "WhatsApp de prueba"
-              : "Consultar por WhatsApp"}
-            <Arrow />
-          </a>
-        )}
-      </div>
-    </section>
-  );
-}
 function Footer() {
   return (
     <footer className="footer">
+      <p className="proposal-note">
+        Propuesta de diseño · Material de Musashi y composiciones conceptuales
+        para los espacios sin fotografía.
+      </p>
       <div className="footer-top">
-        <Brand />
+        <div className="footer-brand">
+          <Brand />
+          <p className="brand-signoff">
+            {site.brand}
+            <span>{copy.hero.title}</span>
+          </p>
+        </div>
         <nav aria-label="Pie de página">
           {nav.map(([label, href]) => (
             <a key={label} href={href}>
@@ -862,7 +595,7 @@ function App() {
   useEffect(() => {
     document.title = isMenu
       ? "Carta de propuesta · Musashi"
-      : "Musashi · La mesa de Musashi";
+      : `Musashi · ${copy.hero.title}`;
   }, [isMenu]);
   return (
     <>
@@ -875,21 +608,23 @@ function App() {
           <>
             <Menu full />
             <Reservations events={agenda.events} />
-            <HolisticSpace />
-            <Contact />
+            <ExperienceContact />
           </>
         ) : (
           <>
             <Hero />
-
+            <Essence />
+            <CoffeeIntro />
             <Menu />
-            <Experience />
+            <PastryGallery />
+            <Dinner />
             <OfficialAgenda {...agenda} />
-            <Events />
+            <Tatami />
+            <Wellbeing />
+            <OwnerHistory />
             <NameHistory />
             <Reservations events={agenda.events} />
-            <HolisticSpace />
-            <Contact />
+            <ExperienceContact />
           </>
         )}
       </main>

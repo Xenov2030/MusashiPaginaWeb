@@ -135,6 +135,18 @@ test("una imagen válida del propietario se muestra en la promoción", async ({
 test("el carrusel avanza automáticamente y respeta movimiento reducido", async ({
   page,
 }) => {
+  await page.route("**/api/events", (route) =>
+    route.fulfill({
+      json: [1, 2, 3].map((i) => ({
+        ...base,
+        id: `archivo-${i}`,
+        title: `Encuentro ${i}`,
+        date: `2026-0${i}-01`,
+        status: "finished",
+        imageUrl: null,
+      })),
+    }),
+  );
   await page.clock.install();
   await page.goto("/");
   const carousel = page.locator(".event-archive");
