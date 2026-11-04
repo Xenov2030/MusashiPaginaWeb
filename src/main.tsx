@@ -17,6 +17,8 @@ import {
   historicalContext,
 } from "./content";
 import "./style.css";
+import { Reservations, PetFriendly, HolisticSpace } from "./Reservations";
+import { OfficialAgenda, useOfficialEvents } from "./OfficialAgenda";
 import { Ambient } from "./Ambient";
 
 const Arrow = () => (
@@ -35,7 +37,8 @@ const nav = [
   ["Inicio", "/#inicio"],
   ["Carta", "/carta"],
   ["El oficio", "/#experiencia"],
-  ["Eventos", "/#eventos"],
+  ["Eventos", "/#agenda"],
+  ["Reservas", "/#reservas"],
   ["Contacto", "/#contacto"],
 ];
 function Instagram({
@@ -273,13 +276,14 @@ function Hero() {
           </span>
         </h1>
         <p className="hero-intro">{copy.hero.intro}</p>
+        <PetFriendly compact />
         <div className="hero-actions">
           <a className="button" href="#carta">
             Explorar la carta
             <Arrow />
           </a>
-          <a className="text-link" href="#experiencia">
-            Nuestra propuesta<span aria-hidden="true"> →</span>
+          <a className="text-link" href="#reservas">
+            Reservar una mesa<span aria-hidden="true"> →</span>
           </a>
         </div>
         <p className="stage-note">
@@ -800,7 +804,7 @@ function Contact() {
       </div>
       <div className="contact-action">
         <p>Las novedades de Musashi y un canal para hacer tus consultas.</p>
-        {site.business.address && <p>{site.business.address}</p>}
+        <p>La dirección se comparte por WhatsApp al confirmar la reserva.</p>
         {site.business.hours && <p>{site.business.hours}</p>}
         {site.business.reservationConditions && (
           <p>{site.business.reservationConditions}</p>
@@ -813,7 +817,9 @@ function Contact() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Consultar por WhatsApp
+            {site.business.whatsappTest
+              ? "WhatsApp de prueba"
+              : "Consultar por WhatsApp"}
             <Arrow />
           </a>
         )}
@@ -848,6 +854,7 @@ function Footer() {
   );
 }
 function App() {
+  const agenda = useOfficialEvents();
   useHashNavigation();
   useSectionMotion();
   const isMenu = window.location.pathname.replace(/\/$/, "") === "/carta";
@@ -866,6 +873,8 @@ function App() {
         {isMenu ? (
           <>
             <Menu full />
+            <Reservations events={agenda.events} />
+            <HolisticSpace />
             <Contact />
           </>
         ) : (
@@ -874,8 +883,11 @@ function App() {
 
             <Menu />
             <Experience />
+            <OfficialAgenda {...agenda} />
             <Events />
             <NameHistory />
+            <Reservations events={agenda.events} />
+            <HolisticSpace />
             <Contact />
           </>
         )}

@@ -343,6 +343,11 @@ test("contraste de lectura y controles", async ({ page }) => {
       [".draft-note", ".menu-section"],
       [".poster-copy>p:not(.eyebrow)", ".event-poster"],
       [".contact-action>p", ".contact"],
+      [".reservation-intro>p:not(.eyebrow)", ".reservations"],
+      [".private-address p", ".reservations"],
+      [".reservations .pet-friendly", ".reservations"],
+      [".holistic-space p", ".holistic-space"],
+      [".official-agenda>p", ".official-agenda"],
     ];
     return pairs.map(([text, background]) => {
       const fg = getComputedStyle(document.querySelector(text)!).color;

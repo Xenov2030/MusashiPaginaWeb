@@ -34,9 +34,9 @@ Guardar imágenes optimizadas en `public/images/`, registrar derechos y proceden
 
 ## Negocio y contacto
 
-`site.stage` puede ser `coming-soon` u `open`, solo tras confirmación. Los campos `address`, `hours`, `whatsapp` y `reservationConditions` permanecen en `null`. Instagram es el canal aportado. No inventar una dirección ni publicar la anterior como vigente.
+`site.stage` puede ser `coming-soon` u `open`, solo tras confirmación. `hours` y `reservationConditions` permanecen en `null`. La dirección no se almacena en el frontend: se comunica manualmente por WhatsApp al confirmar. `whatsapp` contiene el número personal autorizado para pruebas y `whatsappTest: true` debe mantenerse hasta recibir el canal oficial. `petFriendly: true` es una característica confirmada por el cliente. Instagram sigue disponible.
 
-`reservationLink` prepara consultas futuras, pero no confirma reservas ni habilita pagos, señas o disponibilidad automática.
+`buildReservationUrl` prepara solicitudes, sin confirmar reservas ni habilitar pagos, señas o disponibilidad automática. La agenda oficial usa el conector de [Google Calendar](../integrations/google-calendar/README.md), separado de antecedentes ilustrativos. Las colaboradoras del espacio holístico se presentan de forma discreta, sin inventar nombres ni tratamientos.
 
 ## Materiales a pedir
 

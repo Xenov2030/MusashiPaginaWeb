@@ -12,7 +12,7 @@ Boceto web funcional para presentar al propietario de **Musashi, Mendoza, Argent
 - Carta sobre trama neutra inspirada en tatami, hojas blancas, texto negro y acentos rojos. Categorías accesibles de Café, Té y blends, Coctelería y Cocina y pastelería japonesa.
 - Té y coctelería explican la disciplina cuando no hay productos aprobados: no se inventaron blends, cócteles, precios ni disponibilidad.
 - Barista profesional, tea blender y bartender se presentan como un relato de oficio, según la información transmitida por Nicolas, sin credenciales adicionales.
-- Onigiris, encuentros en tatamis y ramen como antecedentes, con detalles en modales accesibles. No se anuncian eventos próximos ni reservas.
+- Onigiris, encuentros en tatamis y ramen como antecedentes, con detalles en modales accesibles. Se mantienen separados de la agenda oficial y de las solicitudes de reserva.
 - Seis pétalos CSS en escritorio, tres en móvil. Control de pausa, preferencia de sesión, suspensión fuera de pantalla o con la pestaña oculta, y composición estática con movimiento reducido.
 - Entradas y recortes diferenciados, trazado rojo, filtros con transición de altura, foco gestionado y navegación real con hashes e historial.
 - Imágenes conceptuales locales, prioridad y vista previa para portada, carga diferida inferior y alternativa ante fallo. Sin backend ni nuevas dependencias.
@@ -88,7 +88,7 @@ La [guía de contenido](docs/CONTENIDO.md) detalla cómo reemplazar logo, imáge
 
 `src/content.ts` centraliza marca, enlaces, modo boceto, estado del negocio y datos confirmados. La carta de demostración está separada de `confirmedProducts`. Los modelos admiten precios ARS, imágenes opcionales, disponibilidad y características confirmadas; los eventos admiten fecha, hora, condiciones y estados.
 
-La estructura para consultas futuras por WhatsApp existe como función `reservationLink`, pero no se activa sin número oficial. Una consulta no confirma una reserva. No se implementan pagos, señas ni disponibilidad automática.
+Las solicitudes por WhatsApp se preparan con `buildReservationUrl` en `src/reservations.ts`. El canal actual está identificado como prueba. Una consulta no confirma una reserva; no se implementan pagos, señas ni disponibilidad automática.
 
 ## Publicación posterior en Netlify
 
@@ -105,7 +105,13 @@ El prototipo incluye `noindex, nofollow` en HTML y `X-Robots-Tag` en Netlify. No
 
 ## Pendiente del propietario
 
-Logo original y su autorización de uso; tipografías o manual de marca; fotografías autorizadas; nueva dirección y horarios; estado y fecha de apertura; carta, descripciones, precios y disponibilidad; características alimentarias verificadas; teléfono o WhatsApp oficial; condiciones y calendario de eventos; política de consultas y reservas. Los audios pendientes no se trataron como requisitos confirmados.
+Logo original y su autorización de uso; tipografías o manual de marca; fotografías autorizadas; horarios (la dirección se mantiene privada); estado y fecha de apertura; carta, descripciones, precios y disponibilidad; características alimentarias verificadas; teléfono o WhatsApp oficial; condiciones y calendario de eventos; política de consultas y reservas. Los audios pendientes no se trataron como requisitos confirmados.
+
+### Reservas, mascotas y agenda
+
+Formulario de solicitudes por WhatsApp con fecha, horario, personas, mascota y notas. La dirección permanece fuera del sitio y se comparte manualmente al confirmar por WhatsApp. El envío no confirma una reserva. Canal actual: número personal de Nicolas para pruebas, identificado en la interfaz. Se destaca que Musashi es pet friendly y se incorpora un pequeño espacio holístico.
+
+La agenda oficial admite encuentros publicados y recurrentes desde un Google Calendar exclusivo. [Configuración para el propietario](integrations/google-calendar/README.md). El conector está implementado; la cuenta de Google y la variable de Netlify requieren configuración inicial. No hay gestión automática de cupos ni envío automático de dirección.
 
 ---
 

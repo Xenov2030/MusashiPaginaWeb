@@ -1,0 +1,6 @@
+{
+  "timeZone": "America/Argentina/Mendoza",
+  "runtimeVersion": "V8",
+  "oauthScopes": ["https://www.googleapis.com/auth/calendar.readonly"],
+  "exceptionLogging": "STACKDRIVER"
+}

@@ -146,10 +146,12 @@ export const site = {
     experienceTable: null as VisualResource | null,
   },
   business: {
-    address: null as string | null,
+    addressPrivate: true,
+    petFriendly: true,
     hours: null as string | null,
     reservationConditions: null as string | null,
-    whatsapp: null as string | null, // Solo número oficial confirmado, formato internacional sin +.
+    whatsapp: "5492615349682" as string | null, // Número personal autorizado para pruebas.
+    whatsappTest: true,
   },
 };
 export const demoProducts: Product[] = [
@@ -218,18 +220,6 @@ export const demoEvent: CafeEvent = {
   conditions: [],
   status: "illustrative",
 };
-export interface ReservationInquiry {
-  date: string;
-  time: string;
-  people: number;
-  event?: string;
-}
-export function reservationLink(inquiry: ReservationInquiry): string | null {
-  if (!site.business.whatsapp) return null;
-  const message = `Hola Musashi. Quisiera consultar por ${inquiry.people} personas el ${inquiry.date} a las ${inquiry.time}${inquiry.event ? ` para ${inquiry.event}` : ""}. Entiendo que esta consulta no confirma una reserva.`;
-  return `https://wa.me/${site.business.whatsapp}?text=${encodeURIComponent(message)}`;
-}
-
 export type Category =
   "Café" | "Té y blends" | "Coctelería" | "Cocina y pastelería japonesa";
 export const categories: Category[] = [
@@ -301,4 +291,21 @@ export const historicalContext = {
   title: "El nombre y su historia",
   paragraphs: [] as string[],
   sources: [] as { title: string; url: string }[],
+};
+
+export const hospitality = {
+  reservations: {
+    title: "Guardá un lugar en la mesa.",
+    intro:
+      "Elegí una fecha y un horario deseados. La solicitud continúa por WhatsApp y Musashi confirma los detalles en la conversación.",
+    privateAddress:
+      "Un poquito de misterio: la dirección se comparte por WhatsApp al confirmar tu reserva.",
+    confirmation:
+      "Enviar una solicitud no confirma una reserva. Musashi te responderá por WhatsApp.",
+  },
+  holistic: {
+    title: "Un pequeño espacio para el bienestar.",
+    description:
+      "Musashi también cuenta con un espacio holístico acompañado por sus colaboradoras. Consultá las propuestas y los encuentros por nuestro canal de contacto.",
+  },
 };

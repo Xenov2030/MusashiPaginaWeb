@@ -6,6 +6,12 @@
   NODE_VERSION = "24"
 
 [[redirects]]
+  from = "/api/events"
+  to = "/.netlify/functions/events"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
