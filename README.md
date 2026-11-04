@@ -4,7 +4,7 @@ Propuesta de la web de una cafetería oculta y un espacio de inspiración japone
 
 ## Revisar esta entrega
 
-El nuevo pedido indica no hacer merge ni desplegar automáticamente. Esta revisión se prepara en la rama local `desarrollo/identidad-musashi`, sin actualizar las ramas remotas ni el sitio existente de Netlify.
+Implementación preparada en `desarrollo/identidad-musashi`. El usuario autorizó ahora desplegarla para probar las funciones. Se publica mediante la rama `desarrollo/boceto-musashi`, conectada al sitio existente de Netlify, conservando el dominio y noindex. No se hace merge a `main`.
 
 - [Portada con el concepto del propietario](docs/capturas/portada.png)
 - [Creaciones y oficio](docs/capturas/creaciones.png)
@@ -76,7 +76,7 @@ Para un anuncio temporal de apertura, editar `copy.hero.stage` solo con texto co
 
 Se conserva `netlify.toml`, el dominio previsto `musashiweb.netlify.app`, la redirección SPA y el adaptador de agenda ya existente. No se agrega un servicio pago ni un backend nuevo. Sin conexión de Calendar, la agenda usa el archivo vacío. Al conectar la cuenta del propietario se mostrarán únicamente eventos publicados por él; [instrucciones](integrations/google-calendar/README.md).
 
-Cuando el usuario indique publicar: revisar los cambios, usar el **sitio existente**, compilar con `npm run build` y publicar `dist`. La rama remota conectada en revisiones anteriores es `desarrollo/boceto-musashi`; enviar cambios a esa rama dispara el despliegue automático. Por eso esta entrega no se envía a esa rama sin una nueva indicación. No crear otro sitio ni hacer merge a `main`. Mantener noindex durante la revisión.
+Publicación autorizada para pruebas: usar el **sitio existente**, compilar con `npm run build` y publicar `dist`. La rama remota conectada en revisiones anteriores es `desarrollo/boceto-musashi`; enviar cambios a esa rama dispara el despliegue automático. El envío actual a esa rama responde a la indicación expresa del usuario de desplegar para probar las funciones. No crear otro sitio ni hacer merge a `main`. Mantener noindex durante la revisión.
 
 ## Verificación
 
