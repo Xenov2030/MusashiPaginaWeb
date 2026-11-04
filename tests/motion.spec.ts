@@ -83,9 +83,9 @@ test("revelado único, filtros con foco y recorrido grabado", async ({
     );
     // Pausas deliberadas para que la grabación muestre entradas y transiciones completas.
     await page.waitForTimeout(1100);
-    await page.getByRole("button", { name: "Pausar pétalos" }).click();
+    await expect(page.locator(".ambient-control")).toHaveCount(0);
     await page.waitForTimeout(350);
-    await page.getByRole("button", { name: "Reanudar pétalos" }).click();
+
     await page.waitForTimeout(450);
     await page.getByRole("link", { name: "Explorar la carta" }).click();
     await page.waitForTimeout(750);

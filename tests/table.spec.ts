@@ -25,7 +25,7 @@ test("cuatro categorías claras sin productos ni precios inventados", async ({
     .click();
   await expect(page.locator(".product")).toHaveCount(3);
 });
-test("pétalos limitados, pausa persistente y pausa fuera de pantalla", async ({
+test("pétalos sin control visible y pausa fuera de pantalla", async ({
   page,
 }) => {
   await page.goto("/");
@@ -37,16 +37,7 @@ test("pétalos limitados, pausa persistente y pausa fuera de pantalla", async ({
     "data-ambient-state",
     "running",
   );
-  await page.getByRole("button", { name: "Pausar pétalos" }).click();
-  await expect(page.locator(".petal").first()).toHaveCSS(
-    "animation-play-state",
-    "paused",
-  );
-  await page.reload();
-  await expect(
-    page.getByRole("button", { name: "Reanudar pétalos" }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Reanudar pétalos" }).click();
+  await expect(page.locator(".ambient-control")).toHaveCount(0);
   await page.locator("#experiencia").scrollIntoViewIfNeeded();
   await expect(page.locator(".ambient")).toHaveAttribute(
     "data-ambient-state",

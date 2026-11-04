@@ -113,6 +113,8 @@ Formulario de solicitudes por WhatsApp con fecha, horario, personas, mascota y n
 
 La agenda oficial admite encuentros publicados y recurrentes desde un Google Calendar exclusivo. [Configuración para el propietario](integrations/google-calendar/README.md). El conector está implementado; la cuenta de Google y la variable de Netlify requieren configuración inicial. No hay gestión automática de cupos ni envío automático de dirección.
 
+La portada de agenda destaca el próximo evento con imagen. El carrusel automático muestra encuentros pasados y admite fotos desde el mismo calendario (`Imagen pública:`). Sin fotos reales muestra ilustraciones identificadas. La burbuja fija de WhatsApp está disponible en inicio y carta; mantiene el rótulo de prueba. Se retiró el control visible de pétalos.
+
 ---
 
 [**DESARROLLADO POR NICOLAS AGUIRRES**](https://nicolasaguirrescode.com/)

@@ -7,6 +7,18 @@ export interface OfficialEvent {
   status: "upcoming" | "full" | "finished";
   priceARS: number | null;
   conditions: string[];
+  imageUrl?: string | null;
+}
+export function publicImageUrl(value: unknown): string | null {
+  if (typeof value !== "string" || value.length > 2000) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && !url.username && !url.password
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
 }
 // Public information only: deliberately no address, guest list or private contact fields.
 export function parseOfficialEvents(value: unknown): OfficialEvent[] {
@@ -56,6 +68,7 @@ export function parseOfficialEvents(value: unknown): OfficialEvent[] {
       status: event.status as OfficialEvent["status"],
       priceARS: event.priceARS as number | null,
       conditions: event.conditions as string[],
+      imageUrl: publicImageUrl(event.imageUrl),
     };
   });
 }

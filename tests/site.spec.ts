@@ -348,6 +348,8 @@ test("contraste de lectura y controles", async ({ page }) => {
       [".reservations .pet-friendly", ".reservations"],
       [".holistic-space p", ".holistic-space"],
       [".official-agenda>p", ".official-agenda"],
+      [".archive-copy p", ".archive-slide"],
+      [".whatsapp-bubble", ".whatsapp-bubble"],
     ];
     return pairs.map(([text, background]) => {
       const fg = getComputedStyle(document.querySelector(text)!).color;

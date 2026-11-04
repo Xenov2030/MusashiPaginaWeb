@@ -19,6 +19,7 @@ import {
 import "./style.css";
 import { Reservations, PetFriendly, HolisticSpace } from "./Reservations";
 import { OfficialAgenda, useOfficialEvents } from "./OfficialAgenda";
+import { WhatsAppBubble } from "./WhatsAppBubble";
 import { Ambient } from "./Ambient";
 
 const Arrow = () => (
@@ -893,6 +894,7 @@ function App() {
         )}
       </main>
       <Footer />
+      <WhatsAppBubble />
     </>
   );
 }

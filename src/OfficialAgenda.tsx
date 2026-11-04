@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { parseOfficialEvents, isEventPast, type OfficialEvent } from "./events";
+import { EventImage } from "./EventImage";
+import { EventCarousel } from "./EventCarousel";
 export function useOfficialEvents() {
   const [events, setEvents] = useState<OfficialEvent[]>([]);
   const [state, setState] = useState("loading");
@@ -21,6 +23,45 @@ export function useOfficialEvents() {
   }, []);
   return { events, state };
 }
+function EventDetails({ event }: { event: OfficialEvent }) {
+  return (
+    <div className="event-details">
+      <p className="eyebrow">
+        {event.status === "full" ? "COMPLETO" : "PRÓXIMO ENCUENTRO"}
+      </p>
+      <h3>{event.title}</h3>
+      <p className="event-date">
+        <time dateTime={`${event.date}T${event.time}:00-03:00`}>
+          {new Intl.DateTimeFormat("es-AR", { dateStyle: "long" }).format(
+            new Date(`${event.date}T12:00:00-03:00`),
+          )}{" "}
+          · {event.time} h
+        </time>
+      </p>
+      <p className="event-public-text">{event.description}</p>
+      {event.priceARS !== null && (
+        <p>
+          {new Intl.NumberFormat("es-AR", {
+            style: "currency",
+            currency: "ARS",
+            maximumFractionDigits: 0,
+          }).format(event.priceARS)}
+        </p>
+      )}
+      {event.conditions.map((condition, i) => (
+        <p key={i}>{condition}</p>
+      ))}
+      {event.status === "upcoming" && (
+        <a
+          className="button"
+          href={`/?evento=${encodeURIComponent(event.id)}#reservas`}
+        >
+          Solicitar lugar →
+        </a>
+      )}
+    </div>
+  );
+}
 export function OfficialAgenda({
   events,
   state,
@@ -28,10 +69,17 @@ export function OfficialAgenda({
   events: OfficialEvent[];
   state: string;
 }) {
+  const upcoming = events
+    .filter((e) => !isEventPast(e) && e.status !== "finished")
+    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const previous = events
+    .filter((e) => isEventPast(e) || e.status === "finished")
+    .sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+  const next = upcoming[0];
   return (
     <section className="official-agenda section" id="agenda">
       <p className="eyebrow">ENCUENTROS / AGENDA OFICIAL</p>
-      <h2>Una próxima ocasión para encontrarnos.</h2>
+      <h2>Tu próxima cita con Musashi.</h2>
       {state === "loading" ? (
         <p role="status">Consultando la agenda…</p>
       ) : state === "error" ? (
@@ -39,60 +87,53 @@ export function OfficialAgenda({
           No pudimos consultar la agenda.{" "}
           <a href="#reservas">Consultá los próximos encuentros por WhatsApp</a>.
         </p>
-      ) : !events.length ? (
-        <p>
-          Todavía no hay encuentros publicados. Consultá las próximas fechas por
-          WhatsApp.
-        </p>
       ) : (
-        <div className="agenda-grid">
-          {events.map((event) => {
-            const past = isEventPast(event) || event.status === "finished";
-            const available = !past && event.status === "upcoming";
-            return (
-              <article className="agenda-card" key={event.id}>
-                <p className="eyebrow">
-                  {past
-                    ? "FINALIZADO"
-                    : event.status === "full"
-                      ? "COMPLETO"
-                      : "PRÓXIMO ENCUENTRO"}
-                </p>
-                <h3>{event.title}</h3>
-                <p>
-                  <time dateTime={`${event.date}T${event.time}:00-03:00`}>
-                    {new Intl.DateTimeFormat("es-AR", {
-                      dateStyle: "long",
-                    }).format(new Date(`${event.date}T12:00:00-03:00`))}{" "}
-                    · {event.time} h
-                  </time>
-                </p>
-                <p className="event-public-text">{event.description}</p>
-                {event.priceARS !== null && (
-                  <p>
-                    {new Intl.NumberFormat("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                      maximumFractionDigits: 0,
-                    }).format(event.priceARS)}
-                  </p>
-                )}
-                {event.conditions.map((condition, i) => (
-                  <p key={i}>{condition}</p>
-                ))}
-                {available && (
-                  <a
-                    className="text-link"
-                    href={`/?evento=${encodeURIComponent(event.id)}#reservas`}
-                  >
-                    Solicitar lugar →
-                  </a>
-                )}
-              </article>
-            );
-          })}
+        <p>
+          {next
+            ? "Una experiencia para compartir. Elegí tu encuentro y consultá por tu lugar."
+            : "Todavía no hay encuentros publicados. La próxima fecha se anunciará acá."}
+        </p>
+      )}
+      {next ? (
+        <article className="agenda-card featured-event">
+          <EventImage
+            key={next.id + next.imageUrl}
+            imageUrl={next.imageUrl}
+            title={next.title}
+          />
+          <EventDetails event={next} />
+        </article>
+      ) : (
+        <div className="featured-event event-awaiting">
+          <EventImage title="Próximos encuentros de Musashi" />
+          <div className="event-details">
+            <p className="eyebrow">UNA NUEVA OCASIÓN PARA ENCONTRARNOS</p>
+            <h3>La próxima mesa, por descubrir.</h3>
+            <p>
+              Estamos preparando nuevos encuentros. Acá vas a encontrar la
+              imagen, la fecha y la propuesta de cada evento cuando se publique.
+            </p>
+            <a className="button" href="#reservas">
+              Consultar próximos encuentros →
+            </a>
+          </div>
         </div>
       )}
+      {upcoming.length > 1 && (
+        <div className="agenda-grid">
+          {upcoming.slice(1).map((event) => (
+            <article className="agenda-card" key={event.id}>
+              <EventImage
+                key={event.id + event.imageUrl}
+                imageUrl={event.imageUrl}
+                title={event.title}
+              />
+              <EventDetails event={event} />
+            </article>
+          ))}
+        </div>
+      )}
+      <EventCarousel events={previous} />
     </section>
   );
 }
