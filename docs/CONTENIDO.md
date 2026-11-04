@@ -4,7 +4,7 @@ El modelo de negocio del propietario y el material multimedia aportado guían es
 
 ## Identidad y recursos
 
-`src/media.ts` reúne recursos reemplazables. El logo `logo.webp` proviene del primer JPEG del ZIP; no fue rediseñado ni recoloreado. Solo se utiliza un recorte de presentación del símbolo en la cabecera; el archivo completo se conserva intacto. Las referencias de espacio (`tatami`, `bienestar`, `cenas`) y retrato (`propietario`) siguen vacías. No inferir que una escena del video o un fondo de publicación es el local o su propietario. La galería usa tres archivos diferentes.
+`src/media.ts` reúne recursos reemplazables. El logo `logo.webp` proviene del primer JPEG del ZIP; no fue rediseñado ni recoloreado. Solo se utiliza un recorte de presentación del símbolo en la cabecera; el archivo completo se conserva intacto. Las referencias documentales de `tatami`, `cenas` y `propietario` siguen vacías. `bienestar` tiene una imagen conceptual identificada y reemplazable. La portada usa el logo completo y la cabecera suma MUSASHI junto al símbolo. El círculo del tatami contiene el logo original. No inferir que una escena del video o un fondo de publicación es el local o su propietario. La galería usa tres archivos diferentes.
 
 ## Carta
 

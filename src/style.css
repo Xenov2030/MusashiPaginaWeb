@@ -3495,3 +3495,86 @@ summary:focus-visible {
 .product .media-dialog img {
   transform: none;
 }
+
+.brand.brand-compact {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+.brand-compact .brand-name {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  margin: 0;
+}
+.hero-brand {
+  background: #0b0b0b;
+}
+.hero-brand .visual-image {
+  object-fit: contain !important;
+  object-position: center !important;
+}
+.tatami-circle {
+  display: grid;
+  place-items: center;
+  transform: none;
+  background: #0b0b0b;
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+}
+.tatami-circle img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+.tatami-circle:after {
+  pointer-events: none;
+  border-color: #ffffff55;
+  border-right-color: transparent;
+}
+.wellbeing-photo figcaption {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--muted);
+  padding-top: 12px;
+}
+.wellbeing-photo img {
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .brand-compact .brand-name {
+    font-size: 18px;
+    letter-spacing: 0.08em;
+  }
+  .brand.brand-compact {
+    gap: 9px;
+  }
+  .nav {
+    gap: 10px;
+  }
+}
+@media (max-width: 700px) {
+  .brand-compact .brand-name {
+    font-size: 20px;
+    letter-spacing: 0.1em;
+  }
+  .brand.brand-compact {
+    gap: 12px;
+  }
+  .hero .hero-brand .visual-image {
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+  .tatami-circle {
+    width: 140px;
+    height: 140px;
+  }
+  .wellbeing-photo {
+    order: 2;
+  }
+}

@@ -7,6 +7,8 @@ Propuesta de la web de una cafetería oculta y un espacio de inspiración japone
 Implementación preparada en `desarrollo/identidad-musashi`. El usuario autorizó ahora desplegarla para probar las funciones. Se publica mediante la rama `desarrollo/boceto-musashi`, conectada al sitio existente de Netlify, conservando el dominio y noindex. No se hace merge a `main`.
 
 - [Portada con el concepto del propietario](docs/capturas/portada.png)
+- [Tatami con la marca](docs/capturas/tatami.png)
+- [Bienestar](docs/capturas/bienestar.png)
 - [Creaciones y oficio](docs/capturas/creaciones.png)
 - [Historia de Musashi](docs/capturas/historia.png)
 - [Política de bebidas](docs/capturas/politica-bebidas.png)
@@ -36,14 +38,14 @@ La ruta `/carta` admite acceso directo y recarga. Los enlaces desde la carta vue
 ## Qué incluye
 
 - Navegación: La experiencia, Carta, Tatami, Cenas, Bienestar, Nuestra historia y Contacto.
-- Portada «Japón detrás de una puerta», frase del propietario, con fotografía aportada, encuadre abstracto de apertura y revelado breve sin bloqueo. Acceso inmediato a la carta y la experiencia. Logo original conservado sin rediseño; la cabecera usa un recorte de presentación del símbolo mediante CSS, con sus trazos y colores intactos. El pie conserva la imagen completa.
+- Portada «Japón detrás de una puerta», frase del propietario, con el logo completo aportado, encuadre abstracto de apertura y revelado breve sin bloqueo. Acceso inmediato a la carta y la experiencia. Logo original conservado sin rediseño; la cabecera usa un recorte de presentación del símbolo mediante CSS, con sus trazos y colores intactos. El pie conserva la imagen completa.
 - Historia real en tres momentos, sin fechas ni superlativos no verificados. «El camino cambia, la esencia permanece» se reserva al cierre de esa historia.
 - Política de bebidas visible en Cafetería y en la carta: receta de autor; no se ofrecen azúcar ni edulcorantes adicionales para agregar a las bebidas. Esto no significa que las recetas sean libres de azúcar ni atribuye propiedades dietéticas.
 - Carta sobre trama de tatami con once propuestas: seis creaciones de bebidas, Taiyaki Red Velvet y cuatro piezas con títulos descriptivos provisionales. Las seis bebidas tienen descripciones HTML transcritas de la parte legible de los afiches, con alcohol indicado en Samurai Coffee, Vagabond, Red Dragon y Midori Kensei. En las demás no se infiere ausencia de alcohol. Gráficas completas con `object-fit: contain` y ampliación accesible; precios y disponibilidad pendientes.
 - Galería de tres imágenes distintas de pastelería. Se distingue material fotográfico, gráfica promocional y composición conceptual.
 - Cenas y antecedentes de onigiris, ramen y tatamis, sin convertirlos en anuncios futuros.
 - Tatami privado protagonista, con una composición abstracta en lugar de una falsa fotografía del espacio.
-- Bienestar diferenciado: Tui Na, acupuntura y Reiki, sin promesas médicas.
+- Bienestar diferenciado: Tui Na, acupuntura y Reiki, sin promesas médicas, con imagen conceptual de toallas, cerámica y piedras.
 - Consultas diferenciadas por experiencia. Instagram es el canal oficial confirmado. Se conserva el número personal de Nicolas autorizado para pruebas, identificado como tal en burbuja y formulario; no representa un WhatsApp oficial.
 - Dirección privada, comunicada manualmente al confirmar por WhatsApp; el formulario prepara una solicitud y no confirma reservas.
 - Pocos pétalos, una ramita ilustrada discreta, control de ambiente solo con icono, pausa fuera de pantalla/pestaña y movimiento reducido.
@@ -68,7 +70,7 @@ La historia del nombre sigue desactivada hasta contar con texto verificado. No s
 | `public/media/musashi` | Imágenes optimizadas WebP, variantes pequeñas y video MP4. |
 | `integrations/google-calendar` | Conector opcional de agenda, preparado en revisiones anteriores; requiere conexión inicial del propietario. |
 
-Para reemplazar imágenes, editar sus referencias en `src/media.ts`, con dimensiones, texto alternativo y procedencia. `cenas`, `tatami`, `bienestar` y `propietario` permanecen en `null` hasta recibir fotografías correspondientes. Al incorporar una foto, indicar `kind: "confirmed"` y `format: "photo"`. Las gráficas de producto usan `format: "graphic"` y se muestran completas al ampliarlas. No usar un flyer como fotografía de una experiencia, ni una escena de ficción como retrato del propietario.
+Para reemplazar imágenes, editar sus referencias en `src/media.ts`, con dimensiones, texto alternativo y procedencia. `cenas`, `tatami` y `propietario` permanecen en `null` hasta recibir fotografías correspondientes. `bienestar` usa una imagen conceptual identificada; se puede reemplazar por una foto autorizada. Al incorporar una foto, indicar `kind: "confirmed"` y `format: "photo"`. Las gráficas de producto usan `format: "graphic"` y se muestran completas al ampliarlas. No usar un flyer como fotografía de una experiencia, ni una escena de ficción como retrato del propietario.
 
 Para un anuncio temporal de apertura, editar `copy.hero.stage` solo con texto confirmado. `site.business` mantiene dirección privada, pet friendly confirmado, horarios sin confirmar y contacto de prueba. La selección de carta es `suppliedProducts`; comprobar disponibilidad con el propietario antes de publicarla como vigente. Ver [guía de contenido](docs/CONTENIDO.md), [recursos](docs/RECURSOS.md) y [movimiento](docs/MOVIMIENTO.md).
 

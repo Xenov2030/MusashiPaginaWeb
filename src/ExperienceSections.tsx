@@ -255,7 +255,15 @@ export function Tatami() {
           <div className="tatami-weave" />
           <div className="tatami-paper">
             <span className="eyebrow">MUSASHI / UN ESPACIO RESERVADO</span>
-            <span className="tatami-circle" />
+            <span className="tatami-circle">
+              <img
+                src={media.logo}
+                alt="Logo de Musashi"
+                width="110"
+                height="110"
+                loading="lazy"
+              />
+            </span>
             <span className="tatami-paper-title">
               Más cerca.
               <br />
@@ -282,7 +290,14 @@ export function Wellbeing() {
             width={media.bienestar.width}
             height={media.bienestar.height}
             loading="lazy"
+            srcSet={media.bienestar.srcSet}
+            sizes={media.bienestar.sizes}
           />
+          {media.bienestar.kind === "conceptual" && (
+            <figcaption>
+              Imagen conceptual de bienestar · no es una fotografía del espacio.
+            </figcaption>
+          )}
         </figure>
       ) : (
         <div className="wellbeing-mark" aria-hidden="true">

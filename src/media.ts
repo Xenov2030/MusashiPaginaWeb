@@ -100,12 +100,32 @@ export const suppliedVisuals = {
 };
 // Sustituir referencias: nunca usar otra sede, una persona o una escena de ficción como el local o propietario.
 export const media = {
-  portada: suppliedVisuals.pastry,
+  portada: {
+    src: "/media/musashi/logo-completo.webp",
+    placeholder: "/media/musashi/logo.webp",
+    alt: "Logo completo de Musashi, con su símbolo y nombre originales",
+    width: 1100,
+    height: 1100,
+    kind: "confirmed",
+    format: "graphic",
+    source,
+  } as VisualResource,
   cafeteria: suppliedVisuals.vagabond,
   pasteleria: suppliedVisuals.pastry,
   cenas: null as VisualResource | null,
   tatami: null as VisualResource | null,
-  bienestar: null as VisualResource | null,
+  bienestar: {
+    src: "/media/musashi/bienestar.webp",
+    srcSet:
+      "/media/musashi/bienestar-small.webp 540w, /media/musashi/bienestar.webp 1200w",
+    sizes: "(max-width:700px) calc(100vw - 44px), 42vw",
+    alt: "Composición conceptual de bienestar con toallas, un cuenco de cerámica y piedras; no es una fotografía del espacio de Musashi",
+    width: 1200,
+    height: 900,
+    kind: "conceptual",
+    source:
+      "Generación de OpenAI imagegen para esta propuesta; ver resources/generated/inventory.json",
+  } as VisualResource | null,
   propietario: null as VisualResource | null,
   logo: "/media/musashi/logo.webp",
   video: {

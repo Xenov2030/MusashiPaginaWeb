@@ -7,8 +7,8 @@ test("portada lenta: contenido y navegación disponibles, revelado al cargar", a
   const gate = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("**/media/musashi/pasteleria*.webp", async (route) => {
-    if (!route.request().url().includes("pasteleria-preview")) await gate;
+  await page.route("**/media/musashi/logo-completo.webp", async (route) => {
+    if (!route.request().url().includes("logo.webp")) await gate;
     await route.continue();
   });
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -45,8 +45,8 @@ test("portada lenta: contenido y navegación disponibles, revelado al cargar", a
 test("fallo de imagen: alternativa visible y controles utilizables", async ({
   page,
 }) => {
-  await page.route("**/media/musashi/pasteleria*.webp", (route) =>
-    route.request().url().includes("pasteleria-preview")
+  await page.route("**/media/musashi/logo-completo.webp", (route) =>
+    route.request().url().includes("logo.webp")
       ? route.continue()
       : route.abort(),
   );

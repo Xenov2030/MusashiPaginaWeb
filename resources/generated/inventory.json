@@ -1,0 +1,10 @@
+[
+  {
+    "original": "resources/generated/bienestar.png",
+    "web": "/media/musashi/bienestar.webp",
+    "description": "Bodegón conceptual de bienestar con toallas, cerámica y piedras.",
+    "section": "Bienestar",
+    "status": "conceptual; no documenta el espacio de Musashi",
+    "source": "Generado con OpenAI imagegen para el ajuste solicitado por el usuario."
+  }
+]

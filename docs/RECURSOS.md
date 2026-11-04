@@ -14,7 +14,7 @@ ZIP: **WhatsApp Image 2026-11-03 at 11.42.25 PM.zip**. Incluye doce JPEG y un MP
 | `11.47.53 PM (1).jpeg` | `bubble-yakuza.webp` | Gráfica de producto Bubble Yakuza. |
 | `11.47.53 PM (2).jpeg` | `praline-negro.webp` | Gráfica de producto Praliné Negro. |
 | `11.47.53 PM.jpeg` | `midori-kensei.webp` | Gráfica de producto Midori Kensei. |
-| `11.47.54 PM (1).jpeg` | `pasteleria-japonesa.webp` | Fotografía de pastelería, portada y carta; nombre exacto pendiente. |
+| `11.47.54 PM (1).jpeg` | `pasteleria-japonesa.webp` | Fotografía de pastelería en la carta; nombre exacto pendiente. |
 | `11.47.54 PM.jpeg` | `pasteleria-personajes.webp` | Fotografía aportada, galería de pastelería. |
 | `11.47.55 PM (1).jpeg` | `pasteleria-gato.webp` | Fotografía aportada, galería de pastelería. |
 | `11.47.55 PM.jpeg` | `pasteleria-panda.webp` | Fotografía aportada, galería de pastelería. |
@@ -29,7 +29,7 @@ El cliente aporta los recursos para esta implementación; el equipo deberá cons
 
 - `public/images/ramen.webp`: ilustración conceptual generada con OpenAI en una revisión anterior. Se mantiene solo en Cenas, señalada como conceptual; no confirma receta, disponibilidad ni una convocatoria futura.
 - Tatami: composición propia de CSS con trama, papel y cerámica abstracta; no reproduce ni documenta el espacio real.
-- Bienestar: composición abstracta de círculos y papel, sin fotografía ni representación de una terapia.
+- Bienestar: imagen conceptual generada con OpenAI imagegen, con toallas, cerámica y piedras. No representa el espacio real ni una terapia; se identifica como conceptual. Original conservado en `resources/generated/bienestar.png`, ficha en `resources/generated/inventory.json` y variantes WebP en `public/media/musashi`.
 - Pétalos y ramita: SVG/CSS decorativos propios, sin dependencias, personas ni local ficticio.
 - Los demás archivos conceptuales de `public/images` se conservan por compatibilidad con revisiones anteriores; no se usan como una falsa galería del negocio.
 
@@ -51,3 +51,7 @@ Georgia/Times New Roman (fuentes del sistema) para títulos y DM Sans alojada lo
 | Midori Kensei | Latte con chocolate blanco & touch de licor de pistacho. | Sí, licor de pistacho. |
 
 Se normalizaron mayúsculas, listas y puntuación. Solo se transcribió lo legible. La frase «cremosa» de Bubble Yakuza se conserva tal como aparece. Taiyaki Red Velvet no aporta receta legible; sus rellenos no se infieren por la imagen. Los cuatro productos fotográficos no aportan receta ni nombre comercial confirmado. El registro no certifica disponibilidad, recetas actuales ni información alimentaria completa.
+
+## Ajuste de presencia de marca
+
+`logo-completo.webp` es una copia de 1100 × 1100 del JPEG original completo, sin recorte ni recoloración, para el hero. El nombre MUSASHI acompaña al símbolo de la cabecera. El círculo conceptual del tatami muestra la imagen del logo, conservando sus proporciones. La fotografía rectangular de pastelería permanece en la carta.

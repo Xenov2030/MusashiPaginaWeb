@@ -88,6 +88,11 @@ function Brand({ compact = false }: { compact?: boolean }) {
           <small>CAFÉ · TÉ · COCTELERÍA</small>
         </>
       )}
+      {compact && site.visuals.logo && (
+        <strong className="brand-name" aria-hidden="true">
+          MUSASHI
+        </strong>
+      )}
     </a>
   );
 }
@@ -285,11 +290,11 @@ function Hero() {
       id="inicio"
       className={`hero table-hero ${scene.kind === "confirmed" ? "hero-real" : "hero-conceptual"}`}
     >
-      <figure className="hero-visual">
+      <figure className="hero-visual hero-brand">
         <Visual resource={scene} priority />
         <figcaption>
           {scene.kind === "confirmed"
-            ? "MUSASHI / PASTELERÍA JAPONESA"
+            ? "MUSASHI / JAPÓN DETRÁS DE UNA PUERTA"
             : "MUSASHI / COMPOSICIÓN CONCEPTUAL"}
         </figcaption>
       </figure>
