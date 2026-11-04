@@ -27,7 +27,11 @@ function EventDetails({ event }: { event: OfficialEvent }) {
   return (
     <div className="event-details">
       <p className="eyebrow">
-        {event.status === "full" ? "COMPLETO" : "PRÓXIMO ENCUENTRO"}
+        {event.demo
+          ? "PRÓXIMO EVENTO · DEMOSTRACIÓN"
+          : event.status === "full"
+            ? "COMPLETO"
+            : "PRÓXIMO ENCUENTRO"}
       </p>
       <h3>{event.title}</h3>
       <p className="event-date">
@@ -56,7 +60,7 @@ function EventDetails({ event }: { event: OfficialEvent }) {
           className="button"
           href={`/?evento=${encodeURIComponent(event.id)}#reservas`}
         >
-          Solicitar lugar →
+          {event.demo ? "Probar reserva →" : "Solicitar lugar →"}
         </a>
       )}
     </div>
@@ -78,8 +82,18 @@ export function OfficialAgenda({
   const next = upcoming[0];
   return (
     <section className="official-agenda section" id="agenda">
-      <p className="eyebrow">ENCUENTROS / AGENDA OFICIAL</p>
+      <p className="eyebrow">
+        {events.some((event) => event.demo)
+          ? "ENCUENTROS / AGENDA DE MUESTRA"
+          : "ENCUENTROS / AGENDA OFICIAL"}
+      </p>
       <h2>Tu próxima cita con Musashi.</h2>
+      {events.some((event) => event.demo) && (
+        <p className="demo-agenda-note">
+          Agenda de muestra · Eventos y fechas ficticios para visualizar la
+          propuesta.
+        </p>
+      )}
       {state === "loading" ? (
         <p role="status">Consultando la agenda…</p>
       ) : state === "error" ? (

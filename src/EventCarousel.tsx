@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { conceptualVisuals } from "./content";
 import { type OfficialEvent } from "./events";
-import { EventImage } from "./EventImage";
+import { EventImage, eventFallback } from "./EventImage";
 const illustrations = [
   {
     id: "ramen",
@@ -30,9 +30,11 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
     fallback: string;
     imageUrl?: string | null;
     date?: string;
+    demo?: boolean;
   }[] = events.length
-    ? events.map((e) => ({ ...e, fallback: conceptualVisuals.ramen.src }))
+    ? events.map((e) => ({ ...e, fallback: eventFallback(e) }))
     : illustrations;
+  const demoGallery = events.length > 0 && events.every((e) => e.demo);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [interacting, setInteracting] = useState(false);
@@ -108,14 +110,18 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
         <div>
           <p className="eyebrow">
             {events.length
-              ? "MOMENTOS QUE YA COMPARTIMOS"
+              ? demoGallery
+                ? "ENCUENTROS DE MUESTRA"
+                : "MOMENTOS QUE YA COMPARTIMOS"
               : "ENCUENTROS / GALERÍA EN PREPARACIÓN"}
           </p>
           <h2>Lo que nos reúne.</h2>
         </div>
         <p>
           {events.length
-            ? "Una mirada a los encuentros anteriores de Musashi."
+            ? demoGallery
+              ? "Encuentros ficticios para mostrar cómo se verá la galería de eventos anteriores."
+              : "Una mirada a los encuentros anteriores de Musashi."
             : "Acá vivirán las imágenes de nuestros encuentros. Mientras llegan las fotos reales, explorá estas imágenes conceptuales."}
         </p>
       </div>
@@ -137,7 +143,11 @@ export function EventCarousel({ events }: { events: OfficialEvent[] }) {
             />
             <div className="archive-copy">
               <p className="eyebrow">
-                {events.length ? "ENCUENTRO FINALIZADO" : "INSPIRACIÓN VISUAL"}
+                {slide.demo
+                  ? "EJEMPLO DE ENCUENTRO ANTERIOR"
+                  : events.length
+                    ? "ENCUENTRO FINALIZADO"
+                    : "INSPIRACIÓN VISUAL"}
               </p>
               <h3>{slide.title}</h3>
               {slide.date && (

@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "demo-proximo-ramen",
+    "title": "Noche de ramen y té",
+    "description": "Un bowl humeante, una selección de té y una mesa para compartir. Una noche de sabores japoneses y conversación, con el oficio de Musashi en cada detalle.",
+    "date": "2026-11-21",
+    "time": "20:30",
+    "status": "upcoming",
+    "priceARS": null,
+    "conditions": [],
+    "imageUrl": null,
+    "demo": true
+  },
+  {
+    "id": "demo-anterior-onigiris",
+    "title": "Tarde de onigiris",
+    "description": "Onigiris, té y una mesa entre amigos. Una tarde para descubrir sabores japoneses, probar algo distinto y quedarse un ratito más.",
+    "date": "2026-10-17",
+    "time": "18:00",
+    "status": "finished",
+    "priceARS": null,
+    "conditions": [],
+    "imageUrl": null,
+    "demo": true
+  },
+  {
+    "id": "demo-anterior-cafe",
+    "title": "Café y conversaciones",
+    "description": "Una tarde alrededor del café y el oficio de prepararlo. Aromas, historias y buena charla para compartir sin apuro.",
+    "date": "2026-09-12",
+    "time": "17:00",
+    "status": "finished",
+    "priceARS": null,
+    "conditions": [],
+    "imageUrl": null,
+    "demo": true
+  },
+  {
+    "id": "demo-anterior-ramen",
+    "title": "Una noche alrededor del ramen",
+    "description": "Ramen humeante y buena compañía. Un encuentro alrededor de la mesa para disfrutar de los sabores que nos reúnen.",
+    "date": "2026-08-22",
+    "time": "20:00",
+    "status": "finished",
+    "priceARS": null,
+    "conditions": [],
+    "imageUrl": null,
+    "demo": true
+  }
+]

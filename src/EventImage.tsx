@@ -35,3 +35,11 @@ export function EventImage({
     </figure>
   );
 }
+
+export function eventFallback(event: { id: string; demo?: boolean }): string {
+  if (event.demo && event.id === "demo-anterior-onigiris")
+    return conceptualVisuals.hero.src;
+  if (event.demo && event.id === "demo-anterior-cafe")
+    return conceptualVisuals.cafe.src;
+  return conceptualVisuals.ramen.src;
+}

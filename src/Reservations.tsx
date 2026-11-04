@@ -96,7 +96,7 @@ export function Reservations({ events }: { events: OfficialEvent[] }) {
       pet,
       notes,
       test: site.business.whatsappTest,
-      event: event?.title,
+      event: event ? `${event.demo ? "[DEMO] " : ""}${event.title}` : undefined,
     });
     if (!url) {
       setError("Revisá la fecha, el horario y la cantidad de personas.");
@@ -139,6 +139,7 @@ export function Reservations({ events }: { events: OfficialEvent[] }) {
                 <option value="">Consulta general</option>
                 {availableEvents.map((event) => (
                   <option value={event.id} key={event.id}>
+                    {event.demo ? "Demo · " : ""}
                     {event.title} · {event.date}
                   </option>
                 ))}

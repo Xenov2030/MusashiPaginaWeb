@@ -2249,3 +2249,10 @@ dialog.is-closing::backdrop {
     font-size: 0.45rem;
   }
 }
+.demo-agenda-note {
+  border-left: 3px solid var(--red);
+  padding: 0.8rem 1rem;
+  background: #f1f1f1;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}

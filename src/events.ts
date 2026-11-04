@@ -8,6 +8,7 @@ export interface OfficialEvent {
   priceARS: number | null;
   conditions: string[];
   imageUrl?: string | null;
+  demo?: boolean;
 }
 export function publicImageUrl(value: unknown): string | null {
   if (typeof value !== "string" || value.length > 2000) return null;
@@ -69,6 +70,7 @@ export function parseOfficialEvents(value: unknown): OfficialEvent[] {
       priceARS: event.priceARS as number | null,
       conditions: event.conditions as string[],
       imageUrl: publicImageUrl(event.imageUrl),
+      demo: event.demo === true,
     };
   });
 }

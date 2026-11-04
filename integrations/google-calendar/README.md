@@ -30,7 +30,7 @@ Para cerrar reservas añadir `[COMPLETO]` al título. Para retirar una publicaci
 
 ## Estado de esta entrega
 
-El conector está preparado; falta que el propietario realice la conexión de su cuenta. Sin URL configurada, la agenda usa `public/events.json` (vacío). El WhatsApp configurado es el número personal de Nicolas, autorizado solo para pruebas; `src/content.ts` mantiene `whatsappTest: true`. Al recibir el número oficial, cambiarlo y desactivar ese indicador. No prometer reservas reales mientras siga en prueba.
+El conector está preparado; falta que el propietario realice la conexión de su cuenta. Sin URL configurada, la agenda usa `public/events.json` (eventos ficticios autorizados para esta página de muestra). El WhatsApp configurado es el número personal de Nicolas, autorizado solo para pruebas; `src/content.ts` mantiene `whatsappTest: true`. Al recibir el número oficial, cambiarlo y desactivar ese indicador. No prometer reservas reales mientras siga en prueba.
 
 ## Imagen promocional y galería de eventos anteriores
 
@@ -45,3 +45,5 @@ Usar un enlace HTTPS directo a una imagen pública autorizada (JPG, PNG o WebP);
 El evento futuro más cercano se destaca con su imagen, fecha y solicitud de reserva. Los eventos pasados marcados `[PUBLICAR]`, de los últimos 365 días, aparecen automáticamente en el carrusel de encuentros anteriores, ordenados del más reciente al más antiguo. Para cargar uno anterior, crear o editar su evento con la fecha real pasada, título, `Texto público:` e `Imagen pública:`. No hace falta editar el sitio. Para retirarlo, quitar `[PUBLICAR]`.
 
 Si no hay fotos cargadas, se usan imágenes conceptuales identificadas; nunca se presentan como registros reales. Si falla una imagen, se muestra la alternativa conceptual. Sin eventos futuros se mantiene un bloque promocional sin inventar una fecha. Para habilitar estas novedades en un script ya desplegado, copiar la versión actual de `Code.gs` y publicar una nueva versión de la implementación conservando su URL.
+
+Los eventos de demostración de `public/events.json` están marcados con `demo: true`. Son datos inventados a pedido del usuario para mostrar la presentación y no se mezclan con Google Calendar: al conectar el calendario, su agenda reemplaza los ejemplos. Antes de la versión oficial, retirar estos ejemplos y configurar el WhatsApp oficial.

@@ -183,6 +183,9 @@ test("anchos adaptables, teclado y recursos locales", async ({ page }) => {
     ).toBe(true);
   }
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Hay un lugar",
+  );
   await page.keyboard.press("Tab");
   await expect(
     page.getByRole("link", { name: "Saltar al contenido" }),
