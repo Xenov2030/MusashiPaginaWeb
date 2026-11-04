@@ -16,6 +16,7 @@ Implementación preparada en `desarrollo/identidad-musashi`. El usuario autoriz�
 - [Inicio en móvil](docs/capturas/movil.png)
 - [Carta](docs/capturas/carta.png)
 - [Recorrido grabado](docs/grabaciones/recorrido.webm)
+- [Miniatura interactiva del video](docs/capturas/video.png)
 
 ## Ejecución y compilación
 
@@ -49,7 +50,7 @@ La ruta `/carta` admite acceso directo y recarga. Los enlaces desde la carta vue
 - Consultas diferenciadas por experiencia. Instagram es el canal oficial confirmado. Se conserva el número personal de Nicolas autorizado para pruebas, identificado como tal en burbuja y formulario; no representa un WhatsApp oficial.
 - Dirección privada, comunicada manualmente al confirmar por WhatsApp; el formulario prepara una solicitud y no confirma reservas.
 - Pocos pétalos, una ramita ilustrada discreta, reproducción automática continua sin botón de pausa y respeto por movimiento reducido.
-- Video del cliente incorporado como pieza promocional en Cenas, por indicación expresa del usuario. Se abre voluntariamente desde «Ver video», con portada, controles nativos, sin reproducción automática y silenciado inicialmente. No se atribuyen frases ni se presenta como registro del local o retrato del propietario. El audio no está transcrito.
+- Video del cliente incorporado como pieza promocional en Cenas, por indicación expresa del usuario. La miniatura está siempre visible con un botón de reproducción. Al pulsarlo comienza la reproducción voluntaria con controles nativos y audio silenciado inicialmente. No se atribuyen frases ni se presenta como registro del local o retrato del propietario. El audio no está transcrito.
 
 La historia del nombre sigue desactivada hasta contar con texto verificado. No se anuncia fecha de apertura ni horarios actuales. La agenda ficticia de la revisión anterior fue retirada conforme al nuevo pedido; `public/events.json` está vacío.
 

@@ -1,5 +1,5 @@
 import { BeveragePolicy } from "./BeveragePolicy";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { craft, conceptualVisuals, suppliedProducts } from "./content";
 import { media, pastryGallery, pastryTitles } from "./media";
 import { ConsultLink } from "./ConsultLink";
@@ -134,39 +134,62 @@ export function PastryGallery() {
 }
 function BrandFilm() {
   const [open, setOpen] = useState(false);
+  const player = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    if (open && player.current) {
+      player.current.focus({ preventScroll: true });
+      void player.current.play().catch(() => {
+        /* Native controls remain available if playback is blocked. */
+      });
+    }
+  }, [open]);
   if (!media.video.enabled) return null;
   return (
-    <details
-      className="brand-film"
-      onToggle={(e) => setOpen(e.currentTarget.open)}
-    >
-      <summary>
-        Una pieza visual de Musashi
-        <span>
-          Ver video <span aria-hidden="true">→</span>
-        </span>
-      </summary>
-      {open && (
-        <figure>
-          <video
-            controls
-            playsInline
-            muted
-            preload="none"
-            poster={media.video.poster}
+    <figure className="brand-film">
+      <p className="eyebrow">MUSASHI EN MOVIMIENTO</p>
+      {open ? (
+        <video
+          ref={player}
+          tabIndex={0}
+          controls
+          playsInline
+          muted
+          preload="none"
+          poster={media.video.poster}
+          width="566"
+          height="850"
+          aria-label="Video promocional de Musashi: personaje de época junto a una taza y pastelería"
+          aria-describedby="film-description"
+        >
+          <source src={media.video.src} type="video/mp4" />
+        </video>
+      ) : (
+        <button
+          className="brand-film-preview"
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="Reproducir video de Musashi"
+        >
+          <img
+            src={media.video.poster}
+            alt="Miniatura del video promocional de Musashi: un personaje de época junto a una taza"
             width="566"
             height="850"
-            aria-label="Video promocional de Musashi: personaje de época junto a una taza y pastelería"
-            aria-describedby="film-description"
-          >
-            <source src={media.video.src} type="video/mp4" />
-          </video>
-          <figcaption id="film-description">
-            Pieza promocional de Musashi · material aportado por el cliente.
-          </figcaption>
-        </figure>
+            loading="lazy"
+            decoding="async"
+          />
+          <span className="film-play" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="m8 4 12 8-12 8Z" />
+            </svg>
+          </span>
+          <span className="film-preview-label">Ver video</span>
+        </button>
       )}
-    </details>
+      <figcaption id="film-description">
+        Pieza promocional de Musashi · material aportado por el cliente.
+      </figcaption>
+    </figure>
   );
 }
 export function Dinner() {

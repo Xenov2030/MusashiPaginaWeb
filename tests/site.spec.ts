@@ -168,7 +168,7 @@ test("consultas diferenciadas, sin agenda ficticia ni dirección pública", asyn
     "Pet friendly",
   );
 });
-test("el video del cliente se abre voluntariamente con controles y sin sonido automático", async ({
+test("el video muestra miniatura y se reproduce al pulsar con controles y sin sonido", async ({
   page,
 }) => {
   const requests: string[] = [];
@@ -176,44 +176,38 @@ test("el video del cliente se abre voluntariamente con controles y sin sonido au
     if (r.url().includes(".mp4")) requests.push(r.url());
   });
   await page.goto("/");
-  await expect(page.locator(".brand-film summary")).toContainText("Ver video");
-  await expect(page.locator("video")).toHaveCount(0);
-  expect(requests).toEqual([]);
-  await page.locator(".brand-film summary").click();
-  const video = page.locator(".brand-film video");
-  await expect(video).toBeVisible();
-  await expect(video).toHaveAttribute(
-    "poster",
+  const preview = page.getByRole("button", {
+    name: "Reproducir video de Musashi",
+  });
+  await preview.scrollIntoViewIfNeeded();
+  await expect(preview.locator("img")).toBeVisible();
+  await expect(preview.locator("img")).toHaveAttribute(
+    "src",
     "/media/musashi/film-poster.webp",
   );
-  await expect(video).toHaveAttribute("preload", "none");
+  await expect(preview).toContainText("Ver video");
+  await expect(page.locator("video")).toHaveCount(0);
+  expect(requests).toEqual([]);
+  await preview.screenshot({ path: "docs/capturas/video.png" });
+  await preview.focus();
+  await preview.press("Enter");
+  const video = page.locator(".brand-film video");
+  await expect(video).toBeVisible();
+  await expect(video).toBeFocused();
+  await expect
+    .poll(() => video.evaluate((v: HTMLVideoElement) => v.currentTime))
+    .toBeGreaterThan(0);
   expect(
     await video.evaluate(
-      (v: HTMLVideoElement) => v.controls && v.muted && v.paused && !v.autoplay,
+      (v: HTMLVideoElement) => v.controls && v.muted && !v.autoplay,
     ),
   ).toBe(true);
-  const duration = await video.evaluate(
-    (v: HTMLVideoElement) =>
-      new Promise<number>((resolve, reject) => {
-        v.addEventListener("loadedmetadata", () => resolve(v.duration), {
-          once: true,
-        });
-        v.addEventListener(
-          "error",
-          () => reject(new Error("Video no disponible")),
-          { once: true },
-        );
-        v.preload = "metadata";
-        v.load();
-      }),
-  );
-  expect(duration).toBeGreaterThan(15);
-  expect(duration).toBeLessThan(17);
-  await expect(page.locator("#film-description")).toContainText(
-    "material aportado por el cliente",
-  );
-  await page.locator(".brand-film summary").click();
-  await expect(video).toHaveCount(0);
+  expect(
+    await video.evaluate((v: HTMLVideoElement) => v.duration),
+  ).toBeGreaterThan(15);
+  await expect(preview).toHaveCount(0);
+  await video.evaluate((v: HTMLVideoElement) => v.pause());
+  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
 });
 test("contraste de lectura, controles y espacios diferenciados", async ({
   page,
