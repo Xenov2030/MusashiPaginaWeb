@@ -39,7 +39,9 @@ Las imágenes faltantes se sustituyen desde `src/media.ts`. Se debe usar una fot
 
 Georgia/Times New Roman (fuentes del sistema) para títulos y DM Sans alojada localmente para lectura. DM Sans está bajo SIL Open Font License 1.1, disponible en el paquete `@fontsource/dm-sans` y en `public/fonts`. No se afirmó conocer las fuentes originales de las publicaciones ni se usó una fuente oriental caricaturesca. Las gráficas conservan su tipografía original como imagen.
 
-## Registro de transcripción
+## Registro histórico de transcripción (reemplazado)
+
+Para las siete bebidas, la fuente vigente es `src/menu/owner-recipes.json`, proporcionada por el propietario el 4 de noviembre de 2026. Las transcripciones siguientes solo documentan los afiches originales intactos y no deben utilizarse para reconstruir las recetas actuales.
 
 | Afiche | Texto legible incorporado como HTML | Alcohol indicado |
 | --- | --- | --- |

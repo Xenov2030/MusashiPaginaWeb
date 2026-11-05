@@ -1,3 +1,4 @@
+import ownerRecipes from "./menu/owner-recipes.json" with { type: "json" };
 import { media, suppliedVisuals } from "./media";
 export interface VisualResource {
   src: string;
@@ -113,6 +114,13 @@ export interface Product {
   name: string;
   category: Category;
   description: string;
+  ingredients?: string;
+  contentSource?: { providedBy: string; providedOn: string; status: string };
+  summerInclusion?: null;
+  servingTemperature?: null;
+  sizes?: null;
+  adaptations?: null;
+  allergens?: null;
   priceARS: number | null;
   detail: string;
   texture: string;
@@ -181,7 +189,27 @@ const suppliedProduct = (
   availability: "pending",
   confirmedFeatures: [],
 });
+const recipeImages: Record<string, VisualResource> = {
+  "red-dragon": suppliedVisuals.redDragon,
+  vagabond: suppliedVisuals.vagabond,
+  "midori-kensei": suppliedVisuals.midori,
+  "bubble-yakuza": suppliedVisuals.bubble,
+  "praline-negro": suppliedVisuals.praline,
+  samurai: suppliedVisuals.samurai,
+};
 export const suppliedProducts: Product[] = [
+  ...ownerRecipes.map((recipe): Product => ({
+    ...recipe,
+    alcohol: recipe.alcohol as Product["alcohol"],
+    category: "Café y creaciones de autor",
+    image: recipeImages[recipe.id],
+    priceARS: null,
+    availability: "pending",
+    confirmedFeatures: ["Receta confirmada"],
+    detail:
+      "Receta confirmada por el propietario. Inclusión estacional y disponibilidad por confirmar.",
+    texture: "Información completa de alérgenos pendiente.",
+  })),
   suppliedProduct(
     "pasteleria",
     "Porción rectangular de pastelería",
@@ -190,65 +218,11 @@ export const suppliedProducts: Product[] = [
     "Nombre comercial y elaboración por confirmar con Musashi.",
   ),
   suppliedProduct(
-    "vagabond",
-    "Vagabond",
-    "Café y creaciones de autor",
-    suppliedVisuals.vagabond,
-    "Doble espresso, leche, crema de leche, chocolate blanco y touch de licor de dulce de leche.",
-    "indicated",
-    "legible",
-  ),
-  suppliedProduct(
     "taiyaki",
     "Taiyaki Red Velvet",
     "Pastelería",
     suppliedVisuals.taiyaki,
     "Taiyaki Red Velvet, una creación de Musashi. Consultá su elaboración y disponibilidad.",
-  ),
-  suppliedProduct(
-    "samurai",
-    "Samurai Coffee",
-    "Café y creaciones de autor",
-    suppliedVisuals.samurai,
-    "Doble espresso, leche, crema de leche y un touch de licor de chocolate con menta.",
-    "indicated",
-    "legible",
-  ),
-  suppliedProduct(
-    "red-dragon",
-    "Red Dragon",
-    "Café y creaciones de autor",
-    suppliedVisuals.redDragon,
-    "Espresso, red velvet, frambuesa, licor de chocolate blanco y leche texturizada.",
-    "indicated",
-    "legible",
-  ),
-  suppliedProduct(
-    "bubble-yakuza",
-    "Bubble Yakuza",
-    "Café y creaciones de autor",
-    suppliedVisuals.bubble,
-    "Latte de vainilla cremosa con perlas de tapioca caramelizadas.",
-    "not-stated",
-    "legible",
-  ),
-  suppliedProduct(
-    "praline-negro",
-    "Praliné Negro",
-    "Café y creaciones de autor",
-    suppliedVisuals.praline,
-    "Leche texturizada, sésamo negro, praliné de maní, caramelo, miel y vainilla.",
-    "not-stated",
-    "legible",
-  ),
-  suppliedProduct(
-    "midori-kensei",
-    "Midori Kensei",
-    "Café y creaciones de autor",
-    suppliedVisuals.midori,
-    "Latte con chocolate blanco & touch de licor de pistacho.",
-    "indicated",
-    "legible",
   ),
   suppliedProduct(
     "panda",

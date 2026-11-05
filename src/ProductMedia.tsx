@@ -6,12 +6,16 @@ export function ProductMedia({
   children,
   notice,
   description,
+  ingredients,
+  includesLiqueur,
 }: {
   resource: VisualResource;
   name: string;
   children: ReactNode;
   notice?: string;
   description?: string;
+  ingredients?: string;
+  includesLiqueur?: boolean;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   return (
@@ -60,6 +64,12 @@ export function ProductMedia({
               ? "Afiche de Musashi"
               : "Imagen aportada por Musashi"}
         </p>
+        {ingredients && (
+          <p className="product-ingredients">
+            <strong>Ingredientes:</strong> {ingredients}
+          </p>
+        )}
+        {includesLiqueur && <p className="alcohol-note">Incluye licor</p>}
         {description && <p className="media-description">{description}</p>}
       </dialog>
     </>

@@ -3982,3 +3982,11 @@ summary:focus-visible {
   padding-block: 10px;
   border-bottom: 1px solid var(--red);
 }
+
+/* Recetas confirmadas; composición neutra sin fotografía inventada. */
+.product-ingredients { font-size: .88rem; line-height: 1.7; }
+.recipe-status { font-size: .78rem; border-left: 2px solid var(--red, #b5202a); padding-left: 12px; }
+.recipe-typography { min-height: 260px; display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 30px; background: #141414; color: #fff; border: 1px solid #444; }
+.recipe-typography span, .recipe-typography small { font-size: .65rem; letter-spacing: .12em; }
+.recipe-typography strong { font-family: Georgia, serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 400; border-bottom: 2px solid #ad222a; padding-bottom: 20px; }
+.brand-archive .recipe-typography small { color: #c8c8c8; }

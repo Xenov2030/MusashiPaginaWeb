@@ -39,13 +39,13 @@ test("las creaciones tienen texto HTML y solo se marca alcohol indicado por los 
   ]) {
     const product = page.locator("#" + id);
     await expect(product).toContainText(ingredient);
-    await expect(product.locator(".alcohol-note")).toHaveText(
-      "Contiene alcohol · indicado en el afiche",
+    await expect(product.locator(":scope > .alcohol-note")).toHaveText(
+      "Incluye licor",
     );
   }
   for (const id of ["praline-negro", "bubble-yakuza"])
     await expect(page.locator("#" + id + " .alcohol-note")).toHaveCount(0);
-  await expect(page.locator("#praline-negro")).toContainText("praliné de maní");
+  await expect(page.locator("#praline-negro")).toContainText("pasta de maní");
   await expect(page.locator("#bubble-yakuza")).toContainText(
     "tapioca caramelizadas",
   );
@@ -76,7 +76,7 @@ test("navegación del brief y pastelería con nombres descriptivos", async ({
     page
       .getByRole("navigation", { name: "Creaciones de Musashi" })
       .getByRole("link"),
-  ).toHaveCount(6);
+  ).toHaveCount(7);
   await page
     .getByRole("navigation", { name: "Principal", exact: true })
     .getByRole("link", { name: "Nuestra historia" })

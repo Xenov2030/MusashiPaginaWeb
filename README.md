@@ -90,13 +90,15 @@ Enviar una consulta no confirma una reserva. No hay calendario de disponibilidad
 
 [Inventario de los seis productos e imágenes](docs/INVENTARIO_VERANO.md). Cuatro imágenes de bebidas frías se generaron con OpenAI imagegen específicamente para la demo; no son fotos de Musashi ni de otro negocio. Se conservan los originales y las variantes optimizadas WebP de 1000 y 540 px. Los otros dos productos usan afiches aportados por el cliente, sin cambiar sus recetas ni presentarlos como bebidas frías.
 
-El desplegable «Creaciones de la marca» conserva las once propuestas documentadas en revisiones anteriores, con transcripciones HTML y visor completo. No afirma inclusión estacional ni disponibilidad. Los hashes existentes como `/carta#samurai` abren esa referencia cuando no forma parte de la temporada seleccionada.
+El desplegable «Creaciones de autor» reúne siete recetas confirmadas por el propietario el 4 de noviembre de 2026 y las cinco referencias de pastelería. Ingredientes y descripción están separados en HTML y en `src/menu/owner-recipes.json`, fuente prioritaria frente a los afiches. Xena Sama usa composición tipográfica; las otras seis bebidas conservan su afiche ampliable. No afirma inclusión estacional ni disponibilidad. Los hashes existentes como `/carta#samurai` abren esa referencia cuando no forma parte de la temporada seleccionada.
+
+[Registro de recetas confirmadas y pendientes](docs/RECETAS_CONFIRMADAS.md). Capturas: [escritorio](docs/capturas/recetas-escritorio.png) y [móvil](docs/capturas/recetas-movil.png). La carga actual permanece local, sin nuevo despliegue ni aprobación del diseño.
 
 Ver también [recursos](docs/RECURSOS.md), [contenido](docs/CONTENIDO.md) y [movimiento](docs/MOVIMIENTO.md).
 
 ## Verificación y límites
 
-Compilación de producción completada y **35 pruebas automatizadas aprobadas**.
+Compilación de producción completada y **37 comprobaciones automatizadas aprobadas** (incluyendo las siete recetas y su presentación en escritorio/móvil; se corrigieron selectores para distinguir tarjetas y visores).
 
 Se comprueban acceso directo y recarga de `/carta`, enlaces desde Inicio, hashes de las creaciones, atrás/adelante, filtros, precio pendiente, ausencia de pedidos en demo, detalle con aviso, imágenes, originales, tres recorridos de reserva, números faltantes o inválidos, independencia de contactos, teclado, foco, movimiento reducido, cinco anchos y ausencia de desbordamientos. Hay pruebas del modelo para reutilización de productos y separación entre borrador, demo, publicación y archivo.
 
@@ -108,7 +110,7 @@ Se conservan `netlify.toml`, `musashiweb.netlify.app`, `/carta`, la redirección
 
 ## Pendientes del propietario
 
-Carta oficial de verano, año si corresponde, descripciones definitivas, precios, disponibilidad, imágenes aprobadas para cada producto, combo de tatami, condiciones de reserva, los tres WhatsApp oficiales, dirección y horarios actuales. También siguen pendientes fotografías documentales de los espacios y transcripción/subtítulos del video si se desean.
+Carta oficial de verano, año si corresponde, descripciones de pastelería, precios, disponibilidad, presentación fría/caliente, tamaños, adaptaciones, alérgenos completos, imagen de Xena Sama, combo de tatami, condiciones de reserva, los tres WhatsApp oficiales, dirección y horarios actuales. También siguen pendientes fotografías documentales de los espacios y transcripción/subtítulos del video si se desean.
 
 ---
 

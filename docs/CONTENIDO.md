@@ -8,7 +8,7 @@ El modelo de negocio del propietario y el material multimedia aportado guían es
 
 ## Carta
 
-`suppliedProducts` contiene once propuestas. Siete nombres aparecen en las gráficas: Red Dragon, Vagabond, Samurai Coffee, Taiyaki Red Velvet, Bubble Yakuza, Praliné Negro y Midori Kensei. Las cuatro piezas fotográficas usan títulos descriptivos provisionales: porción rectangular, pieza con forma de panda, piezas inspiradas en Totoro y pieza con forma de gato. Las tres figuras aparecen además en la galería; la porción rectangular se usa en carta y portada. No se inventan nombres comerciales ni rellenos.
+`suppliedProducts` contiene doce propuestas (siete bebidas y cinco referencias de pastelería). Siete nombres aparecen en las gráficas: Red Dragon, Vagabond, Samurai Coffee, Taiyaki Red Velvet, Bubble Yakuza, Praliné Negro y Midori Kensei. Las cuatro piezas fotográficas usan títulos descriptivos provisionales: porción rectangular, pieza con forma de panda, piezas inspiradas en Totoro y pieza con forma de gato. Las tres figuras aparecen además en la galería; la porción rectangular se usa en carta y portada. No se inventan nombres comerciales ni rellenos.
 
 Las categorías «Café y creaciones de autor» y «Pastelería» agrupan el material aportado. «Té y blends» y «Coctelería» explican las especialidades del propietario sin añadir productos desconocidos. Tui Na, acupuntura y Reiki pertenecen a Bienestar y nunca a estos filtros.
 
@@ -40,7 +40,7 @@ Concepto confirmado: **MUSASHI — Japón detrás de una puerta**. `copy.hero.ti
 
 ## Transcripciones y alcohol
 
-Las seis descripciones de bebidas se transcribieron desde ingredientes o descripciones legibles de sus afiches. Se omiten eslóganes de sabor y no se completan recetas por intuición. `Product.transcription` distingue `legible` de `not-provided`. Las piezas de pastelería sin receta legible no reciben una transcripción inventada. No hay fragmentos dudosos incorporados.
+Las siete bebidas usan literalmente `src/menu/owner-recipes.json`: nombres, ingredientes y descripciones confirmados por el propietario el 2026-11-04. Esta fuente reemplaza las transcripciones previas. Los afiches intactos son material promocional; solo el HTML representa la receta actualizada. Xena Sama no tiene imagen confirmada y utiliza tipografía. Las cuatro recetas con licor muestran «Incluye licor»; las demás no se etiquetan como sin alcohol. Precio, verano, disponibilidad, temperatura, tamaños, adaptaciones y alérgenos completos siguen pendientes. Receta confirmada no significa disponibilidad ni aprobación de diseño.
 
 `Product.alcohol: "indicated"` se usa únicamente cuando el afiche menciona licor: Samurai Coffee, Vagabond, Red Dragon y Midori Kensei. La etiqueta aparece junto a la descripción HTML, antes de consultar. `not-stated` no significa sin alcohol ni apto para niños: no se publica una etiqueta de ausencia de alcohol para Bubble Yakuza o Praliné Negro.
 

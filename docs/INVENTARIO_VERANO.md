@@ -8,7 +8,7 @@ Temporada: `verano-prueba`. Nombre: Verano. Año no confirmado, sin asignar. Est
 | `demo-latte-frio` | Latte frío de vainilla | Café frío | `public/media/verano/latte-frio.webp`; OpenAI imagegen | Combinación ilustrativa de café, leche y vainilla con hielo. |
 | `demo-infusion-citrica` | Infusión cítrica fría | Té e infusiones frías | `public/media/verano/infusion-citrica.webp`; OpenAI imagegen | Infusión fría y cítricos como combinación de prueba. |
 | `demo-te-frutal` | Té frío de frutos rojos | Té e infusiones frías | `public/media/verano/te-frutal.webp`; OpenAI imagegen | Té frío y frutos rojos como combinación de prueba. |
-| `vagabond` | Vagabond | Creaciones de autor | Afiche del cliente: `public/media/musashi/vagabond.webp` | Creación documentada de la marca. Inclusión en temporada por confirmar; no se presume que sea fría. Afiche indica licor. |
+| `vagabond` | VAGABOND | Creaciones de autor | Afiche del cliente: `public/media/musashi/vagabond.webp` | Creación documentada de la marca. Inclusión en temporada por confirmar; no se presume que sea fría. La receta del propietario confirma licor; el afiche se conserva como promoción. |
 | `taiyaki` | Taiyaki Red Velvet | Pastelería | Afiche del cliente: `public/media/musashi/taiyaki-red-velvet.webp` | Creación de la marca. Inclusión por confirmar, sin inventar relleno o receta. |
 
 Los nombres y combinaciones `demo-*` son ejemplos, no una propuesta comercial ni recetas atribuidas a Musashi. No incluyen precio, alérgenos, propiedades nutricionales o aptitudes alimentarias inventadas. El énfasis en bebidas frías no declara excluidas las propuestas calientes.

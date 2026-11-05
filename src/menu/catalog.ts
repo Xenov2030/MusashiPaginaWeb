@@ -3,7 +3,14 @@ export interface MenuProduct {
   id: string;
   name: string;
   description: string;
-  image: VisualResource;
+  image?: VisualResource;
+  ingredients?: string;
+  contentSource?: { providedBy: string; providedOn: string; status: string };
+  summerInclusion?: null;
+  servingTemperature?: null;
+  sizes?: null;
+  adaptations?: null;
+  allergens?: null;
   alcohol?: "indicated" | "not-stated";
 }
 const illustrative = (
@@ -29,15 +36,7 @@ const illustrative = (
 });
 export const productCatalog: Record<string, MenuProduct> = Object.fromEntries(
   [
-    ...suppliedProducts
-      .filter((p) => p.image)
-      .map((p) => ({
-        id: p.id,
-        name: p.name,
-        description: p.description,
-        image: p.image!,
-        alcohol: p.alcohol,
-      })),
+    ...suppliedProducts,
     illustrative(
       "demo-cafe-hielo",
       "Negro sobre hielo",

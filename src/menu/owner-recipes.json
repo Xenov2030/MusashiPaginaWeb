@@ -1,0 +1,121 @@
+[
+  {
+    "id": "red-dragon",
+    "name": "RED DRAGON",
+    "ingredients": "Espresso, pasta de Red Velvet, frambuesa, licor de chocolate blanco y leche texturizada.",
+    "description": "Una combinación intensa y sedosa, donde el carácter del café se encuentra con la dulzura del chocolate blanco y el toque frutal de la frambuesa.",
+    "alcohol": "indicated",
+    "contentSource": {
+      "providedBy": "propietario",
+      "providedOn": "2026-11-04",
+      "status": "confirmed"
+    },
+    "summerInclusion": null,
+    "servingTemperature": null,
+    "sizes": null,
+    "adaptations": null,
+    "allergens": null
+  },
+  {
+    "id": "vagabond",
+    "name": "VAGABOND",
+    "ingredients": "Doble espresso, crema de leche, chocolate blanco y licor de dulce de leche.",
+    "description": "Una combinación cremosa y envolvente, donde la intensidad del café se fusiona con la suavidad del chocolate blanco y el dulzor del dulce de leche.",
+    "alcohol": "indicated",
+    "contentSource": {
+      "providedBy": "propietario",
+      "providedOn": "2026-11-04",
+      "status": "confirmed"
+    },
+    "summerInclusion": null,
+    "servingTemperature": null,
+    "sizes": null,
+    "adaptations": null,
+    "allergens": null
+  },
+  {
+    "id": "midori-kensei",
+    "name": "MIDORI KENSEI",
+    "ingredients": "Latte, chocolate blanco y licor de pistacho.",
+    "description": "Una combinación suave y cremosa, con notas de pistacho y chocolate blanco que aportan un carácter delicado y distintivo.",
+    "alcohol": "indicated",
+    "contentSource": {
+      "providedBy": "propietario",
+      "providedOn": "2026-11-04",
+      "status": "confirmed"
+    },
+    "summerInclusion": null,
+    "servingTemperature": null,
+    "sizes": null,
+    "adaptations": null,
+    "allergens": null
+  },
+  {
+    "id": "bubble-yakuza",
+    "name": "BUBBLE YAKUZA",
+    "ingredients": "Latte de vainilla, caramelo y perlas de tapioca caramelizadas.",
+    "description": "Una combinación dulce y cremosa, con una textura especial que convierte cada sorbo en una experiencia diferente.",
+    "alcohol": "not-stated",
+    "contentSource": {
+      "providedBy": "propietario",
+      "providedOn": "2026-11-04",
+      "status": "confirmed"
+    },
+    "summerInclusion": null,
+    "servingTemperature": null,
+    "sizes": null,
+    "adaptations": null,
+    "allergens": null
+  },
+  {
+    "id": "praline-negro",
+    "name": "PRALINÉ NEGRO",
+    "ingredients": "Pasta de sésamo negro tostado, melaza de miel, chocolate, Salted Caramel, pasta de maní, espresso y leche texturizada.",
+    "description": "Una combinación intensa y profunda, con notas tostadas y dulces, equilibradas por un delicado contraste de sabores.",
+    "alcohol": "not-stated",
+    "contentSource": {
+      "providedBy": "propietario",
+      "providedOn": "2026-11-04",
+      "status": "confirmed"
+    },
+    "summerInclusion": null,
+    "servingTemperature": null,
+    "sizes": null,
+    "adaptations": null,
+    "allergens": null
+  },
+  {
+    "id": "xena-sama",
+    "name": "XENA SAMA",
+    "ingredients": "Latte de coco, dulce de leche y un toque de vainilla.",
+    "description": "Una combinación suave y cremosa, con notas tropicales y dulces, y un delicado aroma a vainilla.",
+    "alcohol": "not-stated",
+    "contentSource": {
+      "providedBy": "propietario",
+      "providedOn": "2026-11-04",
+      "status": "confirmed"
+    },
+    "summerInclusion": null,
+    "servingTemperature": null,
+    "sizes": null,
+    "adaptations": null,
+    "allergens": null
+  },
+  {
+    "id": "samurai",
+    "name": "SAMURÁI COFFEE",
+    "ingredients": "Doble espresso, crema de leche y un touch de licor de chocolate con menta.",
+    "description": "Una combinación intensa y cremosa, donde el café se encuentra con el chocolate y un delicado toque de menta.",
+    "alcohol": "indicated",
+    "contentSource": {
+      "providedBy": "propietario",
+      "providedOn": "2026-11-04",
+      "status": "confirmed"
+    },
+    "summerInclusion": null,
+    "servingTemperature": null,
+    "sizes": null,
+    "adaptations": null,
+    "allergens": null
+  }
+]

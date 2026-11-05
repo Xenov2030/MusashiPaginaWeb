@@ -43,10 +43,10 @@ test("escritorio: identidad real, experiencia, ampliación de imagen y firma", a
     .click();
   await expect(page).toHaveURL(/\/carta$/);
   const opener = page.getByRole("button", {
-    name: "Ampliar gráfica de Vagabond",
+    name: "Ampliar gráfica de VAGABOND",
   });
   await opener.click();
-  const dialog = page.getByRole("dialog", { name: "Imagen de Vagabond" });
+  const dialog = page.getByRole("dialog", { name: "Imagen de VAGABOND" });
   await expect(dialog).toBeVisible();
   await expect(dialog.locator("img")).toHaveAttribute(
     "src",

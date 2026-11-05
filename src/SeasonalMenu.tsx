@@ -25,23 +25,36 @@ function SeasonalProduct({
       data-demo={seasonIsDemo || product.role === "demonstration"}
     >
       <div className="product-visual">
-        <ProductMedia
-          resource={product.image}
-          name={product.name}
-          notice={notice}
-          description={product.description}
-        >
-          <Visual resource={product.image} />
-        </ProductMedia>
+        {product.image ? (
+          <ProductMedia
+            resource={product.image!}
+            name={product.name}
+            notice={notice}
+            description={product.description}
+            ingredients={product.ingredients}
+            includesLiqueur={product.alcohol === "indicated"}
+          >
+            <Visual resource={product.image!} />
+          </ProductMedia>
+        ) : (
+          <div className="recipe-typography">
+            <span>MUSASHI / CREACIÓN DE AUTOR</span>
+            <strong>{product.name}</strong>
+            <small>Imagen del producto pendiente</small>
+          </div>
+        )}
       </div>
       <div className="product-copy">
         <p className="eyebrow">{product.category}</p>
         <h3>{product.name}</h3>
         <p>{product.description}</p>
+        {product.ingredients && (
+          <p className="product-ingredients">
+            <strong>Ingredientes:</strong> {product.ingredients}
+          </p>
+        )}
         {product.alcohol === "indicated" && (
-          <span className="alcohol-note">
-            Contiene alcohol · indicado en el afiche
-          </span>
+          <span className="alcohol-note">Incluye licor</span>
         )}
         <p className="season-role">
           {product.role === "brand-reference"
@@ -70,9 +83,9 @@ function SeasonalProduct({
           )
         )}
         <small className="season-image-kind">
-          {product.image.kind === "conceptual"
+          {product.image?.kind === "conceptual"
             ? "Imagen conceptual"
-            : product.image.format === "graphic"
+            : product.image?.format === "graphic"
               ? "Afiche original de Musashi"
               : "Imagen aportada por Musashi"}
         </small>
@@ -236,11 +249,14 @@ export function SeasonalMenu({ full = false }: { full?: boolean }) {
           onToggle={(e) => setArchiveOpen(e.currentTarget.open)}
         >
           <summary>
-            Creaciones de la marca<span>Ver material de Musashi ↓</span>
+            Creaciones de autor<span>Recetas de Musashi y pastelería ↓</span>
           </summary>
           <p>
-            {brandNotice}. Estas piezas documentan creaciones de Musashi; no
-            confirman su disponibilidad ni que sean bebidas frías.
+            Siete recetas confirmadas por Musashi, separadas de los ejemplos
+            ficticios de verano. Precios, disponibilidad, inclusión estacional y
+            presentación fría o caliente por confirmar. Los afiches son material
+            promocional: la receta actualizada está en el texto. La pastelería
+            conserva sus referencias; sus descripciones siguen pendientes.
           </p>
           {archiveOpen && (
             <div className="brand-archive-grid">
@@ -256,20 +272,40 @@ export function SeasonalMenu({ full = false }: { full?: boolean }) {
                 >
                   {product.image && (
                     <ProductMedia
-                      resource={product.image}
+                      resource={product.image!}
                       name={product.name}
                       notice={brandNotice}
                       description={product.description}
+                      ingredients={product.ingredients}
+                      includesLiqueur={product.alcohol === "indicated"}
                     >
-                      <Visual resource={product.image} />
+                      <Visual resource={product.image!} />
                     </ProductMedia>
+                  )}
+                  {!product.image && (
+                    <div
+                      className="recipe-typography"
+                      aria-label="Composición tipográfica, imagen del producto pendiente"
+                    >
+                      <span>MUSASHI / CREACIÓN DE AUTOR</span>
+                      <strong>{product.name}</strong>
+                      <small>Imagen del producto pendiente</small>
+                    </div>
                   )}
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
+                  {product.ingredients && (
+                    <p className="product-ingredients">
+                      <strong>Ingredientes:</strong> {product.ingredients}
+                    </p>
+                  )}
+                  {product.contentSource && (
+                    <p className="recipe-status">
+                      Receta confirmada · Disponibilidad por confirmar
+                    </p>
+                  )}
                   {product.alcohol === "indicated" && (
-                    <span className="alcohol-note">
-                      Contiene alcohol · indicado en el afiche
-                    </span>
+                    <span className="alcohol-note">Incluye licor</span>
                   )}
                   <small>{brandNotice}</small>
                 </article>
